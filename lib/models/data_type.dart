@@ -1,0 +1,1 @@
+enum DataType { News, Case }
