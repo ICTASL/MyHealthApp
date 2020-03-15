@@ -6,15 +6,19 @@ import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'COVID-19 Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.green,
+          backgroundColor: Color(0xfff6f6f9),
+          textTheme: TextTheme(
+            display1: TextStyle(color: Colors.black, fontSize: 15.0),
+            display2: TextStyle(color: Colors.black54, fontSize: 12.0),
+            body1: TextStyle(color: Colors.black54, fontSize: 15.0),
+          )),
       supportedLocales: [Locale('en', "US"), Locale('si', "LK")],
       localizationsDelegates: [
         // A class which loads the translations from JSON files

@@ -10,3 +10,5 @@ class Case {
     return Case(id: json['id'], location: Location.fromJson(json['location']));
   }
 }
+
+class ReportedCase {}

@@ -2,13 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/app_localizations.dart';
+import 'package:selftrackingapp/networking/data_repository.dart';
+import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/routes.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/theme.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    GetIt.instance
+        .registerSingleton<DataRepository>(AppDataRepository(DummyDatabase()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
