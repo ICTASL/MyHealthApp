@@ -52,6 +52,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           "assets/images/welcome_screen_bg.png",
                           width: 300,
                           height: 300,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       Column(
