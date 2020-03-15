@@ -83,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.push(context,
+                                      Navigator.pushReplacement(context,
                                           createRoute(DashboardScreen()));
                                     },
                                   ),
