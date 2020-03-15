@@ -45,111 +45,108 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 1.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: ListView(children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(color: colorAccentBackground),
+                        child: Image.asset(
+                          "assets/images/welcome_screen_bg.png",
+                          width: 300,
+                          height: 300,
+                        ),
+                      ),
+                      Column(
                         children: <Widget>[
-                          Container(
-                            decoration:
-                                BoxDecoration(color: colorAccentBackground),
-                            child: Image.asset(
-                              "assets/images/welcome_screen_bg.png",
-                              width: 300,
-                              height: 300,
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 20.0),
+                            child: Container(
+                              child: Text(
+                                AppLocalizations.of(context)
+                                    .translate('welcome_screen_title'),
+                                style: h1TextStyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: mainButtonTextColor),
+                              ),
                             ),
                           ),
-                          Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 20.0),
-                                child: Container(
-                                  child: Text(
-                                    AppLocalizations.of(context)
-                                        .translate('welcome_screen_title'),
-                                    style: h1TextStyle.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                        color: mainButtonTextColor),
-                                  ),
-                                ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 5.0),
+                            child: Container(
+                              child: Text(
+                                AppLocalizations.of(context)
+                                    .translate('welcome_screen_subtitle'),
+                                style: h4TextStyle.copyWith(
+                                    fontWeight: FontWeight.w300,
+                                    color: mainButtonTextColor),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 5.0),
-                                child: Container(
-                                  child: Text(
-                                    AppLocalizations.of(context)
-                                        .translate('welcome_screen_subtitle'),
-                                    style: h4TextStyle.copyWith(
-                                        fontWeight: FontWeight.w300,
-                                        color: mainButtonTextColor),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 20.0),
-                                child: Container(
-                                  child: FlatButton(
-                                    color: Color(0XFF8DC63F),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Text(
-                                        AppLocalizations.of(context).translate(
-                                            'welcome_screen_button_text'),
-                                        style: h2TextStyle.copyWith(
-                                            color: textColor,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DashboardScreen()));
-                                    },
-                                  ),
-                                ),
-                              )
-                            ],
+                            ),
                           ),
-                          Column(
-                            children: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                  "Sinhala",
-                                  style: h6TextStyle.copyWith(
-                                      color: colorAccentBackground),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 20.0),
+                            child: Container(
+                              child: FlatButton(
+                                color: Color(0XFF8DC63F),
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Text(
+                                    AppLocalizations.of(context).translate(
+                                        'welcome_screen_button_text'),
+                                    style: h2TextStyle.copyWith(
+                                        color: textColor,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ),
                                 onPressed: () {
-                                  AppLocalizations.of(context)
-                                      .load(Locale("si", "LK"));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DashboardScreen()));
                                 },
                               ),
-                              FlatButton(
-                                child: Text(
-                                  "English",
-                                  style: h6TextStyle.copyWith(
-                                      color: colorAccentBackground),
-                                ),
-                                onPressed: () {
-                                  AppLocalizations.of(context)
-                                      .load(Locale("en", "US"));
-                                },
-                              ),
-                              FlatButton(
-                                child: Text(
-                                  "Tamil",
-                                  style: h6TextStyle.copyWith(
-                                      color: colorAccentBackground),
-                                ),
-                                onPressed: () {
-                                  AppLocalizations.of(context)
-                                      .load(Locale("ta", "TA"));
-                                },
-                              )
-                            ],
+                            ),
                           )
-                        ])))));
+                        ],
+                      ),
+                      Column(
+                        children: <Widget>[
+                          FlatButton(
+                            child: Text(
+                              "Sinhala",
+                              style: h6TextStyle.copyWith(
+                                  color: colorAccentBackground),
+                            ),
+                            onPressed: () {
+                              AppLocalizations.of(context)
+                                  .load(Locale("si", "LK"));
+                            },
+                          ),
+                          FlatButton(
+                            child: Text(
+                              "English",
+                              style: h6TextStyle.copyWith(
+                                  color: colorAccentBackground),
+                            ),
+                            onPressed: () {
+                              AppLocalizations.of(context)
+                                  .load(Locale("en", "US"));
+                            },
+                          ),
+                          FlatButton(
+                            child: Text(
+                              "Tamil",
+                              style: h6TextStyle.copyWith(
+                                  color: colorAccentBackground),
+                            ),
+                            onPressed: () {
+                              AppLocalizations.of(context)
+                                  .load(Locale("ta", "TA"));
+                            },
+                          )
+                        ],
+                      )
+                    ])))));
   }
 }
