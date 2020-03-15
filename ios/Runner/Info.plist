@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need this check whether you have contacted with any contaminated area</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need this to get information relevent to your current location</string>
 </dict>
 </plist>
