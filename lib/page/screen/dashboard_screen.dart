@@ -9,7 +9,7 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Self Tracker"),
+        title: Text("Dashboard"),
       ),
       body: Center(
           child: Column(
@@ -23,14 +23,16 @@ class DashboardScreen extends StatelessWidget {
             color: Colors.green,
             child: Text("Select News"),
             onPressed: () {
-              Navigator.push(context, createRoute(NewsDetailScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NewsDetailScreen()));
             },
           ),
           FlatButton(
             color: Colors.blue,
             child: Text("Case List Screen"),
             onPressed: () {
-              Navigator.push(context, createRoute(CaseListScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CaseListScreen()));
             },
           )
         ],
