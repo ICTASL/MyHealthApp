@@ -87,8 +87,11 @@ class WelcomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.pushReplacement(context,
-                                          createRoute(DashboardScreen()));
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DashboardScreen()));
                                     },
                                   ),
                                 ),
