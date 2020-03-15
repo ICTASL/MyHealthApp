@@ -7,6 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="selftrackingapp"
@@ -28,8 +30,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <service android:name=".plugin.LocationTrackingService" android:enabled="true" />
-        <receiver android:name=".plugin.LocationReceiver" >
+        <service android:name=".service.LocationTrackingService" android:enabled="true" />
+        <receiver android:name=".service.LocationReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.REBOOT"/>
