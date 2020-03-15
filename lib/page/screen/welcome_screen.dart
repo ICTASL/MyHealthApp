@@ -18,13 +18,17 @@ class WelcomeScreen extends StatelessWidget {
             color: Colors.amber,
             child: Text("Home Screen"),
             onPressed: () {
-              Navigator.push(context, createRoute(DashboardScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DashboardScreen()));
             },
           ),
           FlatButton(
             child: Text("Privacy Policy Screen"),
             onPressed: () {
-              Navigator.push(context, createRoute(PrivacyPolicyScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PrivacyPolicyScreen()));
             },
           )
         ],
