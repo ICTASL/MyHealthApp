@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1096700657713",
+    "firebase_url": "https://covid-19-lk-dev.firebaseio.com",
+    "project_id": "covid-19-lk-dev",
+    "storage_bucket": "covid-19-lk-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096700657713:android:0a0df1ee8409b2909b5510",
+        "android_client_info": {
+          "package_name": "app.ceylon.selftrackingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096700657713-unbpqgi7v23616evj9kp288vtjqg5u2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz68l5B3gtQEHVE1crZ1m14pzkccVb0mo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096700657713-unbpqgi7v23616evj9kp288vtjqg5u2j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096700657713:android:61dfc8a0080557ce9b5510",
+        "android_client_info": {
+          "package_name": "lk.gov.govtech.covid19"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096700657713-unbpqgi7v23616evj9kp288vtjqg5u2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz68l5B3gtQEHVE1crZ1m14pzkccVb0mo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096700657713-unbpqgi7v23616evj9kp288vtjqg5u2j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
