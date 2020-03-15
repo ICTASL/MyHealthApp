@@ -7,6 +7,9 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Dashboard"),
+      ),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -16,14 +19,16 @@ class DashboardScreen extends StatelessWidget {
             color: Colors.green,
             child: Text("Select News"),
             onPressed: () {
-              Navigator.push(context, createRoute(NewsDetailScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NewsDetailScreen()));
             },
           ),
           FlatButton(
             color: Colors.blue,
             child: Text("Case List Screen"),
             onPressed: () {
-              Navigator.push(context, createRoute(CaseListScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CaseListScreen()));
             },
           )
         ],

@@ -6,6 +6,10 @@ class CaseDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text(
+        "Case Details",
+      )),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -15,7 +19,10 @@ class CaseDetailScreen extends StatelessWidget {
             color: Colors.blue,
             child: Text("User register"),
             onPressed: () {
-              Navigator.push(context, createRoute(UserRegisterScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserRegisterScreen()));
             },
           )
         ],

@@ -6,6 +6,9 @@ class CaseListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Case List"),
+      ),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -15,7 +18,8 @@ class CaseListScreen extends StatelessWidget {
             color: Colors.green,
             child: Text("Select Case"),
             onPressed: () {
-              Navigator.push(context, createRoute(CaseDetailScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CaseDetailScreen()));
             },
           ),
         ],
