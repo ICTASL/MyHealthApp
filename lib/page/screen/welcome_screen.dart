@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/page/routes.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
@@ -48,7 +49,8 @@ class WelcomeScreen extends StatelessWidget {
                                     horizontal: 20.0, vertical: 20.0),
                                 child: Container(
                                   child: Text(
-                                    "Welcome",
+                                    AppLocalizations.of(context)
+                                        .translate('welcome_screen_title'),
                                     style: h1TextStyle.copyWith(
                                         fontWeight: FontWeight.w600,
                                         color: mainButtonTextColor),
@@ -60,7 +62,8 @@ class WelcomeScreen extends StatelessWidget {
                                     horizontal: 20.0, vertical: 5.0),
                                 child: Container(
                                   child: Text(
-                                    "Together we can defeat COVID-19",
+                                    AppLocalizations.of(context)
+                                        .translate('welcome_screen_subtitle'),
                                     style: h4TextStyle.copyWith(
                                         fontWeight: FontWeight.w300,
                                         color: mainButtonTextColor),
@@ -76,7 +79,8 @@ class WelcomeScreen extends StatelessWidget {
                                     child: Padding(
                                       padding: EdgeInsets.all(16.0),
                                       child: Text(
-                                        "Next",
+                                        AppLocalizations.of(context).translate(
+                                            'welcome_screen_button_text'),
                                         style: h2TextStyle.copyWith(
                                             color: textColor,
                                             fontWeight: FontWeight.w400),
@@ -88,6 +92,43 @@ class WelcomeScreen extends StatelessWidget {
                                     },
                                   ),
                                 ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              FlatButton(
+                                child: Text(
+                                  "Sinhala",
+                                  style: h6TextStyle.copyWith(
+                                      color: colorAccentBackground),
+                                ),
+                                onPressed: () {
+                                  AppLocalizations.of(context)
+                                      .load(Locale("si", "LK"));
+                                },
+                              ),
+                              FlatButton(
+                                child: Text(
+                                  "English",
+                                  style: h6TextStyle.copyWith(
+                                      color: colorAccentBackground),
+                                ),
+                                onPressed: () {
+                                  AppLocalizations.of(context)
+                                      .load(Locale("en", "US"));
+                                },
+                              ),
+                              FlatButton(
+                                child: Text(
+                                  "Tamil",
+                                  style: h6TextStyle.copyWith(
+                                      color: colorAccentBackground),
+                                ),
+                                onPressed: () {
+                                  AppLocalizations.of(context)
+                                      .load(Locale("ta", "TA"));
+                                },
                               )
                             ],
                           )
