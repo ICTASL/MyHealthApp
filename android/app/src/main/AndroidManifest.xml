@@ -5,6 +5,8 @@
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="selftrackingapp"
@@ -26,5 +28,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <service android:name=".plugin.LocationTrackingService" android:enabled="true" />
+        <receiver android:name=".plugin.LocationReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.REBOOT"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

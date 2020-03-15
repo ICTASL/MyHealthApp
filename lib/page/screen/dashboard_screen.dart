@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/page/routes.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
@@ -15,6 +16,12 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          FutureBuilder<String>(
+            future: getLocationUpdate(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return Text("DAta ${snapshot.data}");
+            },
+          ),
           Text(
             AppLocalizations.of(context)
                 .translate('dashboard_screen_welcome_message'),
@@ -38,5 +45,20 @@ class DashboardScreen extends StatelessWidget {
         ],
       )),
     );
+  }
+
+  static const locationChannel = const MethodChannel("location");
+
+  Future<String> getLocationUpdate() async {
+    String location;
+    try {
+      var result = await locationChannel.invokeMethod('getLocation');
+      location = '$result%';
+    } on PlatformException catch (e) {
+      location = "0.0,0.0";
+    }
+
+    print(location);
+    return location;
   }
 }
