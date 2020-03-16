@@ -34,6 +34,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+		<meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBQu2WwoTFKJQ1PM4w-hIRkLnEVDtWtFoo"/>
         <service android:name=".service.LocationTrackingService" android:enabled="false" />
         <receiver android:name=".service.LocationReceiver" android:exported="true">
             <intent-filter>
