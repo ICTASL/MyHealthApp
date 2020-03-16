@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/fcm_message.dart';
+import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/news_details_screen.dart';
@@ -33,10 +36,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FutureBuilder<String>(
+          FutureBuilder<List<Location>>(
             future: getLocationUpdate(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              return Text("DAta ${snapshot.data}");
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Location>> snapshot) {
+              print(snapshot.error);
+              if (snapshot.hasError) return Text("${snapshot.error}");
+              return Text("Data Recived");
             },
           ),
           Text(
@@ -64,18 +70,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Future<String> getLocationUpdate() async {
-    String location;
+  Future<List<Location>> getLocationUpdate() async {
     try {
-      var result =
+      final List<dynamic> locations =
           await DashboardScreen.locationChannel.invokeMethod('getLocation');
-      location = '$result%';
-    } on PlatformException catch (e) {
-      location = "0.0,0.0";
-    }
 
-    print(location);
-    return location;
+      return locations.map((v) => Location.fromJson(v)).toList();
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
   }
 
   void _configureFCM() {

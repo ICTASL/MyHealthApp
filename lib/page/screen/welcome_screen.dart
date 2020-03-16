@@ -100,7 +100,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>

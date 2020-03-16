@@ -34,7 +34,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <service android:name=".service.LocationTrackingService" android:enabled="true" />
+        <service android:name=".service.LocationTrackingService" android:enabled="false" />
         <receiver android:name=".service.LocationReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

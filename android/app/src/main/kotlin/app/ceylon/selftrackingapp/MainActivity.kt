@@ -19,7 +19,10 @@ import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : FlutterActivity() {
@@ -108,13 +111,18 @@ class MainActivity : FlutterActivity() {
                 AsyncTask.execute {
                     val allLocations = locationDao.getAll();
                     var message = "";
+                    val locaitons = ArrayList<String>(allLocations.size)
                     for (location in allLocations) {
-                        val locationResult: String = "${location.lng},${location.lat},${location.date?.time}"
-                        message += locationResult;
+                        val jsonLocation = JSONObject()
+                        jsonLocation.put("longitude", location.lng)
+                        jsonLocation.put("latitude", location.lat)
+                        jsonLocation.put("recordedAt", location.date?.time)
+                        jsonLocation.put("title", location.dateString)
+                        locaitons.add(jsonLocation.toString(10))
                     }
 
                     handler.post {
-                        result.success(message);
+                        result.success(locaitons);
                     }
                 }
 
