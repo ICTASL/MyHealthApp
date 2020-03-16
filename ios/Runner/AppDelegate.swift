@@ -16,6 +16,9 @@ import GoogleMaps
     isSupportingLocationUpdates = CLLocationManager.significantLocationChangeMonitoringAvailable()
     if (isSupportingLocationUpdates) {
       locationManager.requestAlwaysAuthorization()
+      if #available(iOS 9.0, *) {
+        locationManager.allowsBackgroundLocationUpdates = true
+      }
       locationManager.delegate = self
       startLocationUpdate()
     }
