@@ -22,35 +22,58 @@ class CaseItem extends StatelessWidget {
                 color: Colors.black12, blurRadius: 12.0, offset: Offset(0, 4.0))
           ],
         ),
-        child: Row(
-          children: <Widget>[
-            Icon(
-              Icons.trip_origin,
-              size: 18.0,
-            ),
-            SizedBox(width: 20.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(_case.locations[0].address),
-                SizedBox(height: 10.0),
-                Text(
-                  "CASE " + _case.id.toString(),
-                  style: TextStyle(fontSize: 16.0),
-                )
-              ],
-            ),
-          ],
+        child: Container(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Icon(
+                Icons.trip_origin,
+                size: 18.0,
+              ),
+              SizedBox(width: 20.0),
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Text(_case.locations[0].address),
+                    ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      "CASE " + _case.id.toString(),
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomRight,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  color: Colors.green,
+                  onPressed: () => _showCasDetails(context, _case),
+                  child: Text(
+                    "See Map ",
+                    style: TextStyle(fontSize: 14.0, color: Colors.white),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
-      onTap: () => _showCasDetails(context, _case.id),
     );
   }
 
-  void _showCasDetails(BuildContext context, int id) {
-    //Uncomment this after implementing case details screen
-
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => CaseDetailScreen(id)));
+  void _showCasDetails(BuildContext context, ReportedCase reportedCase) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CaseDetailScreen(
+                  reportedCase: reportedCase,
+                )));
   }
 }

@@ -26,6 +26,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
       for (var i = id; i > 0; i--) {
         ApiClient().getMessage(i).then((article) {
           // Save article for display
+          print(article.title);
           setState(() {
             stories.add(article);
           });
@@ -44,9 +45,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
             padding: const EdgeInsets.only(top: 50.0, left: 10.0, right: 10.0),
             sliver: SliverAppBar(
               backgroundColor: Color(0xff16a33e),
-              automaticallyImplyLeading: false,
-              stretch: true,
               floating: true,
+              automaticallyImplyLeading: false,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(20.0),
@@ -66,31 +66,45 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            "11",
-                            style: TextStyle(
-                                fontSize: 40.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                          GestureDetector(
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 30.0,
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
-                          Text(
-                            "Total Cases",
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400),
-                          )
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "11",
+                                style: TextStyle(
+                                    fontSize: 40.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Total Cases",
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            ],
+                          ),
                         ],
                       ),
-                      GestureDetector(
-                        child: Icon(Icons.keyboard_arrow_right,
-                            color: Colors.white),
-                      )
                     ],
                   ),
                 ),
@@ -162,12 +176,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                                 Text(
                                   stories[index].originator,
                                   textAlign: TextAlign.start,
-                                  style: h1TextStyle,
+                                  style: TextStyle(color: Colors.black),
                                 ),
                                 Text(
                                   "8th March 12:45", //published data needs to facilitated into the messages from the API
                                   textAlign: TextAlign.start,
-                                  style: h3TextStyle,
+                                  style: TextStyle(color: Colors.black45),
                                 )
                               ],
                             )
@@ -176,13 +190,21 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Text(
-                          stories[index].message,
-                          style: h5TextStyle,
+                        Container(
+                          child: Divider(
+                            color: Colors.grey[300],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            stories[index].message,
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                         Container(
                           child: Divider(
-                            color: Colors.grey[400],
+                            color: Colors.grey[300],
                           ),
                         ),
                         Align(

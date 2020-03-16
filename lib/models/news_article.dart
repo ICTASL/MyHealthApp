@@ -19,7 +19,6 @@ class NewsArticle {
   factory NewsArticle.fromJSON(Map data) {
     NewsArticle article = new NewsArticle();
     String sid = data['id'];
-    print("Article ID:$sid");
     if (sid != null) {
       article.id = int.parse(sid);
     }

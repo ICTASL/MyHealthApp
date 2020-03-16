@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,9 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 print(snapshot.error);
                 if (snapshot.hasError) return Text("${snapshot.error}");
                 List<Location> entries = snapshot.data;
-                // print("----aaa---");
-                // print(entries);
-                // print("----aaa----");
+
                 if (entries != null && entries.length > 0) {
                   return ListView.builder(
                       padding: const EdgeInsets.all(8),
@@ -67,44 +67,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           Text(
-            AppLocalizations.of(context)
-                .translate('dashboard_screen_welcome_message'),
-          ),
-          FlatButton(
+              AppLocalizations.of(context)
+                  .translate('dashboard_screen_welcome_message'),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+          RaisedButton(
             color: Colors.green,
-            child: Text(AppLocalizations.of(context)
-                .translate('dashboard_screen_news_button')),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: Text(
+              AppLocalizations.of(context)
+                  .translate('dashboard_screen_news_button'),
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => NewsDetailScreen()));
             },
           ),
-          FlatButton(
+          RaisedButton(
             color: Colors.blue,
-            child: Text(AppLocalizations.of(context)
-                .translate('dashboard_screen_case_list_button')),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: Text(
+              AppLocalizations.of(context)
+                  .translate('dashboard_screen_case_list_button'),
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CaseListScreen()));
             },
           ),
-          FlatButton(
+
+          RaisedButton(
             color: Colors.blue,
-            child: Text(AppLocalizations.of(context)
-                .translate('dashboard_screen_case_details_button')),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CaseDetailScreen(),
-                ),
-              );
-            },
-          ),
-          FlatButton(
-            color: Colors.blue,
-            child: Text(AppLocalizations.of(context)
-                .translate('dashboard_screen_privacy_policy_button')),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: Text(
+              AppLocalizations.of(context)
+                  .translate('dashboard_screen_privacy_policy_button'),
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Navigator.push(
                   context,
@@ -123,10 +126,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           //   },
           // )
 
-          FlatButton(
+          RaisedButton(
             color: Colors.blue,
-            child: Text(AppLocalizations.of(context)
-                .translate('dashboard_screen_contact_us_button')),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: Text(
+              AppLocalizations.of(context)
+                  .translate('dashboard_screen_contact_us_button'),
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -145,9 +153,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     try {
       final List<dynamic> locations =
           await DashboardScreen.locationChannel.invokeMethod('getLocation');
-      // print("--------");
-      // print(locations);
-      // print("--------");
       return locations.map((v) => Location.fromJson(v)).toList();
     } on Exception catch (e) {
       print(e);

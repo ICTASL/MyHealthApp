@@ -49,7 +49,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   List<ContactUsContact> contacts = snapshot.data;
                   return ListView.builder(
                     itemBuilder: (context, index) {
-                      print(contacts[index]);
                       return _contactCard(contacts[index].title,
                           contacts[index].phoneNumber, contacts[index].address);
                     },

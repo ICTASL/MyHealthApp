@@ -32,7 +32,6 @@ class UserRegisterScreen extends StatelessWidget {
                   for (var i = 0; i < edit.length; i++) {
                     // Get field value
                     String value = edit[i].text;
-                    print(value);
                   }
                 },
               );
