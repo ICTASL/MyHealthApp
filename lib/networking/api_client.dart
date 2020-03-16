@@ -19,7 +19,7 @@ class ApiClient {
   }
 
   Future<int> getLastMessageId() async {
-    final url = '$_baseUrl/application/message/latest';
+    final url = '$_baseUrl/application/alert/latest';
     print('Get last message ID: $url');
     final response = await http.get(url);
     // Was this not a success?
@@ -35,7 +35,7 @@ class ApiClient {
   Future<NewsArticle> getMessage(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lang = prefs.getString('preferred_language');
-    final url = '$_baseUrl/application/message/$id/$lang';
+    final url = '$_baseUrl/application/alert/$id/$lang';
     print('Get message: $url');
     final response = await http.get(url);
     // Was this not a success?
