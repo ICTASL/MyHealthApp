@@ -2,17 +2,17 @@
     "welcome_screen_title": "Welcome",
     "welcome_screen_subtitle": "Together we can defeat COVID-19",
     "welcome_screen_button_text": "Next",
-
     "dashboard_screen_title": "Dashboard",
     "dashboard_screen_welcome_message": "Dashboard",
     "dashboard_screen_data_received": "Data Recived",
     "dashboard_screen_news_button": "Select News",
     "dashboard_screen_case_list_button": "Case List Screen",
     "dashboard_screen_case_details_button": "Case Details",
+    "dashboard_screen_contact_us_button": "Contact Us",
+    "dashboard_screen_privacy_policy_button": "Privacy Policy",
+    "contact_us_screen_contact_us_title": "Get in touch.",
     "dashboard_screen_ok_button": "OK",
-
     "case_details_screen_title": "Case Detail Screen",
-
     "user_register_screen_title": "User Registration",
     "user_register_screen_name": "Name",
     "user_register_screen_email": "E-mail",
