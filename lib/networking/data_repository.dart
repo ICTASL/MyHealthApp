@@ -2,10 +2,11 @@ import 'package:selftrackingapp/exceptions/data_fetch_exception.dart';
 import 'package:selftrackingapp/models/case.dart';
 import 'package:selftrackingapp/models/contact_us_contact.dart';
 import 'package:selftrackingapp/models/news_article.dart';
+import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/networking/db.dart';
 
 abstract class DataRepository {
-  Future<List<ReportedCase>> fetchCases();
+  Future<List<ReportedCase>> fetchCases(String lang);
   Future<List<NewsArticle>> fetchNewsArticles();
   Future<int> fetchCaseTotal();
   Future<List<ContactUsContact>> fetchContactUsContacts();
@@ -13,14 +14,15 @@ abstract class DataRepository {
 }
 
 class AppDataRepository implements DataRepository {
-  AppDataRepository(this._db);
   final String TAG = "AppDataRepository: ";
   final DB _db;
 
+  AppDataRepository(this._db);
+  
   @override
-  Future<List<ReportedCase>> fetchCases() {
+  Future<List<ReportedCase>> fetchCases(String lang) {
     try {
-      return _db.fetchCases();
+      return _db.fetchCases(lang);
     } catch (e) {
       throw DataFetchException(e);
     }

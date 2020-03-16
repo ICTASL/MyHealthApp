@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:selftrackingapp/models/case.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/models/location.dart';
+import 'package:selftrackingapp/models/reported_case.dart';
+import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/widgets/case_item.dart';
 
 class CaseListScreen extends StatefulWidget {
@@ -114,7 +116,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                   Container(
                     color: Color(0xffeceff1),
                   ),
-                  // _selectedTab == 0 ? NewestList() : TestedList(),
+                  _selectedTab == 0 ? _buildNewestList() : _buildTestedList(),
                 ],
               ),
             )
@@ -127,36 +129,25 @@ class _CaseListScreenState extends State<CaseListScreen> {
       _selectedTab = tab;
     });
   }
-}
 
-class NewestList extends StatelessWidget {
-  final List<Case> _cases;
-
-  NewestList(this._cases);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _cases.length,
-      itemBuilder: (BuildContext context, int index) {
-        return CaseItem(_cases[index]);
+  Widget _buildNewestList() {
+    return FutureBuilder(
+      future: GetIt.instance<DataRepository>().fetchCases('en'),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ReportedCase>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CaseItem(snapshot.data[index]);
+              });
+        }
+        return Center(child: CircularProgressIndicator());
       },
     );
   }
-}
 
-class TestedList extends StatelessWidget {
-  final List<Case> _cases;
-
-  TestedList(this._cases);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _cases.length,
-      itemBuilder: (BuildContext context, int index) {
-        return CaseItem(_cases[index]);
-      },
-    );
+  _buildTestedList() {
+    return Container();
   }
 }

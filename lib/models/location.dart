@@ -1,22 +1,25 @@
-import 'dart:convert';
-
 class Location {
   double longitude;
   double latitude;
-  String title;
-  DateTime recordedAt;
+  String address;
+  DateTime date, from, to;
 
-  Location({this.longitude, this.latitude, this.title, this.recordedAt});
+  Location({
+    this.longitude,
+    this.latitude,
+    this.address,
+    this.date,
+    this.from,
+    this.to,
+  });
 
-  factory Location.fromJson(dynamic jsonString) {
-    var json = jsonDecode(jsonString);
-    print(json);
-
+  factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
         latitude: json["latitude"],
         longitude: json["longitude"],
-        title: "Title",
-        recordedAt:
-            DateTime.fromMillisecondsSinceEpoch(json["recordedAt"] * 1000));
+        address: json['address'],
+        date: json['date'],
+        from: json['from'],
+        to: json['to']);
   }
 }

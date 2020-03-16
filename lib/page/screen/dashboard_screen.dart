@@ -59,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       itemCount: entries.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Text(
-                            'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].recordedAt.toIso8601String()}');
+                            'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].date.toIso8601String()}');
                       });
                 } else {
                   return Text("No data");
