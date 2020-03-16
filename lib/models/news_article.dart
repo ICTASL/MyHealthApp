@@ -19,7 +19,10 @@ class NewsArticle {
   factory NewsArticle.fromJSON(Map data) {
     NewsArticle article = new NewsArticle();
     String sid = data['id'];
-    article.id = int.parse(sid);
+    print("Article ID:$sid");
+    if (sid != null) {
+      article.id = int.parse(sid);
+    }
     article.title = data['title'];
     article.subtitle = data['subtitle'];
     article.originator = data['source'];
