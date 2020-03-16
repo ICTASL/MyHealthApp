@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppLocalizations {
   Locale locale;
@@ -23,6 +24,9 @@ class AppLocalizations {
 
   Future<bool> load(Locale locale) async {
     print("Local debug ${locale.languageCode}");
+    // Save the language preference
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('preferred_language', locale.languageCode);
     // Load the language JSON file from the "lang" folder
     String jsonString =
         await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
@@ -52,7 +56,7 @@ class _AppLocalizationsDelegate
   @override
   bool isSupported(Locale locale) {
     // Include all of your supported language codes here
-    return ['en', 'si'].contains(locale.languageCode);
+    return ['en', 'si', 'ta'].contains(locale.languageCode);
   }
 
   @override

@@ -16,7 +16,11 @@ import GoogleMaps
     isSupportingLocationUpdates = CLLocationManager.significantLocationChangeMonitoringAvailable()
     if (isSupportingLocationUpdates) {
       locationManager.requestAlwaysAuthorization()
+      if #available(iOS 9.0, *) {
+        locationManager.allowsBackgroundLocationUpdates = true
+      }
       locationManager.delegate = self
+      startLocationUpdate()
     }
     
     let controller = window?.rootViewController as! FlutterViewController
@@ -57,12 +61,14 @@ import GoogleMaps
     }
   }
   
-  private func getLocation() -> String? {
-    var locationsString = ""
-    LocationsStorage.shared.locations.forEach { (location) in
-      locationsString += " \(location.lat), \(location.lng) \(location.dateString) |"
+  private func getLocation() -> [String] {
+    let encoder = JSONEncoder()
+    return LocationsStorage.shared.locations.map { (location) -> String in
+      guard let data = try? encoder.encode(location) else {
+        return ""
+      }
+      return String(data: data, encoding: .utf8)!
     }
-    return locationsString
   }
   
   private func startLocationUpdate() {

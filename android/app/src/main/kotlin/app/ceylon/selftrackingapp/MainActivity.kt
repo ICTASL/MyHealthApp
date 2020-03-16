@@ -1,48 +1,37 @@
 package app.ceylon.selftrackingapp
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import app.ceylon.selftrackingapp.dao.LocationDao
-import app.ceylon.selftrackingapp.model.LocationModel
 import app.ceylon.selftrackingapp.service.LocationTrackingService
-import com.google.android.gms.location.*
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.EventChannel
-import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
-import org.json.JSONArray
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : FlutterActivity() {
     companion object {
-        const val CHANNEL = "app.ceylon.selftrackingapp.channel"
+        const val CHANNEL = "location"
         const val LOCATION_UPDATE_REQUEST_CODE = 1554
         const val TAG = "MainActivity"
     }
 
-    private var serviceConnected: Boolean = false
-    private var locationService: LocationTrackingService? = null;
 
-    private lateinit var client: FusedLocationProviderClient;
     private lateinit var locationDao: LocationDao;
-    private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        client = LocationServices.getFusedLocationProviderClient(this)
+        GeneratedPluginRegistrant.registerWith(this.flutterEngine!!);
 
+        locationDao = LocationDatabase.getInstance(this).locationDao()
         val permissionAccessCoarseLocationApproved = ActivityCompat
                 .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED
@@ -58,53 +47,11 @@ class MainActivity : FlutterActivity() {
             )
         }
 
-        locationDao = LocationDatabase.getInstance(context).locationDao()
+        Intent(this, LocationTrackingService::class.java).also { intent ->
+            startService(intent);
+        }
 
-        val locationRequest = LocationRequest.create();
-        locationRequest.interval = 1000
-        locationRequest.fastestInterval = 20000
-        locationRequest.smallestDisplacement = 0.0f
-        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-
-        client.requestLocationUpdates(locationRequest, object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                val location = locationResult.lastLocation
-                val dateTime = Date(location.time)
-                var locationModel = LocationModel(
-                        date = dateTime,
-                        dateString = dateTime.toString(),
-                        lat = location.latitude,
-                        lng = location.longitude);
-
-                AsyncTask.execute {
-                    locationDao.insert(locationModel)
-                    handler.post {
-                        Toast.makeText(context, "Location Updated ${locationModel.lng},${locationModel.lat},${locationModel.date?.time}", Toast.LENGTH_LONG).show()
-                    }
-                }
-                Log.i(TAG, "Location store ${locationModel.lat},${locationModel.lng}")
-            }
-        }, mainLooper)
-
-    }
-
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
-
-//        EventChannel(flutterEngine.dartExecutor, "location").setStreamHandler(
-//                object : EventChannel.StreamHandler {
-//                    override fun onListen(args: Any, events: EventSink) {
-//                        Log.w(TAG, "adding listener")
-//                    }
-//
-//                    override fun onCancel(args: Any) {
-//                        Log.w(TAG, "cancelling listener")
-//                    }
-//                }
-//        )
-
-
-        MethodChannel(flutterEngine.dartExecutor, "location").setMethodCallHandler { call, result ->
+        MethodChannel(flutterEngine!!.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "getLocation") {
 
                 val handler = Handler()
@@ -128,6 +75,7 @@ class MainActivity : FlutterActivity() {
 
             }
         }
+
     }
 
 
@@ -136,5 +84,6 @@ class MainActivity : FlutterActivity() {
         val locationResult: String? = ""//"${location?.longitude},${location?.latitude}"
         return locationResult
     }
+
 
 }
