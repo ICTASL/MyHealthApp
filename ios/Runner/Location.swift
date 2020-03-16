@@ -11,22 +11,24 @@ import CoreLocation
 
 class Location: Codable {
   
-  let lat: Double
-  let lng: Double
+  let latitude: Double
+  let longitude: Double
+  let recordedAt: Int
   let date: Date
-  let dateString: String
+  let title: String
   
   init(_ location: CLLocationCoordinate2D, date: Date) {
-    lat =  location.latitude
-    lng =  location.longitude
+    latitude =  location.latitude
+    longitude =  location.longitude
     self.date = date
-    dateString = Location.dateFormatter.string(from: date)
+    recordedAt = Int(date.timeIntervalSince1970)
+    title = Location.dateFormatter.string(from: date)
   }
   
   static let dateFormatter: DateFormatter = {
      let formatter = DateFormatter()
      formatter.dateStyle = .medium
-     formatter.timeStyle = .medium
+     formatter.timeStyle = .short
      return formatter
    }()
    

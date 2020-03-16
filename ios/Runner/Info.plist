@@ -26,6 +26,10 @@
 	<string>We need location information to check whether you were present in any contaminated area</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need this to get information relevent to your current location</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
