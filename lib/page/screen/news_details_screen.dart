@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
+import 'package:selftrackingapp/theme.dart';
 import 'package:share/share.dart';
 
 class NewsDetailScreen extends StatefulWidget {
@@ -161,12 +162,12 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                                 Text(
                                   stories[index].originator,
                                   textAlign: TextAlign.start,
-                                  style: Theme.of(context).textTheme.headline4,
+                                  style: h1TextStyle,
                                 ),
                                 Text(
                                   "8th March 12:45", //published data needs to facilitated into the messages from the API
                                   textAlign: TextAlign.start,
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style: h3TextStyle,
                                 )
                               ],
                             )
@@ -177,7 +178,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         ),
                         Text(
                           stories[index].message,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: h5TextStyle,
                         ),
                         Container(
                           child: Divider(
