@@ -6,6 +6,7 @@ import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app_localizations.dart';
+import '../../theme.dart';
 
 class ContactUsScreen extends StatefulWidget {
   @override
@@ -16,53 +17,61 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xff16a33e),
+        backgroundColor: primaryColor,
         title: Text(
-          AppLocalizations.of(context)
-              .translate("dashboard_screen_contact_us_button"),
-        ),
+            AppLocalizations.of(context).translate('dashboard_screen_title')),
       ),
       body: Container(
-          padding: const EdgeInsets.all(10.0),
-          child: FutureBuilder(
-            future: GetIt.instance<DataRepository>().fetchContactUsContacts(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Center(
-                    child: Text(
-                        "An error has occured fetching contacts, try again later"),
-                  );
-                  break;
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                  break;
-                case ConnectionState.active:
-                  return Center(
-                    child: Text(
-                        "An error has occured fetching contacts, try again later"),
-                  );
-                  break;
-                case ConnectionState.done:
-                  List<ContactUsContact> contacts = snapshot.data;
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      print(contacts[index]);
-                      return _contactCard(contacts[index].title,
-                          contacts[index].phoneNumber, contacts[index].address);
-                    },
-                    itemCount: contacts.length,
-                  );
-                  break;
-                default:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-              }
-            },
-          )),
+          decoration: BoxDecoration(
+              color: Color(0xff7c94b6),
+              image: DecorationImage(
+                  colorFilter: new ColorFilter.mode(
+                      Colors.white.withOpacity(0.8), BlendMode.dstATop),
+                  image: AssetImage("assets/images/bg.png"),
+                  fit: BoxFit.cover)),
+          child: Container(
+              padding: const EdgeInsets.all(10.0),
+              child: FutureBuilder(
+                future:
+                    GetIt.instance<DataRepository>().fetchContactUsContacts(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Center(
+                        child: Text(
+                            "An error has occured fetching contacts, try again later"),
+                      );
+                      break;
+                    case ConnectionState.waiting:
+                      return Center(child: CircularProgressIndicator());
+                      break;
+                    case ConnectionState.active:
+                      return Center(
+                        child: Text(
+                            "An error has occured fetching contacts, try again later"),
+                      );
+                      break;
+                    case ConnectionState.done:
+                      List<ContactUsContact> contacts = snapshot.data;
+                      return ListView.builder(
+                        itemBuilder: (context, index) {
+                          print(contacts[index]);
+                          return _contactCard(
+                              contacts[index].title,
+                              contacts[index].phoneNumber,
+                              contacts[index].address);
+                        },
+                        itemCount: contacts.length,
+                      );
+                      break;
+                    default:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                  }
+                },
+              ))),
     );
   }
 

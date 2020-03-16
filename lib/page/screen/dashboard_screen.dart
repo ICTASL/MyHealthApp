@@ -191,7 +191,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: FlatButton(
                     color: Colors.green,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ContactUsScreen()));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
