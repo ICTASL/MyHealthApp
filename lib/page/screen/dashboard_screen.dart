@@ -1,15 +1,19 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/fcm_message.dart';
 import 'package:selftrackingapp/models/location.dart';
+import 'package:selftrackingapp/models/news_article.dart';
+import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/news_details_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
-import 'package:selftrackingapp/page/screen/user_register_screen.dart';
+import 'package:selftrackingapp/theme.dart';
+import 'package:share/share.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -18,16 +22,197 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
+  List<NewsArticle> stories = [];
 
   @override
   void initState() {
     super.initState();
     _configureFCM();
+
+    ApiClient().getLastMessageId().then((id) {
+      print(id);
+      if (id == -1) {
+        return;
+      }
+      for (var i = id; i > 0; i--) {
+        ApiClient().getMessage(i).then((article) {
+          // Save article for display
+          setState(() {
+            stories.add(article);
+          });
+        });
+      }
+    });
+  }
+
+  Widget buildComponent(String title, int number, Color textColor) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: new BorderRadius.all(Radius.circular(8.0)),
+            color: colorAccentBackground,
+            boxShadow: [backgroundBoxShadow]),
+        width: 160.0,
+        height: 160.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Spacer(),
+            Text(
+              "$number",
+              style: h1TextStyle.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: textColor.withOpacity(0.7)),
+            ),
+            Spacer(),
+            Text(
+              "$title".toUpperCase(),
+              style: h3TextStyle.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: textColor.withOpacity(0.9)),
+            ),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    Widget horizontalList1 = new Container(
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        height: 160.0,
+        child: new ListView(
+          scrollDirection: Axis.horizontal,
+          children: <Widget>[
+            buildComponent("CONFIRMED", 99999, Colors.green),
+            buildComponent("RECOVERED", 99999, Colors.blue),
+            buildComponent("SUSPECTED", 99999, Colors.yellow),
+            buildComponent("DEATHS", 99999, Colors.red),
+          ],
+        ));
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: Text(
+            AppLocalizations.of(context).translate('dashboard_screen_title')),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.4, 0.7, 0.9],
+            colors: [
+              Color(0xFF181C30),
+              Color(0xFF181C30),
+              Color(0xFF181C30),
+              Color(0xFF181C30),
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              horizontalList1,
+              Flexible(
+                child: ListView.builder(
+                    itemCount: stories.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      print(index);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  new BorderRadius.all(Radius.circular(8.0)),
+                              color: colorAccentBackground,
+                              boxShadow: [backgroundBoxShadow]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  stories[index].originator,
+                                  textAlign: TextAlign.start,
+                                  style: h2TextStyle.copyWith(
+                                      color: primaryColorText),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Text(
+                                    "8th March 12:45",
+                                    //published data needs to facilitated into the messages from the API
+                                    textAlign: TextAlign.start,
+                                    style: h6TextStyle.copyWith(
+                                        color:
+                                            primaryColorText.withOpacity(0.5)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    stories[index].message,
+                                    style: h5TextStyle.copyWith(
+                                        color:
+                                            primaryColorText.withOpacity(0.7)),
+                                  ),
+                                ),
+                                Container(
+                                  child: Divider(
+                                    color: Colors.grey[400],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Share.share(
+                                          "Shared button not implemented yet");
+                                    },
+                                    child: Icon(
+                                      Icons.share,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+              Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlatButton(
+                    color: Colors.green,
+                    onPressed: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "More Detail",
+                        style: h1TextStyle.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _configureFCM() {

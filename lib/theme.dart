@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const primaryColor = Color(0xFF615ed8);
+const primaryColorText = Color(0xFF242424);
+const secondaryColorText = Color(0xFF615ed8);
+
 const primaryColorSwitch = Color(0xFF615ed8);
 const colorBackground = Color(0xFF242424);
 const colorAccentBackground = Color(0xFFFFFFFF);
