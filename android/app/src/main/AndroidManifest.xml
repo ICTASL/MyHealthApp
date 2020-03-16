@@ -38,8 +38,8 @@
                android:value="AIzaSyBQu2WwoTFKJQ1PM4w-hIRkLnEVDtWtFoo"/>
 
 
-        <service android:name=".service.LocationTrackingService" android:enabled="false" />
-        <receiver android:name=".service.LocationReceiver" android:exported="true">
+        <service android:name=".service.LocationTrackingService" android:enabled="true" />
+        <receiver android:name=".service.LocationReceiver" android:exported="true" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.REBOOT"/>
