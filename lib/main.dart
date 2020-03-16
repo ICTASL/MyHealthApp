@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/app_localizations.dart';
+import 'package:selftrackingapp/networking/data_repository.dart';
+import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  GetIt.instance
+      .registerSingleton<DataRepository>(AppDataRepository(AppDatabase()));
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
