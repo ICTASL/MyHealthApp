@@ -17,5 +17,6 @@
     "user_register_screen_name": "Name",
     "user_register_screen_email": "E-mail",
     "user_register_screen_phone": "Mobile Number",
-    "user_register_screen_register": "Register"
+    "user_register_screen_register": "Register",
+    "news_detail_page_title": "Register"
 }

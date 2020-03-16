@@ -27,8 +27,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: Text(AppLocalizations.of(context)
-              .translate('contact_us_screen_contact_us_title')),
+          title: Text(widget.article.title),
         ),
         body: Container(
             decoration: BoxDecoration(
