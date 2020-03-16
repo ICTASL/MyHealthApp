@@ -16,6 +16,7 @@
 		B7C0E260241EA24F00CCF392 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0E25F241EA24F00CCF392 /* Location.swift */; };
 		B7C0E262241EA34B00CCF392 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0E261241EA34B00CCF392 /* LocationStore.swift */; };
 		BBCD2C901F384000E7FADB16 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43350230E19D93690A620EBE /* Pods_Runner.framework */; };
+		DDC38DD4241F1E5300A0ECBB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DDC38DD3241F1E5300A0ECBB /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +52,7 @@
 		B2802931FCC7C305FF71A4C3 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		B7C0E25F241EA24F00CCF392 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		B7C0E261241EA34B00CCF392 /* LocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStore.swift; sourceTree = "<group>"; };
+		DDC38DD3241F1E5300A0ECBB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				DDC38DD3241F1E5300A0ECBB /* GoogleService-Info.plist */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -204,6 +207,7 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				DDC38DD4241F1E5300A0ECBB /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
