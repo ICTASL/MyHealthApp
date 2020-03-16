@@ -10,6 +10,7 @@ import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
+import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/page/screen/news_details_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/theme.dart';
@@ -122,62 +123,71 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       print(index);
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  new BorderRadius.all(Radius.circular(8.0)),
-                              color: colorAccentBackground,
-                              boxShadow: [backgroundBoxShadow]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  stories[index].originator,
-                                  textAlign: TextAlign.start,
-                                  style: h2TextStyle.copyWith(
-                                      color: primaryColorText),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text(
-                                    "8th March 12:45",
-                                    //published data needs to facilitated into the messages from the API
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewsDetailScreen(
+                                        article: stories[index])));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    new BorderRadius.all(Radius.circular(8.0)),
+                                color: colorAccentBackground,
+                                boxShadow: [backgroundBoxShadow]),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    stories[index].originator,
                                     textAlign: TextAlign.start,
-                                    style: h6TextStyle.copyWith(
-                                        color:
-                                            primaryColorText.withOpacity(0.5)),
+                                    style: h2TextStyle.copyWith(
+                                        color: primaryColorText),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                    stories[index].message,
-                                    style: h5TextStyle.copyWith(
-                                        color:
-                                            primaryColorText.withOpacity(0.7)),
-                                  ),
-                                ),
-                                Container(
-                                  child: Divider(
-                                    color: Colors.grey[400],
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Share.share(
-                                          "Shared button not implemented yet");
-                                    },
-                                    child: Icon(
-                                      Icons.share,
-                                      color: Colors.grey,
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(
+                                      "8th March 12:45",
+                                      //published data needs to facilitated into the messages from the API
+                                      textAlign: TextAlign.start,
+                                      style: h6TextStyle.copyWith(
+                                          color: primaryColorText
+                                              .withOpacity(0.5)),
                                     ),
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text(
+                                      stories[index].message,
+                                      style: h5TextStyle.copyWith(
+                                          color: primaryColorText
+                                              .withOpacity(0.7)),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Divider(
+                                      color: Colors.grey[400],
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Share.share(
+                                            "Shared button not implemented yet");
+                                      },
+                                      child: Icon(
+                                        Icons.share,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -5,12 +5,12 @@ import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/theme.dart';
 import 'package:share/share.dart';
 
-class NewsDetailScreen extends StatefulWidget {
+class NewsDetailOldScreen extends StatefulWidget {
   @override
-  _NewsDetailScreenState createState() => _NewsDetailScreenState();
+  _NewsDetailOldScreenState createState() => _NewsDetailOldScreenState();
 }
 
-class _NewsDetailScreenState extends State<NewsDetailScreen> {
+class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
   List<NewsArticle> stories = [];
 
   @override
