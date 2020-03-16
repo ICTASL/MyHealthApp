@@ -17,6 +17,7 @@ import GoogleMaps
     if (isSupportingLocationUpdates) {
       locationManager.requestAlwaysAuthorization()
       locationManager.delegate = self
+      startLocationUpdate()
     }
     
     let controller = window?.rootViewController as! FlutterViewController
@@ -58,11 +59,12 @@ import GoogleMaps
   }
   
   private func getLocation() -> String? {
-    var locationsString = ""
-    LocationsStorage.shared.locations.forEach { (location) in
-      locationsString += " \(location.lat), \(location.lng) \(location.dateString) |"
+    let encoder = JSONEncoder()
+   
+    guard let data = try? encoder.encode(LocationsStorage.shared.locations) else {
+      return nil
     }
-    return locationsString
+    return String(data: data, encoding: .utf8)
   }
   
   private func startLocationUpdate() {

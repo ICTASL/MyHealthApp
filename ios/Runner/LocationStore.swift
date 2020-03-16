@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import CoreData
 
 class LocationsStorage {
   static let shared = LocationsStorage()
@@ -33,12 +34,12 @@ class LocationsStorage {
         return nil
       }
       return try? jsonDecoder.decode(Location.self, from: data)
-    }.sorted(by: { $0.date < $1.date })
+    }.sorted(by: { $0.recordedAt < $1.recordedAt })
   }
   
   func saveLocationOnDisk(location: Location) {
     let encoder = JSONEncoder()
-    let timestamp = location.date.timeIntervalSince1970
+    let timestamp = location.recordedAt.timeIntervalSince1970
     let fileURL = documentsURL.appendingPathComponent("\(timestamp)")
     
     let data = try! encoder.encode(location)
