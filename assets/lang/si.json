@@ -1,7 +1,14 @@
 {
-  "welcome_screen_title": "ආයුබෝවන්",
-  "welcome_screen_subtitle": "Together we can ආයුබෝවන් COVID-19",
-  "welcome_screen_button_text": "Next ආයුබෝවන්",
+    "welcome_screen_title": "ආයුබෝවන්",
+    "welcome_screen_subtitle": "Together we can ආයුබෝවන් COVID-19",
+    "welcome_screen_button_text": "Next ආයුබෝවන්",
 
-  "dashboard_screen_welcome_message": "ආයුබෝවන් Dashboard"
+    "dashboard_screen_title": "Dashboard",
+    "dashboard_screen_welcome_message": "ආයුබෝවන් Dashboard",
+
+    "user_register_screen_title": "User Registration",
+    "user_register_screen_name": "Name",
+    "user_register_screen_email": "E-mail",
+    "user_register_screen_phone": "Mobile Number",
+    "user_register_screen_register": "Register"
 }

@@ -9,6 +9,7 @@ import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/news_details_screen.dart';
+import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -30,7 +31,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dashboard"),
+        title: Text(
+            AppLocalizations.of(context).translate('dashboard_screen_title')),
       ),
       body: Center(
           child: Column(
@@ -64,7 +66,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CaseListScreen()));
             },
-          )
+          ),
+          // FlatButton(
+          //   color: Colors.blue,
+          //   child: Text("User Registration"),
+          //   onPressed: () {
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) => UserRegisterScreen()));
+          //   },
+          // )
         ],
       )),
     );
