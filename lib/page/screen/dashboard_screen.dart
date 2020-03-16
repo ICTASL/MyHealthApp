@@ -28,6 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _configureFCM();
+    _messaging.subscribeToTopic("mobile_message");
 
     ApiClient().getLastMessageId().then((id) {
       print(id);
@@ -51,8 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: new BorderRadius.all(Radius.circular(8.0)),
-            color: colorAccentBackground,
-            boxShadow: [backgroundBoxShadow]),
+            color: colorAccentBackground),
         width: 160.0,
         height: 160.0,
         child: Column(
@@ -101,20 +101,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.1, 0.4, 0.7, 0.9],
-            colors: [
-              Color(0xFF181C30),
-              Color(0xFF181C30),
-              Color(0xFF181C30),
-              Color(0xFF181C30),
-            ],
-          ),
-        ),
+            color: Color(0xff7c94b6),
+            image: DecorationImage(
+                colorFilter: new ColorFilter.mode(
+                    Colors.white.withOpacity(0.8), BlendMode.dstATop),
+                image: AssetImage("assets/images/bg.png"),
+                fit: BoxFit.cover)),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(0.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -430,6 +424,7 @@ class _DashboardScreenOldState extends State<DashboardScreenOld> {
 
     _messaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _messaging.subscribeToTopic("topic1");
   }
 
   void _handleFCM(Map<String, dynamic> message) {
