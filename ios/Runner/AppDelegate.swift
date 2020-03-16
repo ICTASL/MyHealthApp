@@ -58,13 +58,14 @@ import GoogleMaps
     }
   }
   
-  private func getLocation() -> String? {
+  private func getLocation() -> [String] {
     let encoder = JSONEncoder()
-   
-    guard let data = try? encoder.encode(LocationsStorage.shared.locations) else {
-      return nil
+    return LocationsStorage.shared.locations.map { (location) -> String in
+      guard let data = try? encoder.encode(location) else {
+        return ""
+      }
+      return String(data: data, encoding: .utf8)!
     }
-    return String(data: data, encoding: .utf8)
   }
   
   private func startLocationUpdate() {

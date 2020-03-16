@@ -13,13 +13,15 @@ class Location: Codable {
   
   let latitude: Double
   let longitude: Double
-  let recordedAt: Date
+  let recordedAt: Int
+  let date: Date
   let title: String
   
   init(_ location: CLLocationCoordinate2D, date: Date) {
     latitude =  location.latitude
     longitude =  location.longitude
-    self.recordedAt = date
+    self.date = date
+    recordedAt = Int(date.timeIntervalSince1970)
     title = Location.dateFormatter.string(from: date)
   }
   
