@@ -20,7 +20,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     super.initState();
     GetIt.instance
-        .registerSingleton<DataRepository>(AppDataRepository(DummyDatabase()));
+        .registerSingleton<DataRepository>(AppDataRepository(AppDatabase()));
   }
 
   @override
