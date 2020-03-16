@@ -29,6 +29,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        GeneratedPluginRegistrant.registerWith(this.flutterEngine!!);
 
         locationDao = LocationDatabase.getInstance(this).locationDao()
         val permissionAccessCoarseLocationApproved = ActivityCompat
@@ -50,14 +51,7 @@ class MainActivity : FlutterActivity() {
             startService(intent);
         }
 
-    }
-
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
-
-
-
-        MethodChannel(flutterEngine.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
+        MethodChannel(flutterEngine!!.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "getLocation") {
 
                 val handler = Handler()
@@ -81,6 +75,7 @@ class MainActivity : FlutterActivity() {
 
             }
         }
+
     }
 
 
