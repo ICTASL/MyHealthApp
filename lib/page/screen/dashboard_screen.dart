@@ -14,11 +14,86 @@ import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 class DashboardScreen extends StatefulWidget {
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final FirebaseMessaging _messaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+    _configureFCM();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+  void _configureFCM() {
+    _messaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        _handleFCM(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        _handleFCM(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        _handleFCM(message);
+      },
+    );
+
+    _messaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+  }
+
+  void _handleFCM(Map<String, dynamic> message) {
+    FCMMessage fcmMessage = FCMMessage.decode(message);
+
+    switch (fcmMessage.type) {
+      case "message":
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NewsDetailScreen()));
+        break;
+
+      case "data":
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CaseDetailScreen()));
+        break;
+
+      default:
+        _showMessageAsDialog(fcmMessage);
+    }
+  }
+
+  void _showMessageAsDialog(FCMMessage fcmMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(fcmMessage.title),
+          content: Text(fcmMessage.body),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context)
+                  .translate('dashboard_screen_ok_button')),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
+  }
+}
+
+class DashboardScreenOld extends StatefulWidget {
+  @override
+  _DashboardScreenOldState createState() => _DashboardScreenOldState();
 
   static const locationChannel = const MethodChannel("location");
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenOldState extends State<DashboardScreenOld> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
 
   @override
@@ -144,7 +219,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<List<Location>> getLocationUpdate() async {
     try {
       final List<dynamic> locations =
-          await DashboardScreen.locationChannel.invokeMethod('getLocation');
+          await DashboardScreenOld.locationChannel.invokeMethod('getLocation');
       // print("--------");
       // print(locations);
       // print("--------");
