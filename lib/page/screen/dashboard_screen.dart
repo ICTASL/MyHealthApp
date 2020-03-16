@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,8 +41,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             builder:
                 (BuildContext context, AsyncSnapshot<List<Location>> snapshot) {
               print(snapshot.error);
-              if (snapshot.hasError) return Text("${snapshot.error}");
-              return Text("Data Recived");
+              if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              return Text(AppLocalizations.of(context)
+                  .translate('dashboard_screen_data_received'));
             },
           ),
           Text(
@@ -53,7 +54,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           FlatButton(
             color: Colors.green,
-            child: Text("Select News"),
+            child: Text(AppLocalizations.of(context)
+                .translate('dashboard_screen_news_button')),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => NewsDetailScreen()));
@@ -61,7 +63,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           FlatButton(
             color: Colors.blue,
-            child: Text("Case List Screen"),
+            child: Text(AppLocalizations.of(context)
+                .translate('dashboard_screen_case_list_button')),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CaseListScreen()));
@@ -77,6 +80,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           //             builder: (context) => UserRegisterScreen()));
           //   },
           // )
+          FlatButton(
+            color: Colors.blue,
+            child: Text(AppLocalizations.of(context)
+                .translate('dashboard_screen_case_details_button')),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CaseDetailScreen(),
+                ),
+              );
+            },
+          )
         ],
       )),
     );
@@ -132,18 +148,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _showMessageAsDialog(FCMMessage fcmMessage) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(fcmMessage.title),
-            content: Text(fcmMessage.body),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("Okay"),
-                onPressed: () => Navigator.pop(context),
-              )
-            ],
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(fcmMessage.title),
+          content: Text(fcmMessage.body),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context)
+                  .translate('dashboard_screen_ok_button')),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
   }
 }

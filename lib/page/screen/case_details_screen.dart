@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selftrackingapp/page/routes.dart';
+import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 
 class CaseDetailScreen extends StatelessWidget {
@@ -8,13 +8,14 @@ class CaseDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        "Case Details",
+        AppLocalizations.of(context).translate('case_details_screen_title'),
       )),
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Case Detail Screen"),
+          Text(AppLocalizations.of(context)
+              .translate('case_details_screen_title')),
           FlatButton(
             color: Colors.blue,
             child: Text("User register"),
