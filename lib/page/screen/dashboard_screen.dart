@@ -38,14 +38,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FutureBuilder<List<Location>>(
-            future: getLocationUpdate(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Location>> snapshot) {
-              print(snapshot.error);
-              if (snapshot.hasError) return Text("${snapshot.error}");
-              return Text("Data Recived");
-            },
+          Container(
+            width: 600,
+            height: 100,
+            child: FutureBuilder<List<Location>>(
+              future: getLocationUpdate(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Location>> snapshot) {
+                print(snapshot.error);
+                if (snapshot.hasError) return Text("${snapshot.error}");
+                List<Location> entries = snapshot.data;
+                print("----aaa---");
+                print(entries);
+                print("----aaa----");
+                if (entries != null && entries.length > 0) {
+                  print(entries);
+                  return ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: entries.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Text(
+                            'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].recordedAt.toIso8601String()}');
+                      });
+                } else {
+                  return Text("No data");
+                }
+              },
+            ),
           ),
           Text(
             AppLocalizations.of(context)
@@ -86,7 +105,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     try {
       final List<dynamic> locations =
           await DashboardScreen.locationChannel.invokeMethod('getLocation');
-
+      print("--------");
+      print(locations);
+      print("--------");
       return locations.map((v) => Location.fromJson(v)).toList();
     } on Exception catch (e) {
       print(e);

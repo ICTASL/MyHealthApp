@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:convert';
 
 class Location {
   double longitude;
@@ -8,14 +8,15 @@ class Location {
 
   Location({this.longitude, this.latitude, this.title, this.recordedAt});
 
-  factory Location.fromJson(dynamic json) {
-    print("Home");
-    print(json[2]);
+  factory Location.fromJson(dynamic jsonString) {
+    var json = jsonDecode(jsonString);
+    print(json);
+
     return Location(
-        latitude: double.parse(json[0]),
-        longitude: double.parse(json[1]),
-        title: json[3],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        title: "Title",
         recordedAt:
-            DateTime.fromMillisecondsSinceEpoch(int.parse(json[2]) * 1000));
+            DateTime.fromMillisecondsSinceEpoch(json["recordedAt"] * 1000));
   }
 }
