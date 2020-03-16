@@ -1,4 +1,4 @@
-package app.ceylon.selftrackingapp.plugin
+package app.ceylon.selftrackingapp.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 
-private const val TAG = "LocationReceiver"
+const val TAG = "LocationReceiver"
 
 class LocationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
