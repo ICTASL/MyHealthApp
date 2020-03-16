@@ -46,11 +46,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 print(snapshot.error);
                 if (snapshot.hasError) return Text("${snapshot.error}");
                 List<Location> entries = snapshot.data;
-                print("----aaa---");
-                print(entries);
-                print("----aaa----");
+                // print("----aaa---");
+                // print(entries);
+                // print("----aaa----");
                 if (entries != null && entries.length > 0) {
-                  print(entries);
                   return ListView.builder(
                       padding: const EdgeInsets.all(8),
                       itemCount: entries.length,
@@ -118,9 +117,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     try {
       final List<dynamic> locations =
           await DashboardScreen.locationChannel.invokeMethod('getLocation');
-      print("--------");
-      print(locations);
-      print("--------");
+      // print("--------");
+      // print(locations);
+      // print("--------");
       return locations.map((v) => Location.fromJson(v)).toList();
     } on Exception catch (e) {
       print(e);
