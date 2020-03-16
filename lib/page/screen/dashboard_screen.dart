@@ -6,7 +6,9 @@ import 'package:selftrackingapp/models/fcm_message.dart';
 import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
+import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/news_details_screen.dart';
+import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -29,6 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff16a33e),
         title: Text(
             AppLocalizations.of(context).translate('dashboard_screen_title')),
       ),
@@ -85,6 +88,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   MaterialPageRoute(builder: (context) => CaseListScreen()));
             },
           ),
+          FlatButton(
+            color: Colors.blue,
+            child: Text(AppLocalizations.of(context)
+                .translate('dashboard_screen_case_details_button')),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CaseDetailScreen(),
+                ),
+              );
+            },
+          ),
+          FlatButton(
+            color: Colors.blue,
+            child: Text(AppLocalizations.of(context)
+                .translate('dashboard_screen_privacy_policy_button')),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PrivacyPolicyScreen()));
+            },
+          ),
           // FlatButton(
           //   color: Colors.blue,
           //   child: Text("User Registration"),
@@ -95,15 +122,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           //             builder: (context) => UserRegisterScreen()));
           //   },
           // )
+
           FlatButton(
             color: Colors.blue,
             child: Text(AppLocalizations.of(context)
-                .translate('dashboard_screen_case_details_button')),
+                .translate('dashboard_screen_contact_us_button')),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CaseDetailScreen(),
+                  builder: (context) => ContactUsScreen(),
                 ),
               );
             },
