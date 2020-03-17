@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:selftrackingapp/models/fcm_message.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
@@ -13,9 +11,6 @@ import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
-
-import 'case_details_screen.dart';
-import 'news_detail_screen.dart';
 
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
 
@@ -26,11 +21,14 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
-  List<NewsArticle> stories = [];
+  static final StreamController<NewsArticle> newsStreamController =
+      StreamController();
 
   int _currentIndex = 0;
   final _homeTabs = {
-    DashboardScreen(),
+    DashboardScreen(
+      articleStream: newsStreamController.stream,
+    ),
     CaseListScreen(),
     ContactUsScreen(),
     UserRegisterScreen()
@@ -41,35 +39,38 @@ class _RootScreenState extends State<RootScreen> {
     super.initState();
     _configureFCM();
     _messaging.subscribeToTopic("mobile_message");
+
+    ApiClient().getLastMessageId().then((id) {
+      int lowerID = 1;
+      if (id >= 10) {
+        lowerID = id - 9;
+      }
+      print("$lowerID m $id");
+      ApiClient().getArticleList(lowerID, id, newsStreamController.sink);
+    });
+  }
+
+  @override
+  void dispose() {
+    newsStreamController.close();
+    super.dispose();
   }
 
   void _handleFCM(Map<String, dynamic> message) {
-    print("Handle FCM has not yet been implemented.");
-    // FCMMessage fcmMessage = FCMMessage.decode(message);
-    // if (message["data"] != null && message["data"]["type"] == "news") {
-    //   var id = message["data"]["id"];
-    //   ApiClient().getMessage(id).then((article) {
-    //     print(article);
-    //     if (article != null) {
-    //       setState(() {
-    //         stories.add(article);
-    //       });
-    //     }
-    //   });
-    // }
-    // switch (fcmMessage.type) {
-    //   case "message":
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => NewsDetailScreen()));
-    //     break;
-
-    //   case "data":
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => CaseDetailScreen()));
-    //     break;
-    //   default:
-    //     _showMessageAsDialog(fcmMessage);
-    // }
+    print(message);
+    print(message["data"] != null && message["data"]["type"] == "alert");
+    print(message["data"] != null);
+    print(message["data"]["type"] == "alert");
+    if (message["data"] != null && message["data"]["type"] == "alert") {
+      var id = message["data"]["id"];
+      print("Message $id");
+      ApiClient().getMessage(id as int).then((article) {
+//        print(article);
+        if (article != null) {
+          newsStreamController.add(article);
+        }
+      });
+    }
   }
 
   void _configureFCM() {
@@ -88,25 +89,6 @@ class _RootScreenState extends State<RootScreen> {
     );
     _messaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
-  }
-
-  void _showMessageAsDialog(FCMMessage fcmMessage) {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        return AlertDialog(
-//          title: Text(fcmMessage.title),
-//          content: Text(fcmMessage.body),
-//          actions: <Widget>[
-//            FlatButton(
-//              child: Text(AppLocalizations.of(context)
-//                  .translate('dashboard_screen_ok_button')),
-//              onPressed: () => Navigator.pop(context),
-//            )
-//          ],
-//        );
-//      },
-//    );
   }
 
   @override

@@ -5,19 +5,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:selftrackingapp/models/news_article.dart';
-import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
 
 enum CounterType { confirmed, recovered, suspected, deaths }
 
 class DashboardScreen extends StatefulWidget {
+  final Stream<NewsArticle> articleStream;
+
+  const DashboardScreen({Key key, this.articleStream}) : super(key: key);
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
   List<NewsArticle> stories = [];
+
   // Remotely configured values
   DateTime lastUpdated = DateTime.now();
   int confirmed = 0;
@@ -30,19 +34,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-
-    ApiClient().getLastMessageId().then((id) {
-      int lowerID = 0;
-      if (id >= 10) {
-        lowerID = id - 10;
-      }
-      print("$lowerID m $id");
-      ApiClient().getArticleList(lowerID, id).then((articles) {
-        setState(() {
-          //print(articles[0]);
-          //stories = articles;
-          //404 error is thrown in API
-        });
+    widget.articleStream.listen((NewsArticle article) async {
+      print("Article Updte ${article}");
+      setState(() {
+        stories.add(article);
       });
     });
 
@@ -157,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              return _createNewsArticle(index);
+              return _createNewsArticle(stories[index]);
             }, childCount: stories.length),
           )
         ],
@@ -165,7 +160,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _createNewsArticle(int index) {
+  Widget _createNewsArticle(NewsArticle article) {
+    print(
+        "${article.id} ${article.title},${article.message} ${article.created}");
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: Card(
@@ -190,7 +187,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
-                        stories[index].originator,
+                        article.title,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.black,
@@ -198,7 +195,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             fontSize: 15.0),
                       ),
                       Text(
-                        "8th March 12:45", //published data needs to facilitated into the messages from the API
+                        "${article.created}",
+                        //published data needs to facilitated into the messages from the API
                         textAlign: TextAlign.start,
                         style: TextStyle(color: Colors.black),
                       )
@@ -213,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 color: Colors.grey[400],
               ),
               Text(
-                stories[index].message,
+                article.message,
                 style: TextStyle(color: Colors.black),
               ),
               Container(

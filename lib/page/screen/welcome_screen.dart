@@ -1,19 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/app_localizations.dart';
-import 'package:selftrackingapp/networking/data_repository.dart';
-import 'package:selftrackingapp/networking/db.dart';
-import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
-import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
-import 'package:selftrackingapp/theme.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
-import 'package:selftrackingapp/widgets/language_select.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -26,7 +16,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("WEWE");
     print(AppLocalizations.of(context).locale);
     return Scaffold(
       backgroundColor: Colors.white,

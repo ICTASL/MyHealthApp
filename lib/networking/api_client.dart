@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -47,13 +48,13 @@ class ApiClient {
     return lastMessageId;
   }
 
-  Future<List<NewsArticle>> getArticleList(startId, endId) async {
+  void getArticleList(startId, endId, StreamSink<NewsArticle> sink) async {
     List<NewsArticle> articles = [];
     for (var i = startId; i <= endId; i++) {
       NewsArticle article = await getMessage(i);
-      articles.add(article);
+//      articles.add(article);
+      sink.add(article);
     }
-    return articles;
   }
 
   Future<NewsArticle> getMessage(int id) async {
@@ -61,7 +62,7 @@ class ApiClient {
     String lang = prefs.getString('preferred_language');
     final sharedPrefId = "alert_$lang--$id";
     String alertData = prefs.getString(sharedPrefId);
-    print(id);
+    print(sharedPrefId);
     if (alertData == null) {
       final url = '$_baseUrl/application/alert/$id/$lang';
       final response =
@@ -71,9 +72,8 @@ class ApiClient {
             response.statusCode.toString());
         return null;
       }
-
+      print(response.body);
       alertData = utf8.decode(response.bodyBytes);
-      prefs.setString(sharedPrefId, alertData);
       prefs.setString(sharedPrefId, alertData);
     }
 
