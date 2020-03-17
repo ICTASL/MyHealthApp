@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +13,7 @@ import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/theme.dart';
 import 'package:share/share.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 enum CounterType { confirmed, recovered, suspected, deaths }
 
@@ -22,6 +25,12 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
   List<NewsArticle> stories = [];
+
+  // How often (in minutes) to you want the remote config to be updated?
+  final int updateInterval = 15;
+
+  // Remotely configured values
+  DateTime lastUpdated = DateTime.now();
   int confirmed = 0;
   int recovered = 0;
   int suspected = 0;
@@ -44,11 +53,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
       for (var i = id; i > 0; i--) {
         ApiClient().getMessage(i).then((article) {
           // Save article for display
-          setState(() {
-            stories.add(article);
-          });
+          if (article != null) {
+            setState(() {
+              stories.add(article);
+            });
+          }
         });
       }
+    });
+    // Set up Timer to update remote config regularly
+    Timer.periodic(Duration(minutes: updateInterval), (timer) {
+      updateRemoteConfig();
     });
   }
 
@@ -65,7 +80,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       case CounterType.suspected:
         title = 'SUSPECTED';
-        textColor = Colors.yellow;
+        textColor = Colors.brown;
         number = suspected;
         break;
 
@@ -106,6 +121,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontWeight: FontWeight.w600,
                   color: textColor.withOpacity(0.9)),
             ),
+//            Spacer(),
+//            Text(
+//              'Last Updated:\n' + timeago.format(lastUpdated),
+//              textAlign: TextAlign.right,
+//              style: h6TextStyle.copyWith(
+//                  fontWeight: FontWeight.w100,
+//                  color: Colors.black.withOpacity(0.8)),
+//            ),
             Spacer(),
           ],
         ),
@@ -115,18 +138,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget horizontalList1 = new Container(
-        margin: EdgeInsets.symmetric(vertical: 20.0),
-        height: 160.0,
-        child: new ListView(
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            buildCounter(CounterType.confirmed),
-            buildCounter(CounterType.recovered),
-            buildCounter(CounterType.suspected),
-            buildCounter(CounterType.deaths),
-          ],
-        ));
+    Widget horizontalList1 = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        new Container(
+            margin: EdgeInsets.only(top: 20.0),
+            height: 160.0,
+            child: new ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                buildCounter(CounterType.confirmed),
+                buildCounter(CounterType.recovered),
+                buildCounter(CounterType.suspected),
+                buildCounter(CounterType.deaths),
+              ],
+            )),
+        Padding(
+          padding: const EdgeInsets.all(16.0).copyWith(top: 2.0, left: 8.0),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8.0),
+                child: Text(
+                  "Last update",
+                  textAlign: TextAlign.right,
+                  style: h6TextStyle.copyWith(
+                      fontWeight: FontWeight.w300,
+                      color: lightColorText.withOpacity(1)),
+                ),
+              ),
+              Text(
+                timeago.format(lastUpdated),
+                textAlign: TextAlign.right,
+                style: h6TextStyle.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: lightColorText.withOpacity(1)),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -155,6 +207,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       NewsArticle article = stories[index];
                       if (article == null) return Text("updating...");
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
@@ -302,19 +355,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void updateRemoteConfig() async {
     final RemoteConfig config = await RemoteConfig.instance;
     final defaults = <String, dynamic>{
+      'last_updated': '2020-03-17 10:15',
       'confirmed': 28,
       'recovered': 1,
       'suspected': 212,
       'deaths': 0
     };
     await config.setDefaults(defaults);
-    await config.fetch(expiration: const Duration(minutes: 15));
+    await config.fetch(expiration: Duration(minutes: updateInterval - 1));
     await config.activateFetched();
     setState(() {
       confirmed = config.getInt('confirmed');
       recovered = config.getInt('recovered');
       suspected = config.getInt('suspected');
       deaths = config.getInt('deaths');
+      String dt = config.getString('last_updated');
+      lastUpdated = DateTime.parse(dt);
     });
   }
 
