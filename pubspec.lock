@@ -126,6 +126,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.9"
   google_maps_flutter:
     dependency: "direct main"
     description:
@@ -362,6 +369,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.26"
+  titled_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: titled_navigation_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.6.0"
   typed_data:
     dependency: transitive
     description:

@@ -22,5 +22,8 @@
   "user_register_screen_email": "E-mail",
   "user_register_screen_phone": "Mobile Number",
   "user_register_screen_register": "Register",
-  "news_detail_page_title": "Register"
+  "news_detail_page_title": "Register",
+  "language_screen_choose": "ඔබේ මනාපය තෝරන්න.",
+  "language_screen_choose_sub": "කරුණාකර පහත භාෂාවක් තෝරන්න.",
+  "ui_general_next": "ඊළඟ"
 }

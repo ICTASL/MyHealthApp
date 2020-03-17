@@ -30,6 +30,8 @@ dependencies:
     http: ^0.12.0+4
     logger: ^0.8.3
     timeago: ^2.0.26
+    google_fonts: ^0.3.9
+    titled_navigation_bar: ^3.6.0
 
     flutter_localizations:
         sdk: flutter
@@ -58,6 +60,8 @@ flutter:
         - assets/images/bg.png
         - assets/lang/en.json
         - assets/lang/si.json
+        - assets/lang/ta.json
+        - assets/images/logo.png
         - assets/data/constant_data.json
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.

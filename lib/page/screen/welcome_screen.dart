@@ -10,7 +10,9 @@ import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
+import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/theme.dart';
+import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/language_select.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -20,124 +22,198 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   String welcomeScreenTitle = "";
-
-  @override
-  void initState() {
-    super.initState();
-    Timer.run(() {
-      welcomeScreenTitle =
-          AppLocalizations.of(context).translate('welcome_screen_title');
-    });
-  }
-
-  changeLanguage(String language) {
-    setState(() {
-      if (language == "Sinhala")
-        AppLocalizations.of(context).load(Locale("si", "LK"));
-      else if (language == "English")
-        AppLocalizations.of(context).load(Locale("en", "US"));
-      else if (language == "Tamil")
-        AppLocalizations.of(context).load(Locale("ta", "TA"));
-    });
-  }
+  double height = 800.0;
 
   @override
   Widget build(BuildContext context) {
+    print("WEWE");
+    print(AppLocalizations.of(context).locale);
     return Scaffold(
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.light,
-            child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image:
-                            AssetImage("assets/images/welcome_screen_bg.png"),
-                        fit: BoxFit.cover)),
-                child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1.0),
-                    child: ListView(children: <Widget>[
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 160.0),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Image.asset(
+                      "assets/images/logo.png",
+                      height: 124.0,
+                      fit: BoxFit.cover,
+                      color: Color(TrackerColors.primaryColor),
+                    ),
+                    SizedBox(height: 30.0),
+                    Text(
+                      AppLocalizations.of(context)
+                          .translate("language_screen_choose"),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      AppLocalizations.of(context)
+                          .translate("language_screen_choose_sub"),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Divider(),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              height = 500.0;
+                              AppLocalizations.of(context)
+                                  .load(Locale("en", "US"));
+                            });
+                          },
                           child: Container(
-                            child: Text(
-                              "",
-                              style: h1TextStyle.copyWith(
-                                  fontSize: 48,
-                                  fontWeight: FontWeight.w600,
-                                  color: mainButtonTextColor),
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("English",
+                                    style: TextStyle(
+                                        color: AppLocalizations.of(context)
+                                                    .locale ==
+                                                Locale("en", "US")
+                                            ? Color(TrackerColors.primaryColor)
+                                            : Colors.black,
+                                        fontWeight: AppLocalizations.of(context)
+                                                    .locale ==
+                                                Locale("en", "US")
+                                            ? FontWeight.bold
+                                            : FontWeight.normal)),
+                                AppLocalizations.of(context).locale ==
+                                        Locale("en", "US")
+                                    ? Icon(Icons.check,
+                                        color:
+                                            Color(TrackerColors.primaryColor))
+                                    : Container()
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                      buildLanguageButton(
-                          AppLocalizations.of(context)
-                              .translate('welcome_screen_sinhala_button_text'),
-                          "Sinhala"),
-                      buildLanguageButton(
-                          AppLocalizations.of(context)
-                              .translate('welcome_screen_tamil_button_text'),
-                          "Tamil"),
-                      buildLanguageButton(
-                          AppLocalizations.of(context)
-                              .translate('welcome_screen_english_button_text'),
-                          "English"),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PrivacyPolicyScreen()));
-                        },
-                        child: Text(
-                          "Privacy Policy",
-                          style: h4TextStyle.copyWith(
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
+                        Divider(),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              AppLocalizations.of(context)
+                                  .load(Locale("ta", "TA"));
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("சிங்களம்",
+                                    style: TextStyle(
+                                        color: AppLocalizations.of(context)
+                                                    .locale ==
+                                                Locale("ta", "TA")
+                                            ? Color(TrackerColors.primaryColor)
+                                            : Colors.black,
+                                        fontWeight: AppLocalizations.of(context)
+                                                    .locale ==
+                                                Locale("ta", "TA")
+                                            ? FontWeight.bold
+                                            : FontWeight.normal)),
+                                AppLocalizations.of(context).locale ==
+                                        Locale("ta", "TA")
+                                    ? Icon(Icons.check,
+                                        color:
+                                            Color(TrackerColors.primaryColor))
+                                    : Container()
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ])))));
-  }
-
-  Widget buildLanguageButton(String buttonText, String language) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Expanded(
-              child: FlatButton(
-                color: primaryColor.withOpacity(0.8),
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Spacer(),
-                      Text(
-                        buttonText,
-                        style: h2TextStyle.copyWith(
-                            color: textColor, fontWeight: FontWeight.w400),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      )
-                    ],
-                  ),
+                        Divider(),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              AppLocalizations.of(context)
+                                  .load(Locale("si", "LK"));
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("සිංහල",
+                                    style: TextStyle(
+                                        color: AppLocalizations.of(context)
+                                                    .locale ==
+                                                Locale("si", "LK")
+                                            ? Color(TrackerColors.primaryColor)
+                                            : Colors.black,
+                                        fontWeight: AppLocalizations.of(context)
+                                                    .locale ==
+                                                Locale("si", "LK")
+                                            ? FontWeight.bold
+                                            : FontWeight.normal)),
+                                AppLocalizations.of(context).locale ==
+                                        Locale("si", "LK")
+                                    ? Icon(Icons.check,
+                                        color:
+                                            Color(TrackerColors.primaryColor))
+                                    : Container()
+                              ],
+                            ),
+                          ),
+                        ),
+                        Divider(),
+                      ],
+                    )
+                  ],
                 ),
-                onPressed: () {
-                  changeLanguage(language);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DashboardScreen()));
-                },
-              ),
-            )
-          ],
+                SizedBox(
+                  height: 30.0,
+                ),
+                RaisedButton(
+                  color: Color(TrackerColors.primaryColor),
+                  padding: const EdgeInsets.all(20.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Text(
+                          AppLocalizations.of(context).translate(
+                            "ui_general_next",
+                          ),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 17.0)),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => RootScreen()));
+                  },
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

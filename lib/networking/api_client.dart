@@ -61,11 +61,11 @@ class ApiClient {
     String lang = prefs.getString('preferred_language');
     final sharedPrefId = "alert_$lang--$id";
     String alertData = prefs.getString(sharedPrefId);
+    print(id);
     if (alertData == null) {
       final url = '$_baseUrl/application/alert/$id/$lang';
       final response =
           await http.get(url, headers: {'Content-Type': 'application/json'});
-      // Was this not a success?
       if (response.statusCode != 200) {
         print('Error getting message: $id. Status: ' +
             response.statusCode.toString());
@@ -74,10 +74,12 @@ class ApiClient {
 
       alertData = utf8.decode(response.bodyBytes);
       prefs.setString(sharedPrefId, alertData);
+      prefs.setString(sharedPrefId, alertData);
     }
 
     // Create message
     var body = jsonDecode(alertData) as Map<String, dynamic>;
+
     NewsArticle article = NewsArticle.fromJSON(body);
     return article;
   }

@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/fcm_message.dart';
 import 'package:selftrackingapp/models/news_article.dart';
@@ -12,8 +13,10 @@ import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/theme.dart';
+import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 enum CounterType { confirmed, recovered, suspected, deaths }
 
@@ -23,12 +26,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final FirebaseMessaging _messaging = FirebaseMessaging();
   List<NewsArticle> stories = [];
-
-  // How often (in minutes) to you want the remote config to be updated?
-  final int updateInterval = 15;
-
   // Remotely configured values
   DateTime lastUpdated = DateTime.now();
   int confirmed = 0;
@@ -36,326 +34,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int suspected = 0;
   int deaths = 0;
 
+  Timer _timer;
+
   @override
   void initState() {
     super.initState();
-    // Messaging
-    _configureFCM();
-    _messaging.subscribeToTopic("mobile_message");
-    // Remote config
-    updateRemoteConfig();
-    // Get messages
 
     ApiClient().getLastMessageId().then((id) {
-      print('last id $id');
       int lowerID = 0;
-      print("$lowerID m $id");
       if (id >= 10) {
         lowerID = id - 10;
       }
       print("$lowerID m $id");
       ApiClient().getArticleList(lowerID, id).then((articles) {
-//        articles.sort((a, b) => a.id.compareTo(b.id));
         setState(() {
-          stories = articles;
+          //print(articles[0]);
+          //stories = articles;
+          //404 error is thrown in API
         });
       });
     });
 
-    // Set up Timer to update remote config regularly
-    Timer.periodic(Duration(minutes: updateInterval), (timer) {
+    updateRemoteConfig();
+    _timer = Timer.periodic(Duration(minutes: 15), (timer) {
       updateRemoteConfig();
     });
-  }
-
-  void _handleFCM(Map<String, dynamic> message) {
-    FCMMessage fcmMessage = FCMMessage.decode(message);
-
-    print(message);
-
-    if (message["data"] != null && message["data"]["type"] == "news") {
-      var id = message["data"]["id"];
-      ApiClient().getMessage(id).then((article) {
-        // Save article for display
-        print(article);
-        if (article != null) {
-          setState(() {
-            stories.add(article);
-          });
-        }
-      });
-    }
-
-    switch (fcmMessage.type) {
-      case "message":
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NewsDetailScreen()));
-        break;
-
-      case "data":
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CaseDetailScreen()));
-        break;
-
-      default:
-        _showMessageAsDialog(fcmMessage);
-    }
-  }
-
-  Widget buildCounter(CounterType type) {
-    String title = "";
-    int number = 0;
-    Color textColor;
-    switch (type) {
-      case CounterType.confirmed:
-        title = 'CONFIRMED';
-        textColor = Colors.green;
-        number = confirmed;
-        break;
-
-      case CounterType.suspected:
-        title = 'SUSPECTED';
-        textColor = Colors.brown;
-        number = suspected;
-        break;
-
-      case CounterType.recovered:
-        title = 'RECOVERED';
-        textColor = Colors.blue;
-        number = recovered;
-        break;
-
-      case CounterType.deaths:
-        title = 'DEATHS';
-        textColor = Colors.red;
-        number = deaths;
-        break;
-    }
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: new BorderRadius.all(Radius.circular(8.0)),
-            color: colorAccentBackground),
-        width: 160.0,
-        height: 160.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              "$number",
-              style: h1TextStyle.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: textColor.withOpacity(0.7)),
-            ),
-            Spacer(),
-            Text(
-              "$title".toUpperCase(),
-              style: h3TextStyle.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: textColor.withOpacity(0.9)),
-            ),
-            Spacer(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget horizontalList1 = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Container(
-            margin: EdgeInsets.only(top: 20.0),
-            height: 160.0,
-            child: new ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                buildCounter(CounterType.confirmed),
-                buildCounter(CounterType.recovered),
-                buildCounter(CounterType.suspected),
-                buildCounter(CounterType.deaths),
-              ],
-            )),
-        Padding(
-          padding: const EdgeInsets.all(16.0).copyWith(top: 2.0, left: 8.0),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8.0),
-                child: Text(
-                  "Last update",
-                  textAlign: TextAlign.right,
-                  style: h6TextStyle.copyWith(
-                      fontWeight: FontWeight.w300,
-                      color: lightColorText.withOpacity(1)),
-                ),
-              ),
-              Text(
-                timeago.format(lastUpdated),
-                textAlign: TextAlign.right,
-                style: h6TextStyle.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: lightColorText.withOpacity(1)),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: Text(
-            AppLocalizations.of(context).translate('dashboard_screen_title')),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-            color: Color(0xff7c94b6),
-            image: DecorationImage(
-                colorFilter: new ColorFilter.mode(
-                    Colors.white.withOpacity(0.8), BlendMode.dstATop),
-                image: AssetImage("assets/images/bg.png"),
-                fit: BoxFit.cover)),
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              horizontalList1,
-              Flexible(
-                child: ListView.builder(
-                    itemCount: stories.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      NewsArticle article = stories[index];
-                      if (article == null) return Text("updating...");
-
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        NewsDetailScreen(article: article)));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    new BorderRadius.all(Radius.circular(8.0)),
-                                color: colorAccentBackground,
-                                boxShadow: [backgroundBoxShadow]),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    article.originator,
-                                    textAlign: TextAlign.start,
-                                    style: h2TextStyle.copyWith(
-                                        color: primaryColorText),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(2.0),
-                                    child: Text(
-                                      "${article.created.toLocal()}",
-                                      //published data needs to facilitated into the messages from the API
-                                      textAlign: TextAlign.start,
-                                      style: h6TextStyle.copyWith(
-                                          color: primaryColorText
-                                              .withOpacity(0.5)),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      article.message,
-                                      style: h5TextStyle.copyWith(
-                                          color: primaryColorText
-                                              .withOpacity(0.7)),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Divider(
-                                      color: Colors.grey[400],
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Share.share(
-                                            "Shared button not implemented yet");
-                                      },
-                                      child: Icon(
-                                        Icons.share,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
-              Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FlatButton(
-                    color: Colors.green,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ContactUsScreen()));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .translate('dashboard_screen_contact_us_button'),
-                        style: h1TextStyle.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _configureFCM() {
-    _messaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage");
-        _handleFCM(message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume");
-        _handleFCM(message);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        _handleFCM(message);
-      },
-    );
-
-    _messaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
   }
 
   void updateRemoteConfig() async {
@@ -368,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       'deaths': 0
     };
     await config.setDefaults(defaults);
-    await config.fetch(expiration: Duration(minutes: updateInterval - 1));
+    await config.fetch(expiration: Duration(minutes: 15 - 1));
     await config.activateFetched();
     setState(() {
       confirmed = config.getInt('confirmed');
@@ -380,22 +83,202 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  void _showMessageAsDialog(FCMMessage fcmMessage) {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        return AlertDialog(
-//          title: Text(fcmMessage.title),
-//          content: Text(fcmMessage.body),
-//          actions: <Widget>[
-//            FlatButton(
-//              child: Text(AppLocalizations.of(context)
-//                  .translate('dashboard_screen_ok_button')),
-//              onPressed: () => Navigator.pop(context),
-//            )
-//          ],
-//        );
-//      },
-//    );
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+              child: Container(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    child: Text("Welcome.",
+                        style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold)))),
+                Container(
+                    child: Text("Here are the Latest Figures.",
+                        style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.normal)))),
+              ],
+            ),
+          )),
+          SliverPadding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+            sliver: SliverGrid.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 6 / 4,
+                children: [
+                  _createCountCard("Confirmed", "$confirmed"),
+                  _createCountCard("Suspected", "$recovered"),
+                  _createCountCard("Recovered", "$suspected"),
+                  _createCountCard("Deaths", "$deaths"),
+                ]),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                "Last Updated: ${lastUpdated.toString()}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+            sliver: SliverToBoxAdapter(
+              child: Container(),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Divider(),
+          ),
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: PreferredSize(
+                preferredSize: Size.fromHeight(30.0),
+                child: Container(
+                    child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                        text: " News",
+                        style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)))
+                  ]),
+                ))),
+          ),
+          SliverToBoxAdapter(
+            child: Divider(),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return _createNewsArticle(index);
+            }, childCount: stories.length),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _createNewsArticle(int index) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        child: Container(
+          padding: const EdgeInsets.all(30.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            color: Color(TrackerColors.secondaryColor),
+          ),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        stories[index].originator,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0),
+                      ),
+                      Text(
+                        "8th March 12:45", //published data needs to facilitated into the messages from the API
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Divider(
+                color: Colors.grey[400],
+              ),
+              Text(
+                stories[index].message,
+                style: TextStyle(color: Colors.black),
+              ),
+              Container(
+                child: Divider(
+                  color: Colors.grey[400],
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  onTap: () {
+                    Share.share("Shared button not implemented yet");
+                  },
+                  child: Icon(
+                    Icons.share,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _createCountCard(String title, String figure) {
+    return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2.1,
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+            color: Color(TrackerColors.primaryColor),
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  color: Colors.white),
+            ),
+            Text(
+              figure,
+              style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20.0,
+                  color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
