@@ -9,6 +9,7 @@ import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
+import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/theme.dart';
 import 'package:selftrackingapp/widgets/language_select.dart';
 
@@ -60,11 +61,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         children: <Widget>[
                           Center(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 200.0),
+                              padding: EdgeInsets.symmetric(vertical: 160.0),
                               child: Container(
                                 child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('welcome_screen_title'),
+                                  "",
                                   style: h1TextStyle.copyWith(
                                       fontSize: 48,
                                       fontWeight: FontWeight.w600,
@@ -74,64 +74,79 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 5.0),
-                            child: Center(
-                              child: Container(
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('welcome_screen_subtitle'),
-                                  style: h4TextStyle.copyWith(
-                                      fontWeight: FontWeight.w300,
-                                      color: mainButtonTextColor),
-                                ),
-                              ),
+                          buildLanguageButton(
+                              AppLocalizations.of(context).translate(
+                                  'welcome_screen_sinhala_button_text'),
+                              "Sinhala"),
+                          buildLanguageButton(
+                              AppLocalizations.of(context).translate(
+                                  'welcome_screen_tamil_button_text'),
+                              "Tamil"),
+                          buildLanguageButton(
+                              AppLocalizations.of(context).translate(
+                                  'welcome_screen_english_button_text'),
+                              "English"),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PrivacyPolicyScreen()));
+                            },
+                            child: Text(
+                              "Privacy Policy",
+                              style: h4TextStyle.copyWith(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white),
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 20.0),
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: FlatButton(
-                                      color: Color(0XFF8DC63F),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(16.0),
-                                        child: Text(
-                                          AppLocalizations.of(context)
-                                              .translate(
-                                                  'welcome_screen_button_text'),
-                                          style: h2TextStyle.copyWith(
-                                              color: textColor,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DashboardScreen()));
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                        child: LanguageSelectWidget(
-                                      notifyLanguageChange: changeLanguage,
-                                    )),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
                         ])))));
+  }
+
+  Widget buildLanguageButton(String buttonText, String language) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Expanded(
+              child: FlatButton(
+                color: primaryColor.withOpacity(0.8),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Spacer(),
+                      Text(
+                        buttonText,
+                        style: h2TextStyle.copyWith(
+                            color: textColor, fontWeight: FontWeight.w400),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+                onPressed: () {
+                  changeLanguage(language);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DashboardScreen()));
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
