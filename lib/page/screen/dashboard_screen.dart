@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:selftrackingapp/app_localizations.dart';
@@ -11,6 +12,8 @@ import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/theme.dart';
 import 'package:share/share.dart';
 
+enum CounterType { confirmed, recovered, suspected, deaths }
+
 class DashboardScreen extends StatefulWidget {
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -19,13 +22,20 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
   List<NewsArticle> stories = [];
+  int confirmed = 0;
+  int recovered = 0;
+  int suspected = 0;
+  int deaths = 0;
 
   @override
   void initState() {
     super.initState();
+    // Messaging
     _configureFCM();
     _messaging.subscribeToTopic("mobile_message");
-
+    // Remote config
+    updateRemoteConfig();
+    // Get messages
     ApiClient().getLastMessageId().then((id) {
       print(id);
       if (id == -1) {
@@ -42,7 +52,35 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  Widget buildComponent(String title, int number, Color textColor) {
+  Widget buildCounter(CounterType type) {
+    String title = "";
+    int number = 0;
+    Color textColor;
+    switch (type) {
+      case CounterType.confirmed:
+        title = 'CONFIRMED';
+        textColor = Colors.green;
+        number = confirmed;
+        break;
+
+      case CounterType.suspected:
+        title = 'SUSPECTED';
+        textColor = Colors.yellow;
+        number = suspected;
+        break;
+
+      case CounterType.recovered:
+        title = 'RECOVERED';
+        textColor = Colors.blue;
+        number = recovered;
+        break;
+
+      case CounterType.deaths:
+        title = 'DEATHS';
+        textColor = Colors.red;
+        number = deaths;
+        break;
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -83,10 +121,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: new ListView(
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            buildComponent("CONFIRMED", 99999, Colors.green),
-            buildComponent("RECOVERED", 99999, Colors.blue),
-            buildComponent("SUSPECTED", 99999, Colors.yellow),
-            buildComponent("DEATHS", 99999, Colors.red),
+            buildCounter(CounterType.confirmed),
+            buildCounter(CounterType.recovered),
+            buildCounter(CounterType.suspected),
+            buildCounter(CounterType.deaths),
           ],
         ));
     return Scaffold(
@@ -240,8 +278,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _handleFCM(Map<String, dynamic> message) {
     FCMMessage fcmMessage = FCMMessage.decode(message);
 
-    print("MEssage type ${fcmMessage.type}");
-    print("MEssage body ${fcmMessage.body}");
+    print("Message type ${fcmMessage.type}");
+    print("Message body ${fcmMessage.body}");
 
     switch (fcmMessage.type) {
       case "message":
@@ -257,6 +295,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
       default:
         _showMessageAsDialog(fcmMessage);
     }
+  }
+
+  void updateRemoteConfig() async {
+    final RemoteConfig config = await RemoteConfig.instance;
+    final defaults = <String, dynamic>{
+      'confirmed': 28,
+      'recovered': 1,
+      'suspected': 212,
+      'deaths': 0
+    };
+    await config.setDefaults(defaults);
+    await config.fetch(expiration: const Duration(minutes: 15));
+    await config.activateFetched();
+    setState(() {
+      confirmed = config.getInt('confirmed');
+      recovered = config.getInt('recovered');
+      suspected = config.getInt('suspected');
+      deaths = config.getInt('deaths');
+    });
   }
 
   void _showMessageAsDialog(FCMMessage fcmMessage) {

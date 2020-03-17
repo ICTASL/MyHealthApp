@@ -25,7 +25,7 @@ class NewsArticle {
     }
     article.title = data['title'];
     article.subtitle = data['subtitle'];
-    article.originator = data['source'];
+    article.originator = data['source'] ?? '';
     article.message = data['message'];
     String dt = data['createdTime'] as String;
     if (dt != null) {
