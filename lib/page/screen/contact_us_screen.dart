@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/models/contact_us_contact.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
+import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../app_localizations.dart';
 import '../../theme.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -16,63 +16,45 @@ class ContactUsScreen extends StatefulWidget {
 class _ContactUsScreenState extends State<ContactUsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: Text(
-            AppLocalizations.of(context).translate('dashboard_screen_title')),
-      ),
-      body: Container(
-          decoration: BoxDecoration(
-              color: Color(0xff7c94b6),
-              image: DecorationImage(
-                  colorFilter: new ColorFilter.mode(
-                      Colors.white.withOpacity(0.8), BlendMode.dstATop),
-                  image: AssetImage("assets/images/bg.png"),
-                  fit: BoxFit.cover)),
-          child: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: FutureBuilder(
-                future:
-                    GetIt.instance<DataRepository>().fetchContactUsContacts(),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return Center(
-                        child: Text(
-                            "An error has occured fetching contacts, try again later"),
-                      );
-                      break;
-                    case ConnectionState.waiting:
-                      return Center(child: CircularProgressIndicator());
-                      break;
-                    case ConnectionState.active:
-                      return Center(
-                        child: Text(
-                            "An error has occured fetching contacts, try again later"),
-                      );
-                      break;
-                    case ConnectionState.done:
-                      List<ContactUsContact> contacts = snapshot.data;
-                      return ListView.builder(
-                        itemBuilder: (context, index) {
-                          print(contacts[index]);
-                          return _contactCard(
-                              contacts[index].title,
-                              contacts[index].phoneNumber,
-                              contacts[index].address);
-                        },
-                        itemCount: contacts.length,
-                      );
-                      break;
-                    default:
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                  }
-                },
-              ))),
-    );
+    return Container(
+        padding: const EdgeInsets.all(10.0),
+        child: FutureBuilder(
+          future: GetIt.instance<DataRepository>().fetchContactUsContacts(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Center(
+                  child: Text(
+                      "An error has occured fetching contacts, try again later"),
+                );
+                break;
+              case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator());
+                break;
+              case ConnectionState.active:
+                return Center(
+                  child: Text(
+                      "An error has occured fetching contacts, try again later"),
+                );
+                break;
+              case ConnectionState.done:
+                List<ContactUsContact> contacts = snapshot.data;
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    print(contacts[index]);
+                    return _contactCard(contacts[index].title,
+                        contacts[index].phoneNumber, contacts[index].address);
+                  },
+                  itemCount: contacts.length,
+                );
+                break;
+              default:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+            }
+          },
+        ));
   }
 
   Widget _contactCard(String title, String phoneNumber, String address) {
@@ -81,7 +63,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(TrackerColors.primaryColor),
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -91,23 +73,25 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Text(
               phoneNumber,
               style: h1TextStyle.copyWith(
-                  color: primaryColor, fontWeight: FontWeight.w400),
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+              ),
               textAlign: TextAlign.start,
             ),
             Text(
               title,
               style: h3TextStyle.copyWith(
-                  color: primaryColor.withOpacity(0.5),
+                  color: Colors.white.withOpacity(0.5),
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
-            Container(height: 5.0),
+            SizedBox(height: 5.0),
             Container(
               margin: const EdgeInsets.only(top: 10.0),
               child: RaisedButton(
                   color: Colors.green,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(10.0),
                   onPressed: () async {
                     if (await canLaunch("tel:$phoneNumber")) {
                       await launch("tel:$phoneNumber");
