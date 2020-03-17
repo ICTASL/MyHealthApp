@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +45,8 @@ class ApiClient {
           response.statusCode.toString());
       return null;
     }
-    var body = jsonDecode(response.body) as Map<String, dynamic>;
+    var body = jsonDecode(utf8.decode(utf8.encode(response.body)))
+        as Map<String, dynamic>;
     // Create message
     NewsArticle article = NewsArticle.fromJSON(body);
     return article;

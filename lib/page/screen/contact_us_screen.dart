@@ -86,17 +86,53 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
+              phoneNumber,
+              style: h1TextStyle.copyWith(
+                  color: primaryColor, fontWeight: FontWeight.w400),
+              textAlign: TextAlign.start,
+            ),
+            Text(
               title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
+              style: h3TextStyle.copyWith(
+                  color: primaryColor.withOpacity(0.5),
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.start,
             ),
             Container(height: 5.0),
+            Container(
+              margin: const EdgeInsets.only(top: 10.0),
+              child: RaisedButton(
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  onPressed: () async {
+                    if (await canLaunch("tel:$phoneNumber")) {
+                      await launch("tel:$phoneNumber");
+                    } else {
+                      showDialog(
+                        context: context,
+                        child: AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          title: const Text("Oops, something went wrong"),
+                          content: Text(
+                              "Failed to make phone call, try again later."),
+                          actions: [
+                            FlatButton(
+                              child: const Text("Ok"),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  child: Icon(Icons.phone, color: Colors.white)),
+            ),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,14 +140,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      phoneNumber,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.start,
-                    ),
                     SizedBox(
                       height: 2.0,
                     ),
@@ -122,39 +150,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           fontSize: 15.0,
                           fontWeight: FontWeight.w400),
                       textAlign: TextAlign.start,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10.0),
-                      child: RaisedButton(
-                          color: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0))),
-                          onPressed: () async {
-                            if (await canLaunch("tel:$phoneNumber")) {
-                              await launch("tel:$phoneNumber");
-                            } else {
-                              showDialog(
-                                context: context,
-                                child: AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0))),
-                                  title:
-                                      const Text("Oops, something went wrong"),
-                                  content: Text(
-                                      "Failed to make phone call, try again later."),
-                                  actions: [
-                                    FlatButton(
-                                      child: const Text("Ok"),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          },
-                          child: Icon(Icons.phone, color: Colors.white)),
                     ),
                   ],
                 ),

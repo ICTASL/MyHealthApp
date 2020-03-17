@@ -1,23 +1,23 @@
 {
-    "contact_us_contacts": [
-        {
-            "id": 1,
-            "title": "Department of Health",
-            "phone_number": "+94 768043101",
-            "address": "04 Union Place, Colombo 05"
-        },
-        {
-            "id": 2,
-            "title": "Department of Environment",
-            "phone_number": "+94 768043101",
-            "address": "04 Union Place, Colombo 05"
-        },
-        {
-            "id": 3,
-            "title": "Department of Agriculture",
-            "phone_number": "+94 768043101",
-            "address": "04 Union Place, Colombo 05"
-        }
-    ],
-    "privacy_policy": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  "contact_us_contacts": [
+    {
+      "id": 1,
+      "title": "COVID-19 Information",
+      "phone_number": "113",
+      "address": ""
+    },
+    {
+      "id": 2,
+      "title": "Colombo General Hospital",
+      "phone_number": "011-269-1111",
+      "address": ""
+    },
+    {
+      "id": 3,
+      "title": "Police",
+      "phone_number": "119",
+      "address": ""
+    }
+  ],
+  "privacy_policy": "We do not send locations to DHIS system unless you choose to share.All news and alerts comes from verified source"
 }
