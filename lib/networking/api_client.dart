@@ -20,6 +20,12 @@ class ApiClient {
   }
 
   Future<int> getLastMessageId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int lastMessageId = prefs.getInt("last_message_id");
+    if (lastMessageId == null) {
+      lastMessageId = 0;
+    }
+
     final url = '$_baseUrl/application/alert/latest';
     print('Get last message ID: $url');
     final response = await http.get(url);
@@ -29,27 +35,49 @@ class ApiClient {
           response.statusCode.toString());
       return -1;
     }
-    // Decode message ID
-    return jsonDecode(response.body) as int;
+    int lastMessageServerId = jsonDecode(response.body) as int;
+
+    print("l $lastMessageId , lm  $lastMessageServerId");
+
+    if (lastMessageId < lastMessageServerId) {
+      prefs.setInt("last_message_id", lastMessageServerId);
+      lastMessageId = lastMessageServerId;
+    }
+
+    return lastMessageId;
+  }
+
+  Future<List<NewsArticle>> getArticleList(startId, endId) async {
+    List<NewsArticle> articles = [];
+    for (var i = startId; i <= endId; i++) {
+      NewsArticle article = await getMessage(i);
+      articles.add(article);
+    }
+    return articles;
   }
 
   Future<NewsArticle> getMessage(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lang = prefs.getString('preferred_language');
-    final url = '$_baseUrl/application/alert/$id/$lang';
-    final response =
-        await http.get(url, headers: {'Content-Type': 'application/json'});
-    // Was this not a success?
-    if (response.statusCode != 200) {
-      print('Error getting message: $id. Status: ' +
-          response.statusCode.toString());
-      return null;
+    final sharedPrefId = "alert_$lang--$id";
+    String alertData = prefs.getString(sharedPrefId);
+    if (alertData == null) {
+      final url = '$_baseUrl/application/alert/$id/$lang';
+      final response =
+          await http.get(url, headers: {'Content-Type': 'application/json'});
+      // Was this not a success?
+      if (response.statusCode != 200) {
+        print('Error getting message: $id. Status: ' +
+            response.statusCode.toString());
+        return null;
+      }
+
+      alertData = utf8.decode(response.bodyBytes);
+      prefs.setString(sharedPrefId, alertData);
     }
-//    print("JSON DATA");
-//    print(response.body);
-    var body =
-        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+
     // Create message
+    var body = jsonDecode(alertData) as Map<String, dynamic>;
     NewsArticle article = NewsArticle.fromJSON(body);
     return article;
   }

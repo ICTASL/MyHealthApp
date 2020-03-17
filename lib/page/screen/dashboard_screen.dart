@@ -45,27 +45,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // Remote config
     updateRemoteConfig();
     // Get messages
+
     ApiClient().getLastMessageId().then((id) {
-      print(id);
-      if (id == -1) {
-        return;
+      print('last id $id');
+      int lowerID = 0;
+      print("$lowerID m $id");
+      if (id >= 10) {
+        lowerID = id - 10;
       }
-      for (var i = id; i > 0; i--) {
-        ApiClient().getMessage(i).then((article) {
-          // Save article for display
-          print(article);
-          if (article != null) {
-            setState(() {
-              stories.add(article);
-            });
-          }
+      print("$lowerID m $id");
+      ApiClient().getArticleList(lowerID, id).then((articles) {
+//        articles.sort((a, b) => a.id.compareTo(b.id));
+        setState(() {
+          stories = articles;
         });
-      }
+      });
     });
+
     // Set up Timer to update remote config regularly
     Timer.periodic(Duration(minutes: updateInterval), (timer) {
       updateRemoteConfig();
     });
+  }
+
+  void _handleFCM(Map<String, dynamic> message) {
+    FCMMessage fcmMessage = FCMMessage.decode(message);
+
+    print(message);
+
+    if (message["data"] != null && message["data"]["type"] == "news") {
+      var id = message["data"]["id"];
+      ApiClient().getMessage(id).then((article) {
+        // Save article for display
+        print(article);
+        if (article != null) {
+          setState(() {
+            stories.add(article);
+          });
+        }
+      });
+    }
+
+    switch (fcmMessage.type) {
+      case "message":
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NewsDetailScreen()));
+        break;
+
+      case "data":
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CaseDetailScreen()));
+        break;
+
+      default:
+        _showMessageAsDialog(fcmMessage);
+    }
   }
 
   Widget buildCounter(CounterType type) {
@@ -122,14 +156,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontWeight: FontWeight.w600,
                   color: textColor.withOpacity(0.9)),
             ),
-//            Spacer(),
-//            Text(
-//              'Last Updated:\n' + timeago.format(lastUpdated),
-//              textAlign: TextAlign.right,
-//              style: h6TextStyle.copyWith(
-//                  fontWeight: FontWeight.w100,
-//                  color: Colors.black.withOpacity(0.8)),
-//            ),
             Spacer(),
           ],
         ),
@@ -239,7 +265,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(2.0),
                                     child: Text(
-                                      "${article.created}",
+                                      "${article.created.toLocal()}",
                                       //published data needs to facilitated into the messages from the API
                                       textAlign: TextAlign.start,
                                       style: h6TextStyle.copyWith(
@@ -316,9 +342,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _configureFCM() {
     _messaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+        print("onMessage");
         _handleFCM(message);
       },
       onResume: (Map<String, dynamic> message) async {
+        print("onResume");
         _handleFCM(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -328,29 +356,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _messaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
-  }
-
-  void _handleFCM(Map<String, dynamic> message) {
-    FCMMessage fcmMessage = FCMMessage.decode(message);
-
-    print("Message type ${message}");
-    print("Message type ${fcmMessage.type}");
-    print("Message body ${fcmMessage.body}");
-
-    switch (fcmMessage.type) {
-      case "message":
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NewsDetailScreen()));
-        break;
-
-      case "data":
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CaseDetailScreen()));
-        break;
-
-      default:
-        _showMessageAsDialog(fcmMessage);
-    }
   }
 
   void updateRemoteConfig() async {
