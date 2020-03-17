@@ -153,7 +153,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: ListView.builder(
                     itemCount: stories.length,
                     itemBuilder: (BuildContext context, int index) {
-                      print(index);
+                      NewsArticle article = stories[index];
+                      if (article == null) return Text("updating...");
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
@@ -161,8 +162,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => NewsDetailScreen(
-                                        article: stories[index])));
+                                    builder: (context) =>
+                                        NewsDetailScreen(article: article)));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -176,7 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    stories[index].originator,
+                                    article.originator,
                                     textAlign: TextAlign.start,
                                     style: h2TextStyle.copyWith(
                                         color: primaryColorText),
@@ -184,7 +185,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(2.0),
                                     child: Text(
-                                      "${stories[index].created}",
+                                      "${article.created}",
                                       //published data needs to facilitated into the messages from the API
                                       textAlign: TextAlign.start,
                                       style: h6TextStyle.copyWith(
@@ -195,7 +196,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: Text(
-                                      stories[index].message,
+                                      article.message,
                                       style: h5TextStyle.copyWith(
                                           color: primaryColorText
                                               .withOpacity(0.7)),
@@ -278,6 +279,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _handleFCM(Map<String, dynamic> message) {
     FCMMessage fcmMessage = FCMMessage.decode(message);
 
+    print("Message type ${message}");
     print("Message type ${fcmMessage.type}");
     print("Message body ${fcmMessage.body}");
 

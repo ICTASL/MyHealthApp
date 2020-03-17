@@ -69,7 +69,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           ),
                         ),
                       ),
-                      Spacer(),
                       buildLanguageButton(
                           AppLocalizations.of(context)
                               .translate('welcome_screen_sinhala_button_text'),
@@ -97,7 +96,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               color: Colors.white),
                         ),
                       ),
-                      Spacer(),
                     ])))));
   }
 
