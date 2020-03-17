@@ -53,6 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       for (var i = id; i > 0; i--) {
         ApiClient().getMessage(i).then((article) {
           // Save article for display
+          print(article);
           if (article != null) {
             setState(() {
               stories.add(article);

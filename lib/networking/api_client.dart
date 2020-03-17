@@ -37,16 +37,18 @@ class ApiClient {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lang = prefs.getString('preferred_language');
     final url = '$_baseUrl/application/alert/$id/$lang';
-    print('Get message: $url');
-    final response = await http.get(url);
+    final response =
+        await http.get(url, headers: {'Content-Type': 'application/json'});
     // Was this not a success?
     if (response.statusCode != 200) {
       print('Error getting message: $id. Status: ' +
           response.statusCode.toString());
       return null;
     }
-    var body = jsonDecode(utf8.decode(utf8.encode(response.body)))
-        as Map<String, dynamic>;
+    print("JSON DATA");
+    print(response.body);
+    var body =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     // Create message
     NewsArticle article = NewsArticle.fromJSON(body);
     return article;
