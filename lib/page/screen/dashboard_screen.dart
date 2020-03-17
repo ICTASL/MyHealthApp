@@ -34,6 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+
     widget.articleStream.listen((NewsArticle article) async {
       print("Article Updte ${article}");
       setState(() {
@@ -105,8 +106,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 childAspectRatio: 6 / 4,
                 children: [
                   _createCountCard("Confirmed", "$confirmed"),
-                  _createCountCard("Suspected", "$recovered"),
-                  _createCountCard("Recovered", "$suspected"),
+                  _createCountCard("Suspected", "$suspected"),
+                  _createCountCard("Recovered", "$recovered"),
                   _createCountCard("Deaths", "$deaths"),
                 ]),
           ),

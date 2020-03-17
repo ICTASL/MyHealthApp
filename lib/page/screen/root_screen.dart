@@ -22,24 +22,23 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
   static final StreamController<NewsArticle> newsStreamController =
-      StreamController();
+      StreamController.broadcast();
 
   int _currentIndex = 0;
   final _homeTabs = {
     DashboardScreen(
       articleStream: newsStreamController.stream,
     ),
-    CaseListScreen(),
+//    CaseListScreen(),
     ContactUsScreen(),
-    UserRegisterScreen()
+//    UserRegisterScreen()
   };
 
   final _homeTabItems = [
     TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-    TitledNavigationBarItem(title: 'Cases', icon: Icons.search),
+//    TitledNavigationBarItem(title: 'Cases', icon: Icons.search),
     TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
-    TitledNavigationBarItem(
-        title: 'Register', icon: Icons.person_add),
+//    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];
 
   @override
@@ -47,15 +46,7 @@ class _RootScreenState extends State<RootScreen> {
     super.initState();
     _configureFCM();
     _messaging.subscribeToTopic("mobile_message");
-
-    ApiClient().getLastMessageId().then((id) {
-      int lowerID = 1;
-      if (id >= 10) {
-        lowerID = id - 9;
-      }
-      print("$lowerID m $id");
-      ApiClient().getArticleList(lowerID, id, newsStreamController.sink);
-    });
+    updateArticles();
   }
 
   @override
@@ -117,6 +108,7 @@ class _RootScreenState extends State<RootScreen> {
           currentIndex:
               _currentIndex, // Use this to update the Bar giving a position
           onTap: (index) {
+            updateArticles();
             setState(() {
               _currentIndex = index;
             });
@@ -124,5 +116,16 @@ class _RootScreenState extends State<RootScreen> {
           activeColor: Color(TrackerColors.primaryColor),
           items: _homeTabItems),
     );
+  }
+
+  void updateArticles() {
+    ApiClient().getLastMessageId().then((id) {
+      int lowerID = 1;
+      if (id >= 10) {
+        lowerID = id - 9;
+      }
+      print("$lowerID m $id");
+      ApiClient().getArticleList(lowerID, id, newsStreamController.sink);
+    });
   }
 }
