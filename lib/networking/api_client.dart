@@ -45,8 +45,8 @@ class ApiClient {
           response.statusCode.toString());
       return null;
     }
-    print("JSON DATA");
-    print(response.body);
+//    print("JSON DATA");
+//    print(response.body);
     var body =
         jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     // Create message
