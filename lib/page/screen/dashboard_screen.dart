@@ -1,22 +1,13 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:selftrackingapp/app_localizations.dart';
-import 'package:selftrackingapp/models/fcm_message.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
-import 'package:selftrackingapp/page/screen/case_details_screen.dart';
-import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
-import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
-import 'package:selftrackingapp/theme.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 enum CounterType { confirmed, recovered, suspected, deaths }
 
