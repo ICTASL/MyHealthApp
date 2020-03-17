@@ -34,6 +34,14 @@ class _RootScreenState extends State<RootScreen> {
     UserRegisterScreen()
   };
 
+  final _homeTabItems = [
+    TitledNavigationBarItem(title: 'Home', icon: Icons.home),
+    TitledNavigationBarItem(title: 'Cases', icon: Icons.search),
+    TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
+    TitledNavigationBarItem(
+        title: 'Register', icon: Icons.person_add),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -97,7 +105,7 @@ class _RootScreenState extends State<RootScreen> {
       appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            "Home",
+            _homeTabItems[_currentIndex].title,
             style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                     color: Colors.black,
@@ -114,13 +122,7 @@ class _RootScreenState extends State<RootScreen> {
             });
           },
           activeColor: Color(TrackerColors.primaryColor),
-          items: [
-            TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-            TitledNavigationBarItem(title: 'Cases', icon: Icons.search),
-            TitledNavigationBarItem(title: 'Register', icon: Icons.card_travel),
-            TitledNavigationBarItem(
-                title: 'Privacy', icon: Icons.shopping_cart),
-          ]),
+          items: _homeTabItems),
     );
   }
 }
