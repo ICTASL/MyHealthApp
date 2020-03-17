@@ -6,6 +6,8 @@ import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 
+import 'utils/tracker_colors.dart';
+
 void main() {
   GetIt.instance
       .registerSingleton<DataRepository>(AppDataRepository(AppDatabase()));
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'COVID-19 Tracker',
       theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: TrackerColors.primaryColor,
           backgroundColor: Color(0xfff6f6f9),
           textTheme: TextTheme(
             display1: TextStyle(color: Colors.black, fontSize: 15.0),

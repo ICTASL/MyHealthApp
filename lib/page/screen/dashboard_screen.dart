@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
@@ -76,24 +75,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
         slivers: <Widget>[
           SliverToBoxAdapter(
               child: Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                     child: Text("Welcome.",
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold)))),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold))),
                 Container(
                     child: Text("Here are the Latest Figures.",
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.normal)))),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.normal))),
               ],
             ),
           )),
@@ -139,11 +136,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   text: TextSpan(children: [
                     TextSpan(
                         text: " News",
-                        style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)))
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black))
                   ]),
                 ))),
           ),
@@ -246,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         width: MediaQuery.of(context).size.width / 2.1,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-            color: Color(TrackerColors.primaryColor),
+            color: TrackerColors.primaryColor,
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

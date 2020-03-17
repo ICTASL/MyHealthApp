@@ -7,6 +7,7 @@ import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme.dart';
+import '../../utils/tracker_colors.dart';
 
 class ContactUsScreen extends StatefulWidget {
   @override
@@ -63,7 +64,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: Container(
         decoration: BoxDecoration(
-            color: Color(TrackerColors.primaryColor),
+            color: Color(TrackerColors.secondaryColor),
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         padding: const EdgeInsets.all(20.0),
         child: Column(

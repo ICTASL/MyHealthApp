@@ -38,8 +38,7 @@ class _RootScreenState extends State<RootScreen> {
     TitledNavigationBarItem(title: 'Home', icon: Icons.home),
     TitledNavigationBarItem(title: 'Cases', icon: Icons.search),
     TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
-    TitledNavigationBarItem(
-        title: 'Register', icon: Icons.person_add),
+    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];
 
   @override
@@ -121,7 +120,7 @@ class _RootScreenState extends State<RootScreen> {
               _currentIndex = index;
             });
           },
-          activeColor: Color(TrackerColors.primaryColor),
+          activeColor: TrackerColors.primaryColor,
           items: _homeTabItems),
     );
   }

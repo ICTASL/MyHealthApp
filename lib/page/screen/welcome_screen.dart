@@ -4,6 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
+import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
+
+import '../../app_localizations.dart';
+import '../../utils/tracker_colors.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -13,6 +17,21 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   String welcomeScreenTitle = "";
   double height = 800.0;
+  double _nextBtnHeight = 30.0;
+  double _nextBtnWidth = 400.0;
+  final Widget _registerCircleProgress = CircularProgressIndicator(
+    backgroundColor: Colors.white,
+  );
+  Widget _nextBtnChild = Text(
+    "Next",
+    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       "assets/images/logo.png",
                       height: 124.0,
                       fit: BoxFit.cover,
-                      color: Color(TrackerColors.primaryColor),
+                      color: TrackerColors.primaryColor,
                     ),
                     SizedBox(height: 30.0),
                     Text(
@@ -66,6 +85,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               height = 500.0;
                               AppLocalizations.of(context)
                                   .load(Locale("en", "US"));
+                              _nextBtnChild = Text("Next",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold));
                             });
                           },
                           child: Container(
@@ -80,7 +103,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                         color: AppLocalizations.of(context)
                                                     .locale ==
                                                 Locale("en", "US")
-                                            ? Color(TrackerColors.primaryColor)
+                                            ? TrackerColors.primaryColor
                                             : Colors.black,
                                         fontWeight: AppLocalizations.of(context)
                                                     .locale ==
@@ -90,8 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 AppLocalizations.of(context).locale ==
                                         Locale("en", "US")
                                     ? Icon(Icons.check,
-                                        color:
-                                            Color(TrackerColors.primaryColor))
+                                        color: TrackerColors.primaryColor)
                                     : Container()
                               ],
                             ),
@@ -103,6 +125,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             setState(() {
                               AppLocalizations.of(context)
                                   .load(Locale("ta", "TA"));
+
+                              _nextBtnChild = Text("அடுத்தது",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold));
                             });
                           },
                           child: Container(
@@ -117,7 +144,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                         color: AppLocalizations.of(context)
                                                     .locale ==
                                                 Locale("ta", "TA")
-                                            ? Color(TrackerColors.primaryColor)
+                                            ? TrackerColors.primaryColor
                                             : Colors.black,
                                         fontWeight: AppLocalizations.of(context)
                                                     .locale ==
@@ -127,8 +154,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 AppLocalizations.of(context).locale ==
                                         Locale("ta", "TA")
                                     ? Icon(Icons.check,
-                                        color:
-                                            Color(TrackerColors.primaryColor))
+                                        color: TrackerColors.primaryColor)
                                     : Container()
                               ],
                             ),
@@ -140,6 +166,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             setState(() {
                               AppLocalizations.of(context)
                                   .load(Locale("si", "LK"));
+                              _nextBtnChild = Text("ඊළඟ",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold));
                             });
                           },
                           child: Container(
@@ -154,7 +184,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                         color: AppLocalizations.of(context)
                                                     .locale ==
                                                 Locale("si", "LK")
-                                            ? Color(TrackerColors.primaryColor)
+                                            ? TrackerColors.primaryColor
                                             : Colors.black,
                                         fontWeight: AppLocalizations.of(context)
                                                     .locale ==
@@ -164,8 +194,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 AppLocalizations.of(context).locale ==
                                         Locale("si", "LK")
                                     ? Icon(Icons.check,
-                                        color:
-                                            Color(TrackerColors.primaryColor))
+                                        color: TrackerColors.primaryColor)
                                     : Container()
                               ],
                             ),
@@ -179,25 +208,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 SizedBox(
                   height: 30.0,
                 ),
-                RaisedButton(
-                  color: Color(TrackerColors.primaryColor),
-                  padding: const EdgeInsets.all(20.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Text(
-                          AppLocalizations.of(context).translate(
-                            "ui_general_next",
-                          ),
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ),
-                  ),
+                AnimatedTrackerButton(
+                  width: _nextBtnWidth,
+                  height: _nextBtnHeight,
+                  child: _nextBtnChild,
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => RootScreen()));
+                    setState(() {
+                      _nextBtnWidth = 100.0;
+                      _nextBtnHeight = 60.0;
+                      _nextBtnChild = _registerCircleProgress;
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RootScreen()));
+                      });
+                    });
                   },
                 )
               ],
