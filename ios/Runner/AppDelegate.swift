@@ -48,6 +48,11 @@ import GoogleMaps
       }
     })
     
+	// Messaging
+	if #available(iOS 10.0, *) {
+	  UNUserNotificationCenter.current().delegate = self
+	}
+
 	// Google Maps
     GMSServices.provideAPIKey("AIzaSyBQu2WwoTFKJQ1PM4w-hIRkLnEVDtWtFoo")
 	

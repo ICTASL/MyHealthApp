@@ -54,56 +54,51 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         fit: BoxFit.cover)),
                 child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 1.0),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 160.0),
-                              child: Container(
-                                child: Text(
-                                  "",
-                                  style: h1TextStyle.copyWith(
-                                      fontSize: 48,
-                                      fontWeight: FontWeight.w600,
-                                      color: mainButtonTextColor),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Spacer(),
-                          buildLanguageButton(
-                              AppLocalizations.of(context).translate(
-                                  'welcome_screen_sinhala_button_text'),
-                              "Sinhala"),
-                          buildLanguageButton(
-                              AppLocalizations.of(context).translate(
-                                  'welcome_screen_tamil_button_text'),
-                              "Tamil"),
-                          buildLanguageButton(
-                              AppLocalizations.of(context).translate(
-                                  'welcome_screen_english_button_text'),
-                              "English"),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          PrivacyPolicyScreen()));
-                            },
+                    child: ListView(children: <Widget>[
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 160.0),
+                          child: Container(
                             child: Text(
-                              "Privacy Policy",
-                              style: h4TextStyle.copyWith(
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white),
+                              "",
+                              style: h1TextStyle.copyWith(
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.w600,
+                                  color: mainButtonTextColor),
                             ),
                           ),
-                          Spacer(),
-                        ])))));
+                        ),
+                      ),
+                      Spacer(),
+                      buildLanguageButton(
+                          AppLocalizations.of(context)
+                              .translate('welcome_screen_sinhala_button_text'),
+                          "Sinhala"),
+                      buildLanguageButton(
+                          AppLocalizations.of(context)
+                              .translate('welcome_screen_tamil_button_text'),
+                          "Tamil"),
+                      buildLanguageButton(
+                          AppLocalizations.of(context)
+                              .translate('welcome_screen_english_button_text'),
+                          "English"),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PrivacyPolicyScreen()));
+                        },
+                        child: Text(
+                          "Privacy Policy",
+                          style: h4TextStyle.copyWith(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white),
+                        ),
+                      ),
+                      Spacer(),
+                    ])))));
   }
 
   Widget buildLanguageButton(String buttonText, String language) {

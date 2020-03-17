@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>559624413743-7db0d0mlbaf2s6u0aldkq54e6jim41qi.apps.googleusercontent.com</string>
+	<string>1096700657713-n1lvbkr36hm2pa1u758q5gms0hnf49c7.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.559624413743-7db0d0mlbaf2s6u0aldkq54e6jim41qi</string>
+	<string>com.googleusercontent.apps.1096700657713-n1lvbkr36hm2pa1u758q5gms0hnf49c7</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBspzTlnYmUOTEjkbykimLaO2gZKkoK9pk</string>
+	<string>AIzaSyC_Jwk322CBPdMNtwHxD0nXAvkb66VAdiE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>559624413743</string>
+	<string>1096700657713</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>app.ceylon.selftrackingapp</string>
 	<key>PROJECT_ID</key>
-	<string>covid-19-tfa</string>
+	<string>covid-19-lk-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>covid-19-tfa.appspot.com</string>
+	<string>covid-19-lk-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:559624413743:ios:e49ce2cb224838a3dddcda</string>
+	<string>1:1096700657713:ios:3bfdaf3aad640d3a9b5510</string>
 	<key>DATABASE_URL</key>
-	<string>https://covid-19-tfa.firebaseio.com</string>
+	<string>https://covid-19-lk-dev.firebaseio.com</string>
 </dict>
 </plist>
