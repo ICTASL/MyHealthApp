@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TrackerColors {
   static int secondaryColor = 0xffDAD2D8;
-  static MaterialColor primaryColor = MaterialColor(0xFF880E4F, {
+  static MaterialColor primaryColor = MaterialColor(0xFF311F4C, {
     50: Color.fromRGBO(0x31, 0x1F, 0x4C, .1),
     100: Color.fromRGBO(0x31, 0x1F, 0x4C, .2),
     200: Color.fromRGBO(0x31, 0x1F, 0x4C, .3),

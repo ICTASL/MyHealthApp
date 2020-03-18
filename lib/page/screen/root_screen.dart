@@ -14,6 +14,8 @@ import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
+import 'case_details_screen.dart';
+
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
 
 class RootScreen extends StatefulWidget {
@@ -28,14 +30,15 @@ class _RootScreenState extends State<RootScreen> {
   int _currentIndex = 0;
   final _homeTabs = {
     DashboardScreen(),
-    CaseListScreen(),
+    //CaseListScreen(),
+    CaseDetailScreen(),
     ContactUsScreen(),
     UserRegisterScreen()
   };
 
   final _homeTabItems = [
     TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-    TitledNavigationBarItem(title: 'Cases', icon: Icons.search),
+    TitledNavigationBarItem(title: 'Locations', icon: Icons.map),
     TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
     TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];

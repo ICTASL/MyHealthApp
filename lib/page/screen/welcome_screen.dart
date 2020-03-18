@@ -53,7 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       "assets/images/logo.png",
                       height: 124.0,
                       fit: BoxFit.cover,
-                      color: TrackerColors.primaryColor,
+                      color: TrackerColors.primaryColor[900],
                     ),
                     SizedBox(height: 30.0),
                     Text(

@@ -143,7 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.only(left: 20.0, top: 10.0),
             sliver: SliverToBoxAdapter(
               child: Text(
-                "${AppLocalizations.of(context).translate('dashboard_screen_last_updated')}\n${lastUpdated.toString()}",
+                "${AppLocalizations.of(context).translate('dashboard_screen_last_updated')} ${lastUpdated.toString()}",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
