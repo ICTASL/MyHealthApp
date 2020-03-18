@@ -35,5 +35,6 @@
   "news_detail_page_title": "Register",
   "language_screen_choose": "Choose Your Preferred Lanugage.",
   "language_screen_choose_sub": "Please select a language below.",
-  "ui_general_next": "Next"
+  "ui_general_next": "Next",
+  "case_screen_search": "Search by location"
 }

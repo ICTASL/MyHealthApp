@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
+import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
@@ -29,17 +30,18 @@ class _RootScreenState extends State<RootScreen> {
       articleStream: newsStreamController.stream,
     ),
 
+    CaseListScreen(),
     CaseDetailScreen(),
-//    CaseListScreen(),
     ContactUsScreen()
 //    UserRegisterScreen()
   };
 
   final _homeTabItems = [
     TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-    TitledNavigationBarItem(title: 'Cases', icon: Icons.place),
-    TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
-    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
+    TitledNavigationBarItem(title: 'Cases', icon: Icons.view_list),
+    TitledNavigationBarItem(title: 'My Location', icon: Icons.map),
+    TitledNavigationBarItem(title: 'Contact Us', icon: Icons.call),
+    // TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];
 
   @override

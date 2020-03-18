@@ -11,7 +11,6 @@ class CaseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // Will update container body to relevant attributes after spring setup
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
         padding: EdgeInsets.all(16.0),
