@@ -14,6 +14,7 @@ import com.google.android.gms.location.*
 import java.util.*
 
 
+
 class LocationTrackingService : Service() {
 
     private val binder: IBinder = AppServiceBinder()

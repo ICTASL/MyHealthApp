@@ -11,7 +11,7 @@ description: Self tracking app
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.4+5
 
 environment:
     sdk: ">=2.1.0 <3.0.0"
@@ -34,6 +34,8 @@ dependencies:
     titled_navigation_bar: ^3.6.0
     provider: ^4.0.4
     equatable: ^1.1.1
+    geolocator: ^5.1.4+2
+
 
     flutter_localizations:
         sdk: flutter
