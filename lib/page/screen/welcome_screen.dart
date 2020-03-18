@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:selftrackingapp/app_localizations.dart';
@@ -84,10 +83,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  height = 500.0;
                                   AppLocalizations.of(context)
-                                      .load(Locale("en", "US"));
-                                  _nextBtnChild = Text("Next",
+                                      .load(Locale("si", "LK"));
+                                  _nextBtnChild = Text("ඊළඟ",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold));
@@ -105,21 +103,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text("English",
+                                    Text("සිංහල",
                                         style: TextStyle(
                                             color: AppLocalizations.of(context)
                                                         .locale ==
-                                                    Locale("en", "US")
+                                                    Locale("si", "LK")
                                                 ? TrackerColors.primaryColor
                                                 : Colors.black,
                                             fontWeight:
                                                 AppLocalizations.of(context)
                                                             .locale ==
-                                                        Locale("en", "US")
+                                                        Locale("si", "LK")
                                                     ? FontWeight.bold
                                                     : FontWeight.normal)),
                                     AppLocalizations.of(context).locale ==
-                                            Locale("en", "US")
+                                            Locale("si", "LK")
                                         ? Icon(Icons.check,
                                             color: TrackerColors.primaryColor)
                                         : Container()
@@ -178,9 +176,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             InkWell(
                               onTap: () {
                                 setState(() {
+                                  height = 500.0;
                                   AppLocalizations.of(context)
-                                      .load(Locale("si", "LK"));
-                                  _nextBtnChild = Text("ඊළඟ",
+                                      .load(Locale("en", "US"));
+                                  _nextBtnChild = Text("Next",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold));
@@ -198,21 +197,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text("සිංහල",
+                                    Text("English",
                                         style: TextStyle(
                                             color: AppLocalizations.of(context)
                                                         .locale ==
-                                                    Locale("si", "LK")
+                                                    Locale("en", "US")
                                                 ? TrackerColors.primaryColor
                                                 : Colors.black,
                                             fontWeight:
                                                 AppLocalizations.of(context)
                                                             .locale ==
-                                                        Locale("si", "LK")
+                                                        Locale("en", "US")
                                                     ? FontWeight.bold
                                                     : FontWeight.normal)),
                                     AppLocalizations.of(context).locale ==
-                                            Locale("si", "LK")
+                                            Locale("en", "US")
                                         ? Icon(Icons.check,
                                             color: TrackerColors.primaryColor)
                                         : Container()
