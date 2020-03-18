@@ -4,6 +4,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
@@ -82,14 +83,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    child: Text("Welcome.",
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("welcome_screen_title"),
                         style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 color: Colors.black,
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold)))),
                 Container(
-                    child: Text("Here are the Latest Figures.",
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("latest_figures_title"),
                         style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 color: Colors.black,
@@ -105,17 +110,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisSpacing: 10.0,
                 childAspectRatio: 6 / 4,
                 children: [
-                  _createCountCard("Confirmed", "$confirmed"),
-                  _createCountCard("Suspected", "$suspected"),
-                  _createCountCard("Recovered", "$recovered"),
-                  _createCountCard("Deaths", "$deaths"),
+                  _createCountCard("confirmed_card_text", "$confirmed"),
+                  _createCountCard("suspected_card_text", "$suspected"),
+                  _createCountCard("recovered_card_text", "$recovered"),
+                  _createCountCard("deaths_card_text", "$deaths"),
                 ]),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(left: 20.0, top: 10.0),
             sliver: SliverToBoxAdapter(
               child: Text(
-                "Last Updated: ${lastUpdated.toString()}",
+                AppLocalizations.of(context).translate("last_updated_text")+': $lastUpdated',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -139,7 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: RichText(
                   text: TextSpan(children: [
                     TextSpan(
-                        text: " News",
+                        text: AppLocalizations.of(context).translate("news_text"),
                         style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                                 fontSize: 30.0,
@@ -253,7 +258,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              title,
+              AppLocalizations.of(context).translate(title),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
