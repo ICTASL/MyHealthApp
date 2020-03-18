@@ -1,4 +1,6 @@
-class Location {
+import 'package:equatable/equatable.dart';
+
+class Location extends Equatable {
   double longitude;
   double latitude;
   String address;
@@ -32,4 +34,8 @@ class Location {
         from: json['from'],
         to: json['to']);
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [date];
 }

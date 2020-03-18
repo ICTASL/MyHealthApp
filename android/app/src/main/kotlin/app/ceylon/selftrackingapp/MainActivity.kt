@@ -67,7 +67,7 @@ class MainActivity : FlutterActivity() {
                         jsonLocation.put("title", location.dateString)
                         locaitons.add(jsonLocation.toString(10))
                     }
-
+                    
                     handler.post {
                         result.success(locaitons);
                     }

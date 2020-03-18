@@ -20,22 +20,75 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
 
   Completer<GoogleMapController> _controller = Completer();
   Position currentLocation;
+  List<Location> entries = List();
+  Timer _locationTimer;
+
+  Timer _currentLoctimer;
+  bool _isInitialLocationAdded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _locationTimer = Timer.periodic(Duration(minutes: 5), (timer) async {
+        print("POLLING the locations");
+        List<Location> newEntries = await getLocationUpdate();
+        print("LOCATIONS Fetched: ${newEntries.length}");
+        if (this.mounted) {
+          setState(() {
+            newEntries.forEach((e) {
+              if (!entries.contains(e)) {
+                entries.add(
+                    e); //location id should be used here to prevent duplicate locations from being added
+              }
+            });
+            print("POLLED locations: ${newEntries.length}");
+          });
+        }
+      });
+
+      _currentLoctimer = Timer.periodic(Duration(seconds: 3), (_) {
+        Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+            .then((position) {
+          if (this.mounted) {
+            setState(() {
+              if (!_isInitialLocationAdded) {
+                Location location = new Location(
+                    longitude: position.longitude,
+                    latitude: position.latitude,
+                    date: position.timestamp,
+                    from: position.timestamp,
+                    to: position.timestamp,
+                    address: 'Current Location');
+                _isInitialLocationAdded = true;
+                entries.add(location);
+              }
+              currentLocation = position;
+            });
+          }
+        });
+        print("Current Location Updated");
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_locationTimer != null) _locationTimer.cancel();
+    if (_currentLoctimer != null) _currentLoctimer.cancel();
+    print("CANCELLING timers");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: getLocationHistoryView(),
+    return Container(
+      child: getMapView(entries), //initially this will be empty
     );
   }
 
   Widget getMapView(List<Location> entries) {
-    Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((position) {
-      setState(() {
-        currentLocation = position;
-      });
-    });
     return GoogleMap(
       mapType: MapType.terrain,
       markers: entries.map((l) {
@@ -70,27 +123,12 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         });
   }
 
-  Widget getLocationHistoryView() {
-    return FutureBuilder<List<Location>>(
-      future: getLocationUpdate(),
-      builder: (BuildContext context, AsyncSnapshot<List<Location>> snapshot) {
-        print(snapshot.error);
-        if (snapshot.hasError) return Text("${snapshot.error}");
-        List<Location> entries = snapshot.data;
-        if (entries != null && entries.length > 0) {
-          return getMapView(entries);
-        } else {
-          return Text("No data");
-        }
-      },
-    );
-  }
-
   Future<List<Location>> getLocationUpdate() async {
     try {
       final List<dynamic> locations =
           await _channel.invokeMethod('getLocation');
       print("locations $locations");
+
       return locations
           .map((v) => Location.fromBackgroundJson(json.decode(v)))
           .toList();
