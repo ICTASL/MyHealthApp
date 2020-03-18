@@ -37,9 +37,9 @@ class _RootScreenState extends State<RootScreen> {
 
   final _homeTabItems = [
     TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-    TitledNavigationBarItem(title: 'My Location', icon: Icons.map),
+    TitledNavigationBarItem(title: 'Cases', icon: Icons.place),
     TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
-//    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
+    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];
 
   @override
