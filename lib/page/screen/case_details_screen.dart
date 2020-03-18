@@ -23,16 +23,30 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
     );
   }
 
-//  GoogleMap(
-//  mapType: MapType.terrain,
-//  initialCameraPosition: CameraPosition(
-//  target: LatLng(6.9271, 79.8612),
-//  zoom: 12,
-//  ),
-//  onMapCreated: (GoogleMapController controller) {
-//  _controller.complete(controller);
-//  },
-//  )
+  Widget getMapView(List<Location> entries) {
+    return GoogleMap(
+      mapType: MapType.terrain,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(6.9271, 79.8612),
+        zoom: 12,
+      ),
+      myLocationButtonEnabled: true,
+      myLocationEnabled: true,
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
+    );
+  }
+
+  Widget getListView(List<Location> entries) {
+    return ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: entries.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Text(
+              'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].date}');
+        });
+  }
 
   Widget getLocationHistoryView() {
     return FutureBuilder<List<Location>>(
@@ -42,13 +56,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         if (snapshot.hasError) return Text("${snapshot.error}");
         List<Location> entries = snapshot.data;
         if (entries != null && entries.length > 0) {
-          return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: entries.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Text(
-                    'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].date}');
-              });
+          return getMapView(entries);
         } else {
           return Text("No data");
         }
