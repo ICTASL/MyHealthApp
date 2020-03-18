@@ -26,6 +26,11 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   Widget getMapView(List<Location> entries) {
     return GoogleMap(
       mapType: MapType.terrain,
+      markers: entries.map((l) {
+        return Marker(
+            markerId: MarkerId("${l.date.millisecondsSinceEpoch}"),
+            position: LatLng(l.latitude, l.longitude));
+      }).toSet(),
       initialCameraPosition: CameraPosition(
         target: LatLng(6.9271, 79.8612),
         zoom: 12,
