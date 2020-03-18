@@ -120,6 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             sliver: SliverGrid.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 10.0,
+                childAspectRatio: 7 / 6,
                 children: [
                   _createCountCard(
                       AppLocalizations.of(context)
