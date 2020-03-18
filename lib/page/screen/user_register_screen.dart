@@ -65,13 +65,17 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    child: Text("Register",
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("user_register_screen_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    child: Text("Register yourself below.",
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("user_register_screen_subtitle"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
@@ -191,7 +195,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             setState(() {
                               _currentBtnChild = _registerTextChild;
                               _registerBtnStatus = true;
-
                               _registerBtnHeight = 30.0;
                               _registerBtnWidth = 400.0;
                             });

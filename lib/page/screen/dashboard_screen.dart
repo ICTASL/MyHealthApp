@@ -99,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                     child: Text(
                         AppLocalizations.of(context)
-                            .translate("ui_general_welcome"),
+                            .translate("dashboard_welcome_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
@@ -107,7 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                     child: Text(
                         AppLocalizations.of(context)
-                            .translate("dashboard_screen_figures"),
+                            .translate("dashboard_latest_figures_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
@@ -123,19 +123,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_confirmed"),
+                          .translate("dashboard_confirmed_card_text"),
                       "$confirmed"),
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_suspected"),
+                          .translate("dashboard_recovered_card_text"),
                       "$recovered"),
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_recovered"),
+                          .translate("dashboard_suspected_card_text"),
                       "$suspected"),
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_deaths"),
+                          .translate("dashboard_deaths_card_text"),
                       "$deaths"),
                 ]),
           ),
@@ -143,7 +143,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.only(left: 20.0, top: 10.0),
             sliver: SliverToBoxAdapter(
               child: Text(
-                "${AppLocalizations.of(context).translate('dashboard_screen_last_updated')} ${lastUpdated.toString()}",
+                AppLocalizations.of(context)
+                        .translate('dashboard_last_updated_text') +
+                    ' : $lastUpdated'.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -168,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   text: TextSpan(children: [
                     TextSpan(
                         text:
-                            " ${AppLocalizations.of(context).translate('dashboard_screen_news')}",
+                            " ${AppLocalizations.of(context).translate('dashboard_news_text')}",
                         style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold,
