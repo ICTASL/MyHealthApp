@@ -36,7 +36,6 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         currentLocation = position;
       });
     });
-
     return GoogleMap(
       mapType: MapType.terrain,
       markers: entries.map((l) {
