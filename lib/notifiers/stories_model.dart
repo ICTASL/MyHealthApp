@@ -11,7 +11,7 @@ class StoriesModel extends ChangeNotifier {
 
   void add(NewsArticle article) {
     if (!_articles.contains(article)) {
-      _articles.add(article);
+      _articles.insert(0, article);
       notifyListeners();
     }
   }

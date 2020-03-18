@@ -54,7 +54,7 @@ class ApiClient {
 //
     for (var i = startId; i <= endId; i++) {
       NewsArticle article = await getMessage(i, forceUpdate: forceUpdate);
-      articles.add(article);
+      if (article != null) articles.add(article);
     }
 
     return articles;
