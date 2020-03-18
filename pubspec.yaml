@@ -34,6 +34,7 @@ dependencies:
     titled_navigation_bar: ^3.6.0
     provider: ^4.0.4
     equatable: ^1.1.1
+    date_format: ^1.0.8
     geolocator: ^5.1.4+2
 
 
