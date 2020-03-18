@@ -8,6 +8,7 @@ import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
+import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';

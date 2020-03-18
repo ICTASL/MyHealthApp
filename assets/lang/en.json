@@ -47,4 +47,6 @@
   "dashboard_screen_last_updated": "Last Updated:",
   "ui_general_next": "Next",
   "ui_general_welcome": "Welcome"
+  "ui_general_next": "Next",
+  "case_screen_search": "Search by location"
 }
