@@ -14,7 +14,6 @@ import com.google.android.gms.location.*
 import java.util.*
 
 
-
 class LocationTrackingService : Service() {
 
     private val binder: IBinder = AppServiceBinder()
@@ -38,8 +37,8 @@ class LocationTrackingService : Service() {
 
     private var mLocationRequest: LocationRequest? = null
 
-    private val UPDATE_INTERVAL = 10 * 1000 /* 10 secs */.toLong()
-    private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
+    private val UPDATE_INTERVAL = 20 * 60 * 1 * 1000 /* 10 secs */.toLong()
+    private val FASTEST_INTERVAL: Long = 1 * 60 * 1 * 1000 /* 2 sec */
 
 
     // Trigger new location updates at interval
@@ -77,7 +76,7 @@ class LocationTrackingService : Service() {
         AsyncTask.execute {
             locationDao.insert(locationModel)
             handler.post {
-                Toast.makeText(this, "Location Updated ${locationModel.lng},${locationModel.lat},${locationModel.date?.time}", Toast.LENGTH_LONG).show()
+                //                Toast.makeText(this, "Location Updated ${locationModel.lng},${locationModel.lat},${locationModel.date?.time}", Toast.LENGTH_LONG).show()
             }
         }
         Log.i(MainActivity.TAG, "Location store ${locationModel.lat},${locationModel.lng}")
