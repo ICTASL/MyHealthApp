@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   static const MethodChannel _channel = MethodChannel('location');
 
   Completer<GoogleMapController> _controller = Completer();
+  Position currentLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,14 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   }
 
   Widget getMapView(List<Location> entries) {
+    Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((position) {
+      setState(() {
+        currentLocation = position;
+      });
+    });
+
     return GoogleMap(
       mapType: MapType.terrain,
       markers: entries.map((l) {
@@ -38,7 +48,9 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
             position: LatLng(l.latitude, l.longitude));
       }).toSet(),
       initialCameraPosition: CameraPosition(
-        target: LatLng(6.9271, 79.8612),
+        target: currentLocation != null
+            ? LatLng(currentLocation.latitude, currentLocation.longitude)
+            : LatLng(6.9271, 79.8612),
         zoom: 12,
       ),
       myLocationButtonEnabled: true,
