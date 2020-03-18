@@ -139,7 +139,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Text("சிங்களம்",
+                                Text("தமிழ்",
                                     style: TextStyle(
                                         color: AppLocalizations.of(context)
                                                     .locale ==
