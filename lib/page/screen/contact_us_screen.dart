@@ -64,7 +64,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: Container(
         decoration: BoxDecoration(
-            color: Color(TrackerColors.secondaryColor),
+            color: TrackerColors.primaryColor,
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         padding: const EdgeInsets.all(20.0),
         child: Column(

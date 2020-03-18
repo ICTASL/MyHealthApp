@@ -28,5 +28,13 @@
     "news_detail_page_title": "Register",
     "language_screen_choose": "உங்கள் விருப்பமான லானுகேஜைத் தேர்வுசெய்க.",
     "language_screen_choose_sub": "தயவுசெய்து கீழே ஒரு மொழியைத் தேர்ந்தெடுக்கவும்.",
-    "ui_general_next": "அடுத்தது"
+    "dashboard_screen_figures": "சமீபத்திய புள்ளிவிவரங்கள் இங்கே",
+    "dashboard_screen_confirmed": "உறுதி",
+    "dashboard_screen_suspected": "சந்தேகத்திற்குரிய",
+    "dashboard_screen_recovered": "மீட்கப்பட்டது",
+    "dashboard_screen_deaths": "இறப்புகள்",
+    "dashboard_screen_news": "செய்தி",
+    "dashboard_screen_last_updated": "கடைசியாக புதுப்பிக்கப்பட்டது:",
+    "ui_general_next": "அடுத்தது",
+    "ui_general_welcome": "வரவேற்பு"
 }

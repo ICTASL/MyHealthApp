@@ -3,24 +3,28 @@ import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/news_article.dart';
+import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
+
+import '../../models/news_article.dart';
+import '../../models/news_article.dart';
+import '../../networking/api_client.dart';
+import '../../utils/tracker_colors.dart';
 
 enum CounterType { confirmed, recovered, suspected, deaths }
 
 class DashboardScreen extends StatefulWidget {
-  final Stream<NewsArticle> articleStream;
-
-  const DashboardScreen({Key key, this.articleStream}) : super(key: key);
+  const DashboardScreen({Key key}) : super(key: key);
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  List<NewsArticle> stories = [];
-
   // Remotely configured values
   DateTime lastUpdated = DateTime.now();
   int confirmed = 0;
@@ -33,16 +37,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    widget.articleStream.listen((NewsArticle article) async {
-      print("Article Updte ${article}");
-      setState(() {
-        stories.add(article);
-      });
-    });
 
     updateRemoteConfig();
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
       updateRemoteConfig();
+    });
+
+    fetchArticles();
+  }
+
+  Future<void> fetchArticles() async {
+    print("Fetching the articles");
+    int id = await ApiClient().getLastMessageId();
+    int lowerID = 1;
+    if (id >= 10) {
+      lowerID = id - 9;
+    }
+    List<NewsArticle> articles = await ApiClient().getArticleList(
+      lowerID,
+      id,
+    );
+    articles.forEach((e) {
+      Provider.of<StoriesModel>(context, listen: false).add(e);
     });
   }
 
@@ -70,6 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<StoriesModel>(context).articles.length);
     return Container(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -80,13 +97,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    child: Text("Welcome.",
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("ui_general_welcome"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    child: Text("Here are the Latest Figures.",
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("dashboard_screen_figures"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
@@ -99,19 +120,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
             sliver: SliverGrid.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 6 / 4,
                 children: [
-                  _createCountCard("Confirmed", "$confirmed"),
-                  _createCountCard("Suspected", "$recovered"),
-                  _createCountCard("Recovered", "$suspected"),
-                  _createCountCard("Deaths", "$deaths"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_screen_confirmed"),
+                      "$confirmed"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_screen_suspected"),
+                      "$recovered"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_screen_recovered"),
+                      "$suspected"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_screen_deaths"),
+                      "$deaths"),
                 ]),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(left: 20.0, top: 10.0),
             sliver: SliverToBoxAdapter(
               child: Text(
-                "Last Updated: ${lastUpdated.toString()}",
+                "${AppLocalizations.of(context).translate('dashboard_screen_last_updated')}\n${lastUpdated.toString()}",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -135,7 +167,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: RichText(
                   text: TextSpan(children: [
                     TextSpan(
-                        text: " News",
+                        text:
+                            " ${AppLocalizations.of(context).translate('dashboard_screen_news')}",
                         style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold,
@@ -146,10 +179,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
           SliverToBoxAdapter(
             child: Divider(),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              return _createNewsArticle(stories[index]);
-            }, childCount: stories.length),
+          FutureBuilder(
+            future: fetchArticles(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Text("An error has occured, try again"),
+                    ),
+                  );
+                  break;
+                case ConnectionState.waiting:
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                  break;
+                case ConnectionState.active:
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Text("An error has occured, try again"),
+                    ),
+                  );
+                  break;
+                case ConnectionState.done:
+                  return Consumer<StoriesModel>(
+                    builder: (context, model, child) {
+                      print("CHANGED: ${model.articles.length}");
+                      List<NewsArticle> stories = model.articles;
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return _createNewsArticle(stories[index]);
+                        }, childCount: stories.length),
+                      );
+                    },
+                  );
+                  break;
+                default:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+              }
+            },
           )
         ],
       ),
@@ -246,21 +319,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              title,
+              figure,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+                  fontSize: 35.0,
                   color: Colors.white),
             ),
+            SizedBox(
+              height: 5.0,
+            ),
             Text(
-              figure,
+              title,
+              textAlign: TextAlign.start,
               style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 20.0,
                   color: Colors.white),
-            )
+            ),
           ],
         ),
       ),

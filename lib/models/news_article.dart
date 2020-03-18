@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import 'data_type.dart';
 import 'message_type.dart';
 
-class NewsArticle {
+class NewsArticle extends Equatable {
   int id = -1;
   String photoUrl;
   String title = "";
@@ -46,4 +48,8 @@ class NewsArticle {
         data["Data_type"] == "News" ? DataType.News : DataType.Case;
     return article;
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id];
 }

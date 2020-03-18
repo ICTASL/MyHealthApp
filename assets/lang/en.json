@@ -28,5 +28,13 @@
   "news_detail_page_title": "Register",
   "language_screen_choose": "Choose Your Preferred Lanugage.",
   "language_screen_choose_sub": "Please select a language below.",
-  "ui_general_next": "Next"
+  "dashboard_screen_figures": "Here are the Latest Figures",
+  "dashboard_screen_confirmed": "Confirmed",
+  "dashboard_screen_suspected": "Suspected",
+  "dashboard_screen_recovered": "Recovered",
+  "dashboard_screen_deaths": "Deaths",
+  "dashboard_screen_news": "News",
+  "dashboard_screen_last_updated": "Last Updated:",
+  "ui_general_next": "Next",
+  "ui_general_welcome": "Welcome"
 }

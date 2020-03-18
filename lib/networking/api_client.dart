@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/news_article.dart';
+
 class ApiClient {
   final _baseUrl = 'http://covid19.egreen.io:8000';
 
@@ -37,9 +39,6 @@ class ApiClient {
       return -1;
     }
     int lastMessageServerId = jsonDecode(response.body) as int;
-
-    print("l $lastMessageId , lm  $lastMessageServerId");
-
     if (lastMessageId < lastMessageServerId) {
       prefs.setInt("last_message_id", lastMessageServerId);
       lastMessageId = lastMessageServerId;
@@ -48,13 +47,14 @@ class ApiClient {
     return lastMessageId;
   }
 
-  void getArticleList(startId, endId, StreamSink<NewsArticle> sink) async {
+  Future<List<NewsArticle>> getArticleList(startId, endId) async {
+    //this will run everytime th user switchs tabs.
     List<NewsArticle> articles = [];
     for (var i = startId; i <= endId; i++) {
       NewsArticle article = await getMessage(i);
-//      articles.add(article);
-      sink.add(article);
+      articles.add(article);
     }
+    return articles;
   }
 
   Future<NewsArticle> getMessage(int id) async {
@@ -62,7 +62,6 @@ class ApiClient {
     String lang = prefs.getString('preferred_language');
     final sharedPrefId = "alert_$lang--$id";
     String alertData = prefs.getString(sharedPrefId);
-    print(sharedPrefId);
     if (alertData == null) {
       final url = '$_baseUrl/application/alert/$id/$lang';
       final response =
@@ -72,7 +71,6 @@ class ApiClient {
             response.statusCode.toString());
         return null;
       }
-      print(response.body);
       alertData = utf8.decode(response.bodyBytes);
       prefs.setString(sharedPrefId, alertData);
     }
