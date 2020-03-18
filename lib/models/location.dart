@@ -22,4 +22,14 @@ class Location {
         from: json['from'],
         to: json['to']);
   }
+
+  factory Location.fromBackgroundJson(Map<String, dynamic> json) {
+    return Location(
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        address: json['address'],
+        date: DateTime.fromMillisecondsSinceEpoch(json['recordedAt'] * 1000),
+        from: json['from'],
+        to: json['to']);
+  }
 }

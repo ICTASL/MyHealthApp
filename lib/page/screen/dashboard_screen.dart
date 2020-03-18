@@ -37,9 +37,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     widget.articleStream.listen((NewsArticle article) async {
       print("Article Updte ${article}");
-      setState(() {
-        stories.add(article);
-      });
+//      setState(() {
+      stories.add(article);
+//      });
     });
 
     updateRemoteConfig();
