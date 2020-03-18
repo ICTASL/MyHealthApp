@@ -23,19 +23,19 @@ class AppLocalizations {
   Map<String, String> _localizedStrings;
 
   Future<bool> load(Locale locale) async {
-    print("Local debug ${locale.languageCode}");
+    this.locale = locale;
     // Save the language preference
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('preferred_language', locale.languageCode);
     // Load the language JSON file from the "lang" folder
+
+    //Files should be initially stored in the an array and not read every single time.
     String jsonString =
         await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
-
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
     });
-    this.locale = locale;
     return true;
   }
 
