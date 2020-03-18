@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:selftrackingapp/models/location.dart';
+
+DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
 class CaseDetailScreen extends StatefulWidget {
   @override
@@ -28,6 +31,9 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
       mapType: MapType.terrain,
       markers: entries.map((l) {
         return Marker(
+            infoWindow: InfoWindow(
+                title: "You are at ${dateFormat.format(l.date)}",
+                snippet: "No issue found"),
             markerId: MarkerId("${l.date.millisecondsSinceEpoch}"),
             position: LatLng(l.latitude, l.longitude));
       }).toSet(),

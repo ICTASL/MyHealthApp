@@ -28,7 +28,7 @@ class Location {
         latitude: json["latitude"],
         longitude: json["longitude"],
         address: json['address'],
-        date: DateTime.fromMillisecondsSinceEpoch(json['recordedAt'] * 1000),
+        date: DateTime.fromMillisecondsSinceEpoch(json['recordedAt']),
         from: json['from'],
         to: json['to']);
   }
