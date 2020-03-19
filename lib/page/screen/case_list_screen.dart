@@ -1,13 +1,8 @@
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
-import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
-import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
@@ -33,8 +28,6 @@ class _CaseListScreenState extends State<CaseListScreen> {
     if (id == -1) {
       return _cases;
     }
-    // Get all messages up to latest
-    // TODO: Add saving fetched messages and also a better way to fetch messages instead of one by one after API endpoint is fixed
     for (var i = id; i > 0; i--) {
       ReportedCase article = await ApiClient().getCase(i);
 
@@ -212,6 +205,10 @@ class _CaseListScreenState extends State<CaseListScreen> {
                     );
                   }
                   break;
+                default:
+                  return SliverToBoxAdapter(
+                    child: Center(child: Text("")),
+                  );
               }
             },
           ),
@@ -219,10 +216,4 @@ class _CaseListScreenState extends State<CaseListScreen> {
       ),
     );
   }
-
-// _changeTab(int tab) {
-//   setState(() {
-//     // _selectedTab = tab;
-//   });
-// }
 }
