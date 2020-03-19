@@ -161,11 +161,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_suspected_card_text"),
-                      "$recovered"),
+                      "$suspected"),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_recovered_card_text"),
-                      "$suspected"),
+                      "$recovered"),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_deaths_card_text"),
