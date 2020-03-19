@@ -2,6 +2,8 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
+import 'package:selftrackingapp/page/screen/user_register_screen.dart';
+import 'package:selftrackingapp/utils/tracker_colors.dart';
 
 class CaseItem extends StatelessWidget {
   final ReportedCase _case;
@@ -32,78 +34,100 @@ class CaseItem extends StatelessWidget {
               size: 18.0,
             ),
             SizedBox(width: 20.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "CASE " + _case.id.toString(),
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                SizedBox(height: 6.0),
-                Text(
-                  formatDate(_case.createdAt,
-                      [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
-                  style: TextStyle(fontSize: 12.0),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  _case.message,
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  "Reported locations",
-                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w900),
-                ),
-                SizedBox(height: 6.0),
-                Column(
+            Expanded(
+              child: Container(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _case.locations
-                      .map((location) => Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(location.address),
-                              Text(
-                                formatDate(location.from, [
-                                      yy,
-                                      '-',
-                                      M,
-                                      '-',
-                                      d,
-                                      ' ',
-                                      h,
-                                      ':',
-                                      nn,
-                                      ' ',
-                                      am
-                                    ]) +
-                                    " to " +
-                                    formatDate(location.to, [
-                                      yy,
-                                      '-',
-                                      M,
-                                      '-',
-                                      d,
-                                      ' ',
-                                      h,
-                                      ':',
-                                      nn,
-                                      ' ',
-                                      am
-                                    ]),
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontStyle: FontStyle.italic),
-                              ),
-                              SizedBox(
-                                height: 6.0,
-                              )
-                            ],
-                          )))
-                      .toList(),
-                )
-              ],
+                  children: <Widget>[
+                    Text(
+                      "CASE " + _case.id.toString(),
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    SizedBox(height: 6.0),
+                    Text(
+                      formatDate(_case.createdAt,
+                          [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      _case.message,
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      "Reported locations",
+                      style: TextStyle(
+                          fontSize: 14.0, fontWeight: FontWeight.w900),
+                    ),
+                    SizedBox(height: 6.0),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _case.locations
+                          .map((location) => Container(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(location.address),
+                                  Text(
+                                    formatDate(location.from, [
+                                          yy,
+                                          '-',
+                                          M,
+                                          '-',
+                                          d,
+                                          ' ',
+                                          h,
+                                          ':',
+                                          nn,
+                                          ' ',
+                                          am
+                                        ]) +
+                                        " to " +
+                                        formatDate(location.to, [
+                                          yy,
+                                          '-',
+                                          M,
+                                          '-',
+                                          d,
+                                          ' ',
+                                          h,
+                                          ':',
+                                          nn,
+                                          ' ',
+                                          am
+                                        ]),
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        fontStyle: FontStyle.italic),
+                                  ),
+                                  SizedBox(
+                                    height: 6.0,
+                                  )
+                                ],
+                              )))
+                          .toList(),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: RaisedButton(
+                        color: TrackerColors.primaryColor,
+                        child: Text(
+                          "REGISTER ME, I WAS THERE",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => UserRegisterScreen()));
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ],
         ),

@@ -55,8 +55,12 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CustomScrollView(
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          title: Text("Register", style: TextStyle(color: Colors.black))),
+      body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
               child: Container(
@@ -65,13 +69,13 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    child: Text("Register",
+                    child: Text("Register For a Case",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    child: Text("Register yourself below.",
+                    child: Text("Were you near a confirmed case?",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,

@@ -14,8 +14,6 @@ class CaseListScreen extends StatefulWidget {
 }
 
 class _CaseListScreenState extends State<CaseListScreen> {
-  // int _selectedTab = 0;
-
   String _searchKey = "";
   List<ReportedCase> _cases = [];
 
@@ -114,8 +112,10 @@ class _CaseListScreenState extends State<CaseListScreen> {
                     }
                   } else {
                     return SliverToBoxAdapter(
-                      child: Center(
-                        child: Text("No cases found."),
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Center(
+                            child: Text("No cases found for that search.")),
                       ),
                     );
                   }

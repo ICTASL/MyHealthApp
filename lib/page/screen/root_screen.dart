@@ -35,7 +35,6 @@ class _RootScreenState extends State<RootScreen> {
     CaseListScreen(),
     CaseDetailScreen(),
     ContactUsScreen(),
-    UserRegisterScreen()
   };
 
   final _homeTabItems = [
@@ -43,7 +42,6 @@ class _RootScreenState extends State<RootScreen> {
     TitledNavigationBarItem(title: 'Cases', icon: Icons.map),
     TitledNavigationBarItem(title: 'Locations', icon: Icons.call),
     TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
-    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];
 
   @override
