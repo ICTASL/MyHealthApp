@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
+import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
@@ -20,13 +21,26 @@ class CaseListScreen extends StatefulWidget {
 class _CaseListScreenState extends State<CaseListScreen> {
   String _searchKey = "";
   List<ReportedCase> _cases = [];
-  final AsyncMemoizer<List<ReportedCase>> _memoizer = AsyncMemoizer();
 
-  _fetchCases() {
-    return _memoizer.runOnce(() async {
-      return await GetIt.instance<DataRepository>().fetchCases(
-          AppLocalizations.of(context).locale.toString().split("_")[0]);
-    });
+  @override
+  void initState() {
+    // Get latest message ID
+  } //  final AsyncMemoizer<List<ReportedCase>> _memoizer = AsyncMemoizer();
+
+  Future<List<ReportedCase>> _fetchCases() async {
+    _cases = [];
+    int id = await ApiClient().getLastCaseId();
+    if (id == -1) {
+      return _cases;
+    }
+    // Get all messages up to latest
+    // TODO: Add saving fetched messages and also a better way to fetch messages instead of one by one after API endpoint is fixed
+    for (var i = id; i > 0; i--) {
+      ReportedCase article = await ApiClient().getCase(i);
+
+      _cases.add(article);
+    }
+    return _cases;
   }
 
   @override
@@ -206,9 +220,9 @@ class _CaseListScreenState extends State<CaseListScreen> {
     );
   }
 
-  // _changeTab(int tab) {
-  //   setState(() {
-  //     // _selectedTab = tab;
-  //   });
-  // }
+// _changeTab(int tab) {
+//   setState(() {
+//     // _selectedTab = tab;
+//   });
+// }
 }
