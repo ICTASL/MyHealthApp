@@ -2,10 +2,13 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
+import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
+import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/case_item.dart';
 
@@ -28,6 +31,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<RegisteredCasesModel>(context).reportedCases.length);
     return Container(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -67,6 +71,41 @@ class _CaseListScreenState extends State<CaseListScreen> {
               ),
             ),
           ),
+          Provider.of<RegisteredCasesModel>(context).reportedCases.length > 0
+              ? SliverAppBar(
+                  backgroundColor: Colors.white,
+                  pinned: true,
+                  flexibleSpace: Container(
+                      child: Center(
+                          child: FlatButton(
+                    onPressed: () {
+                      RegisteredCasesModel model =
+                          Provider.of<RegisteredCasesModel>(context,
+                              listen: false);
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChangeNotifierProvider.value(
+                          value: model,
+                          child: UserRegisterScreen(),
+                        ),
+                      ));
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "See Pending Registrations (${Provider.of<RegisteredCasesModel>(context).reportedCases.length} Added)",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.keyboard_arrow_right)
+                      ],
+                    ),
+                  ))),
+                )
+              : SliverToBoxAdapter(
+                  child: Container(),
+                ),
           FutureBuilder(
             future: _fetchCases(),
             builder: (BuildContext context,
@@ -113,8 +152,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                       return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(30.0),
-                          child: Center(
-                              child: Text("No cases found for that search.")),
+                          child: Center(child: Text("No cases found there.")),
                         ),
                       );
                     }
