@@ -6,7 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
+import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
+import 'package:selftrackingapp/page/screen/case_list_screen.dart';
+import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
@@ -31,15 +34,12 @@ class _RootScreenState extends State<RootScreen> {
   int _currentIndex = 0;
   final _homeTabs = {
     DashboardScreen(),
-    //CaseListScreen(),
+    CaseListScreen(),
     CaseDetailScreen(),
     ContactUsScreen(),
-    UserRegisterScreen()
   };
-
+  
   List<TitledNavigationBarItem> _homeTabItems;
-
-
 
   @override
   void initState() {
@@ -99,11 +99,15 @@ class _RootScreenState extends State<RootScreen> {
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0),
           )),
-      body: ChangeNotifierProvider<StoriesModel>(
-          create: (context) {
-            return _storiesModel;
-          },
-          child: _homeTabs.elementAt(_currentIndex)),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<RegisteredCasesModel>(
+              create: (context) => RegisteredCasesModel()),
+          ChangeNotifierProvider<StoriesModel>(
+              create: (context) => _storiesModel),
+        ],
+        child: _homeTabs.elementAt(_currentIndex),
+      ),
       bottomNavigationBar: TitledBottomNavigationBar(
           currentIndex:
               _currentIndex, // Use this to update the Bar giving a position

@@ -1,7 +1,4 @@
-{
-  "language_screen_choose": "Choose Your Preferred Language",
-  "language_screen_choose_sub": "Please select a language below",
-  "welcome_screen_language_button_text": "English",
+{ 
   "welcome_screen_tamil_button_text": "தமிழ்",
   "welcome_screen_button_text": "Next",
   "dashboard_welcome_title": "Welcome",
@@ -17,8 +14,8 @@
   "dashboard_contact_tab_text" : "Contact Us",
   "dashboard_register_tab_text": "Register",
   "register_button_text" : "Register",
-  "user_register_screen_title": "Register",
-  "user_register_screen_subtitle": "Register yourself below",
+  "user_register_screen_title": "Register for a Case",
+  "user_register_screen_subtitle": "Were you near a confirmed case?",
   "user_register_screen_name": "Name",
   "user_register_screen_email": "E-mail",
   "user_register_screen_phone": "Mobile Number (0760000000)",
@@ -38,5 +35,6 @@
   "contact_us_screen_contact_us_title": "Get in touch.",
   "dashboard_screen_ok_button": "OK",
   "case_details_screen_title": "Case Detail Screen",
-  "news_detail_page_title": "Register"
+  "news_detail_page_title": "Register",  
+  "case_screen_search": "Search by location"
 }

@@ -16,8 +16,8 @@
   "dashboard_contact_tab_text" : "ඇමතුම්",
   "dashboard_register_tab_text": "ලියාපදිංචිවීම්",
   "register_button_text" : "ලියාපදිංචි වන්න",
-  "user_register_screen_title": "ලියාපදිංචි වන්න",
-  "user_register_screen_subtitle": "ඔබ විසින්ම ලියාපදිංචි වන්න",
+  "user_register_screen_title": "සබැඳි සිද්ධියක් සදහා ලියාපදිංචි වන්න",
+  "user_register_screen_subtitle": "රෝගය තහවුරු වූ අයෙක් අසළ සිටියේද ?",
   "user_register_screen_name": "නම",
   "user_register_screen_email": "විද්යුත් තැපෑල",
   "user_register_screen_phone": "ජංගම දූරකථන අංකය (0760000000)",
@@ -36,7 +36,7 @@
   "dashboard_screen_privacy_policy_button": "Privacy Policy",
   "contact_us_screen_contact_us_title": "Get in touch.",
   "dashboard_screen_ok_button": "OK",
-  "case_details_screen_title": "Case Detail Screen",
-  "user_register_screen_register": "Register",
-  "news_detail_page_title": "Register"
+  "case_details_screen_title": "සිද්ධි විස්තරය",
+  "news_detail_page_title": "Register"   
+  "case_screen_search": "සෙවුම"
 }

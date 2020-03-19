@@ -17,7 +17,7 @@
     "dashboard_register_tab_text": " பதிவு செய்க",
     "register_button_text" : " பதிவு செய்க",
     "user_register_screen_title": " பதிவு செய்க",
-    "user_register_screen_subtitle": "உங்களை கீழே பதிவு செய்யுங்கள்",
+    "user_register_screen_subtitle": "பதிவு செய்க",
     "user_register_screen_name": "பெயர்",
     "user_register_screen_email": "மின்னஞ்சல்",
     "user_register_screen_phone": "கைபேசி எண் (0760000000)",
@@ -36,7 +36,9 @@
     "dashboard_screen_privacy_policy_button": "Privacy Policy",
     "contact_us_screen_contact_us_title": "Get in touch.",
     "dashboard_screen_ok_button": "OK",
-    "case_details_screen_title": "Case Detail Screen",
+    "case_details_screen_title": "வழக்கு விரிவான",
     "ui_general_next": "Next",
-    "ui_general_welcome": "Welcome"
+    "ui_general_welcome": "Welcome"    
+    "news_detail_page_title": "Register",    
+    "case_screen_search": "தேடல்"
 }
