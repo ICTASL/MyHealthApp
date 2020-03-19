@@ -13,6 +13,7 @@
     "dashboard_news_text": "செய்திகள்",
     "dashboard_home_tab_text" : "முற்பகுதி",
     "dashboard_location_tab_text" : "எனது இருப்பிடம்",
+    "dashboard_safe_track_tab_text" : "Safe Track",
     "dashboard_contact_tab_text" : "தொடர்பு கொள்க",
     "dashboard_register_tab_text": " பதிவு செய்க",
     "register_button_text" : " பதிவு செய்க",
@@ -30,7 +31,7 @@
     "dashboard_screen_welcome_message": "Dashboard",
     "dashboard_screen_data_received": "Data Recived",
     "dashboard_screen_news_button": "Select News",
-    "dashboard_screen_case_list_button": "Case List Screen",
+    "dashboard_screen_case_list_button": "Case List",
     "dashboard_screen_case_details_button": "Case Details",
     "dashboard_screen_contact_us_button": "Contact Us",
     "dashboard_screen_privacy_policy_button": "Privacy Policy",
@@ -48,6 +49,6 @@
     "dashboard_screen_recovered": "Recovered",
     "dashboard_screen_deaths": "Deaths",
     "dashboard_screen_news": "News",
-    "dashboard_screen_last_updated": "Last Updated:",
+    "dashboard_screen_last_updated": "Last Updated:"
 
 }
