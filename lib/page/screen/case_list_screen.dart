@@ -1,10 +1,14 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
+import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
+import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/case_item.dart';
 
@@ -14,13 +18,20 @@ class CaseListScreen extends StatefulWidget {
 }
 
 class _CaseListScreenState extends State<CaseListScreen> {
-  // int _selectedTab = 0;
-
   String _searchKey = "";
   List<ReportedCase> _cases = [];
+  final AsyncMemoizer<List<ReportedCase>> _memoizer = AsyncMemoizer();
+
+  _fetchCases() {
+    return _memoizer.runOnce(() async {
+      return await GetIt.instance<DataRepository>().fetchCases(
+          AppLocalizations.of(context).locale.toString().split("_")[0]);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<RegisteredCasesModel>(context).reportedCases.length);
     return Container(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -60,9 +71,75 @@ class _CaseListScreenState extends State<CaseListScreen> {
               ),
             ),
           ),
+          Provider.of<RegisteredCasesModel>(context).reportedCases.length > 0
+              ? SliverAppBar(
+                  backgroundColor: Colors.white,
+                  pinned: true,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(10.0),
+                    child: Text(''), // Add this code
+                  ),
+                  flexibleSpace: Container(
+                      child: Center(
+                          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            Provider.of<RegisteredCasesModel>(context,
+                                    listen: false)
+                                .reportedCases
+                                .clear();
+                          });
+                        },
+                        child: Text("Remove all"),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        color: TrackerColors.primaryColor,
+                        onPressed: () {
+                          RegisteredCasesModel model =
+                              Provider.of<RegisteredCasesModel>(context,
+                                  listen: false);
+
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider.value(
+                              value: model,
+                              child: UserRegisterScreen(),
+                            ),
+                          ));
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "See Added (${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Icon(Icons.keyboard_arrow_right,
+                                color: Colors.white),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ))),
+                )
+              : SliverToBoxAdapter(
+                  child: Container(),
+                ),
           FutureBuilder(
-            future: GetIt.instance<DataRepository>().fetchCases(
-                AppLocalizations.of(context).locale.toString().split("_")[0]),
+            future: _fetchCases(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<ReportedCase>> snapshot) {
               switch (snapshot.connectionState) {
@@ -107,15 +184,16 @@ class _CaseListScreenState extends State<CaseListScreen> {
                       return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(30.0),
-                          child: Center(
-                              child: Text("No cases found for that search.")),
+                          child: Center(child: Text("No cases found there.")),
                         ),
                       );
                     }
                   } else {
                     return SliverToBoxAdapter(
-                      child: Center(
-                        child: Text("No cases found."),
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Center(
+                            child: Text("No cases found for that search.")),
                       ),
                     );
                   }
