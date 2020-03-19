@@ -75,32 +75,64 @@ class _CaseListScreenState extends State<CaseListScreen> {
               ? SliverAppBar(
                   backgroundColor: Colors.white,
                   pinned: true,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(10.0),
+                    child: Text(''), // Add this code
+                  ),
                   flexibleSpace: Container(
                       child: Center(
-                          child: FlatButton(
-                    onPressed: () {
-                      RegisteredCasesModel model =
-                          Provider.of<RegisteredCasesModel>(context,
-                              listen: false);
+                          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            Provider.of<RegisteredCasesModel>(context,
+                                    listen: false)
+                                .reportedCases
+                                .clear();
+                          });
+                        },
+                        child: Text("Remove all"),
+                      ),
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        color: TrackerColors.primaryColor,
+                        onPressed: () {
+                          RegisteredCasesModel model =
+                              Provider.of<RegisteredCasesModel>(context,
+                                  listen: false);
 
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ChangeNotifierProvider.value(
-                          value: model,
-                          child: UserRegisterScreen(),
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider.value(
+                              value: model,
+                              child: UserRegisterScreen(),
+                            ),
+                          ));
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "See Added (${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Icon(Icons.keyboard_arrow_right,
+                                color: Colors.white),
+                          ],
                         ),
-                      ));
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "See Pending Registrations (${Provider.of<RegisteredCasesModel>(context).reportedCases.length} Added)",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.keyboard_arrow_right)
-                      ],
-                    ),
+                      ),
+                    ],
                   ))),
                 )
               : SliverToBoxAdapter(
