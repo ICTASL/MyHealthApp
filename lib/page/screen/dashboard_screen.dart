@@ -10,16 +10,12 @@ import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
 
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/news_article.dart';
 import '../../models/news_article.dart';
 import '../../networking/api_client.dart';
 import '../../utils/tracker_colors.dart';
 
 enum CounterType { confirmed, recovered, suspected, deaths }
-
-DateFormat dateFormat = DateFormat("dd-MM-yy HH:mm");
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key key}) : super(key: key);
@@ -29,15 +25,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  RemoteConfig config;
-
   // Remotely configured values
   DateTime lastUpdated = DateTime.now();
   int confirmed = 0;
   int recovered = 0;
   int suspected = 0;
   int deaths = 0;
-  int resetIndexServer = 0;
 
   Timer _timer;
 
@@ -45,61 +38,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
 
-    updateRemoteConfig().then((val) {
-      fetchArticles();
-    });
+    updateRemoteConfig();
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
       updateRemoteConfig();
     });
+
+    fetchArticles();
   }
 
   Future<void> fetchArticles() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool forceUpdate = true;
-//    if (config != null) {
-//      int resetIndex = prefs.getInt("reset_index");
-//
-//      if (resetIndex == null) {
-//        resetIndex = 0;
-//      }
-//
-//      if (resetIndexServer > resetIndex) {
-//        prefs.setInt("reset_index", resetIndex);
-//        prefs.setInt("last_message_id", 0);
-//        forceUpdate = true;
-//      }
-//
-//      print("DAta Request $resetIndex, $resetIndexServer, $forceUpdate");
-//    }
-
     print("Fetching the articles");
     int id = await ApiClient().getLastMessageId();
     int lowerID = 1;
     if (id >= 10) {
       lowerID = id - 9;
     }
-    List<NewsArticle> articles =
-        await ApiClient().getArticleList(lowerID, id, forceUpdate: forceUpdate);
+    List<NewsArticle> articles = await ApiClient().getArticleList(
+      lowerID,
+      id,
+    );
     articles.forEach((e) {
       Provider.of<StoriesModel>(context, listen: false).add(e);
     });
   }
 
-  Future<void> updateRemoteConfig() async {
-    config = await RemoteConfig.instance;
+  void updateRemoteConfig() async {
+    final RemoteConfig config = await RemoteConfig.instance;
     final defaults = <String, dynamic>{
       'last_updated': '2020-03-17 10:15',
       'confirmed': 28,
       'recovered': 1,
       'suspected': 212,
-      'deaths': 0,
-      "reset_index": 0
+      'deaths': 0
     };
     await config.setDefaults(defaults);
     await config.fetch(expiration: Duration(minutes: 15 - 1));
     await config.activateFetched();
     setState(() {
-      resetIndexServer = config.getInt('reset_index');
       confirmed = config.getInt('confirmed');
       recovered = config.getInt('recovered');
       suspected = config.getInt('suspected');
@@ -124,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                     child: Text(
                         AppLocalizations.of(context)
-                            .translate("ui_general_welcome"),
+                            .translate("dashboard_welcome_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
@@ -132,7 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                     child: Text(
                         AppLocalizations.of(context)
-                            .translate("dashboard_screen_figures"),
+                            .translate("dashboard_latest_figures_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
@@ -145,23 +120,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
             sliver: SliverGrid.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 7 / 6,
                 children: [
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_confirmed"),
+                          .translate("dashboard_confirmed_card_text"),
                       "$confirmed"),
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_suspected"),
+                          .translate("dashboard_recovered_card_text"),
                       "$recovered"),
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_recovered"),
+                          .translate("dashboard_suspected_card_text"),
                       "$suspected"),
                   _createCountCard(
                       AppLocalizations.of(context)
-                          .translate("dashboard_screen_deaths"),
+                          .translate("dashboard_deaths_card_text"),
                       "$deaths"),
                 ]),
           ),
@@ -169,7 +143,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.only(left: 20.0, top: 10.0),
             sliver: SliverToBoxAdapter(
               child: Text(
-                "${AppLocalizations.of(context).translate('dashboard_screen_last_updated')} ${dateFormat.format(lastUpdated)}",
+                AppLocalizations.of(context)
+                        .translate('dashboard_last_updated_text') +
+                    ' : $lastUpdated'.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -194,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   text: TextSpan(children: [
                     TextSpan(
                         text:
-                            " ${AppLocalizations.of(context).translate('dashboard_screen_news')}",
+                            " ${AppLocalizations.of(context).translate('dashboard_news_text')}",
                         style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold,
