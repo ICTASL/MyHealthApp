@@ -32,7 +32,7 @@ class _RootScreenState extends State<RootScreen> {
   int _currentIndex = 0;
   final _homeTabs = {
     DashboardScreen(),
-    //CaseListScreen(),
+    CaseListScreen(),
     CaseDetailScreen(),
     ContactUsScreen(),
     UserRegisterScreen()
@@ -40,7 +40,8 @@ class _RootScreenState extends State<RootScreen> {
 
   final _homeTabItems = [
     TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-    TitledNavigationBarItem(title: 'Locations', icon: Icons.map),
+    TitledNavigationBarItem(title: 'Cases', icon: Icons.map),
+    TitledNavigationBarItem(title: 'Locations', icon: Icons.call),
     TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
     TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
   ];

@@ -34,21 +34,19 @@ class _CaseListScreenState extends State<CaseListScreen> {
               child: TextField(
                 decoration: InputDecoration(
                     hintStyle: TextStyle(
-                        color: Color(TrackerColors.primaryColor),
-                        fontSize: 12.0),
-                    labelStyle:
-                        TextStyle(color: Color(TrackerColors.primaryColor)),
+                        color: TrackerColors.primaryColor, fontSize: 12.0),
+                    labelStyle: TextStyle(color: TrackerColors.primaryColor),
                     border: OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 0.0),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Color(TrackerColors.primaryColor), width: 1.0),
+                          color: TrackerColors.primaryColor, width: 1.0),
                     ),
                     suffixIcon: Icon(
                       Icons.search,
-                      color: Color(TrackerColors.primaryColor),
+                      color: TrackerColors.primaryColor,
                     ),
                     hintText: AppLocalizations.of(context)
                         .translate("case_screen_search")),
