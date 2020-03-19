@@ -100,7 +100,7 @@ class _RootScreenState extends State<RootScreen> {
           icon: Icons.home),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
-              .translate('dashboard_screen_case_list_button'),
+              .translate('dashboard_case_list_tab_text'),
           icon: Icons.location_searching),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
