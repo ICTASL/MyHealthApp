@@ -14,6 +14,7 @@ import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
+import '../../app_localizations.dart';
 import 'case_details_screen.dart';
 
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
@@ -36,12 +37,9 @@ class _RootScreenState extends State<RootScreen> {
     UserRegisterScreen()
   };
 
-  final _homeTabItems = [
-    TitledNavigationBarItem(title: 'Home', icon: Icons.home),
-    TitledNavigationBarItem(title: 'Locations', icon: Icons.map),
-    TitledNavigationBarItem(title: 'Contact Us', icon: Icons.phone),
-    TitledNavigationBarItem(title: 'Register', icon: Icons.person_add),
-  ];
+  List<TitledNavigationBarItem> _homeTabItems;
+
+
 
   @override
   void initState() {
@@ -85,6 +83,12 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _homeTabItems = [
+      TitledNavigationBarItem(title: AppLocalizations.of(context).translate('dashboard_home_tab_text'), icon: Icons.home),
+      TitledNavigationBarItem(title: AppLocalizations.of(context).translate('dashboard_location_tab_text'), icon: Icons.map),
+      TitledNavigationBarItem(title: AppLocalizations.of(context).translate('dashboard_contact_tab_text'), icon: Icons.phone),
+      TitledNavigationBarItem(title: AppLocalizations.of(context).translate('dashboard_register_tab_text'), icon: Icons.person_add),
+    ];
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.white,
