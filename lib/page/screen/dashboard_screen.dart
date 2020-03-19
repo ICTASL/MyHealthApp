@@ -426,13 +426,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: 5.0,
             ),
-            Text(
-              title,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20.0,
-                  color: Colors.white),
+            Expanded(
+              child: Text(
+                title,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.0,
+                    color: Colors.white),
+              ),
             ),
           ],
         ),
