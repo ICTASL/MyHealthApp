@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/news_article.dart';
 
 class ApiClient {
+//  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
   final String _baseUrl = 'http://covid19.egreen.io:8000';
 
   Future<bool> registerUser() async {
