@@ -28,28 +28,30 @@ class _CaseListScreenState extends State<CaseListScreen> {
             backgroundColor: Colors.white,
             floating: true,
             snap: true,
-            title: Container(
-              margin: EdgeInsets.symmetric(horizontal: 6.0),
-              height: 36,
-              child: TextField(
+            expandedHeight: 100.0,
+            flexibleSpace: Container(
+              margin: const EdgeInsets.all(20.0),
+              child: TextFormField(
                 decoration: InputDecoration(
-                    hintStyle: TextStyle(
-                        color: TrackerColors.primaryColor, fontSize: 12.0),
-                    labelStyle: TextStyle(color: TrackerColors.primaryColor),
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: TrackerColors.primaryColor, width: 1.0),
-                    ),
-                    suffixIcon: Icon(
-                      Icons.search,
+                  labelStyle: TextStyle(color: TrackerColors.primaryColor),
+                  labelText: AppLocalizations.of(context)
+                      .translate("case_screen_search"),
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    borderSide: BorderSide(
                       color: TrackerColors.primaryColor,
                     ),
-                    hintText: AppLocalizations.of(context)
-                        .translate("case_screen_search")),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: TrackerColors.primaryColor, width: 1.0),
+                  ),
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: TrackerColors.primaryColor,
+                  ),
+                ),
                 onChanged: (value) {
                   setState(() {
                     _searchKey = value;
@@ -58,7 +60,69 @@ class _CaseListScreenState extends State<CaseListScreen> {
               ),
             ),
           ),
-          _buildNewestList(context),
+          FutureBuilder(
+            future: GetIt.instance<DataRepository>().fetchCases(
+                AppLocalizations.of(context).locale.toString().split("_")[0]),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ReportedCase>> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return SliverToBoxAdapter(
+                    child: Center(
+                        child:
+                            Text("Error getting the cases, try again later.")),
+                  );
+                  break;
+                case ConnectionState.waiting:
+                  return SliverToBoxAdapter(
+                    child: Container(
+                        child: Center(child: CircularProgressIndicator()),
+                        padding: const EdgeInsets.all(30.0)),
+                  );
+                  break;
+                case ConnectionState.active:
+                  return SliverToBoxAdapter(
+                    child: Center(
+                        child:
+                            Text("Error getting the cases, try again later.")),
+                  );
+                  break;
+                case ConnectionState.done:
+                  if (snapshot.hasData) {
+                    _cases = snapshot.data
+                        .where((_) => _.locations
+                            .where((location) => location.address
+                                .toLowerCase()
+                                .contains(_searchKey.toLowerCase()))
+                            .isNotEmpty)
+                        .toList();
+                    if (_cases.length > 0) {
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                          return CaseItem(_cases[index]);
+                        }, childCount: _cases.length),
+                      );
+                    } else {
+                      return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Center(
+                              child: Text("No cases found for that search.")),
+                        ),
+                      );
+                    }
+                  } else {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Text("No cases found."),
+                      ),
+                    );
+                  }
+                  break;
+              }
+            },
+          ),
         ],
       ),
     );
@@ -69,33 +133,4 @@ class _CaseListScreenState extends State<CaseListScreen> {
   //     // _selectedTab = tab;
   //   });
   // }
-
-  Widget _buildNewestList(BuildContext context) {
-    return FutureBuilder(
-      future: GetIt.instance<DataRepository>().fetchCases(
-          AppLocalizations.of(context).locale.toString().split("_")[0]),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ReportedCase>> snapshot) {
-        if (snapshot.hasData) {
-          _cases = snapshot.data
-              .where((_) => _.locations
-                  .where((location) => location.address
-                      .toLowerCase()
-                      .contains(_searchKey.toLowerCase()))
-                  .isNotEmpty)
-              .toList();
-
-          return SliverList(
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              return CaseItem(_cases[index]);
-            }, childCount: _cases.length),
-          );
-        }
-
-        return SliverToBoxAdapter(
-            child: Center(child: CircularProgressIndicator()));
-      },
-    );
-  }
 }

@@ -12,6 +12,7 @@ class CaseItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
+        width: 100.0,
         margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
@@ -23,6 +24,7 @@ class CaseItem extends StatelessWidget {
           ],
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Icon(
@@ -57,7 +59,8 @@ class CaseItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: _case.locations
                       .map((location) => Container(
-                              child: Column(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(location.address),
@@ -75,7 +78,7 @@ class CaseItem extends StatelessWidget {
                                       ' ',
                                       am
                                     ]) +
-                                    " - " +
+                                    " to " +
                                     formatDate(location.to, [
                                       yy,
                                       '-',
