@@ -6,6 +6,7 @@ import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
 
 import '../../app_localizations.dart';
+import '../../app_localizations.dart';
 import '../../utils/tracker_colors.dart';
 
 class UserRegisterScreen extends StatefulWidget {
@@ -71,13 +72,14 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    child: Text("Register For a Case",
+                    child: Text(
+                      AppLocalizations.of(context).translate("user_register_screen_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    child: Text("Were you near a confirmed case?",
+                    child: Text(AppLocalizations.of(context).translate("user_register_screen_subtitle"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
