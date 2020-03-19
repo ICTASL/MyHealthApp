@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -16,6 +17,14 @@ class CaseListScreen extends StatefulWidget {
 class _CaseListScreenState extends State<CaseListScreen> {
   String _searchKey = "";
   List<ReportedCase> _cases = [];
+  final AsyncMemoizer<List<ReportedCase>> _memoizer = AsyncMemoizer();
+
+  _fetchCases() {
+    return _memoizer.runOnce(() async {
+      return await GetIt.instance<DataRepository>().fetchCases(
+          AppLocalizations.of(context).locale.toString().split("_")[0]);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +68,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
             ),
           ),
           FutureBuilder(
-            future: GetIt.instance<DataRepository>().fetchCases(
-                AppLocalizations.of(context).locale.toString().split("_")[0]),
+            future: _fetchCases(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<ReportedCase>> snapshot) {
               switch (snapshot.connectionState) {

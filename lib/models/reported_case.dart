@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:selftrackingapp/models/location.dart';
 
-class ReportedCase {
+class ReportedCase extends Equatable {
   int id;
   String caseNumber;
   List<Location> locations;
@@ -24,4 +25,8 @@ class ReportedCase {
         message: json['message'],
         createdAt: DateTime.parse(json['created']));
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id];
 }

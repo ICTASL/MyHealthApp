@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
+import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
 
@@ -83,6 +85,63 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               ],
             ),
           )),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text(
+                "Cases You've Selected:",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0),
+              ),
+            ),
+          ),
+          Consumer<RegisteredCasesModel>(
+            builder: (context, model, child) {
+              if (model.reportedCases.length > 0) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, top: 10.0, bottom: 10.0),
+                      child: Row(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Provider.of<RegisteredCasesModel>(context,
+                                        listen: false)
+                                    .reportedCases
+                                    .remove(model.reportedCases[index]);
+                              });
+                              print("removed");
+                            },
+                            child: Icon(Icons.remove_circle),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            model.reportedCases[index].caseNumber,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                    );
+                  }, childCount: model.reportedCases.length),
+                );
+              } else {
+                return SliverToBoxAdapter(
+                    child: Padding(
+                        child: Text("No cases selected to register"),
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                        )));
+              }
+            },
+          ),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(20.0),

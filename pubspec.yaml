@@ -36,6 +36,7 @@ dependencies:
     provider: ^4.0.4
     equatable: ^1.1.1
     geolocator: ^5.1.4+2
+    async: ^2.4.1
 
     flutter_localizations:
         sdk: flutter
