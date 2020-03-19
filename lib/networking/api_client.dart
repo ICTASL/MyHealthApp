@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/news_article.dart';
 
 class ApiClient {
-  final _baseUrl = 'http://covid19.egreen.io:8000';
+  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
 
   Future<bool> registerUser() async {
     final url = '$_baseUrl/user/register';
@@ -47,23 +47,29 @@ class ApiClient {
     return lastMessageId;
   }
 
-  Future<List<NewsArticle>> getArticleList(startId, endId) async {
+  Future<List<NewsArticle>> getArticleList(startId, endId,
+      {forceUpdate = false}) async {
     //this will run everytime th user switchs tabs.
     List<NewsArticle> articles = [];
+//
     for (var i = startId; i <= endId; i++) {
-      NewsArticle article = await getMessage(i);
-      articles.add(article);
+      NewsArticle article = await getMessage(i, forceUpdate: forceUpdate);
+      if (article != null) articles.add(article);
     }
+
     return articles;
   }
 
-  Future<NewsArticle> getMessage(int id) async {
+  Future<NewsArticle> getMessage(int id, {forceUpdate = false}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lang = prefs.getString('preferred_language');
     final sharedPrefId = "alert_$lang--$id";
+
     String alertData = prefs.getString(sharedPrefId);
-    if (alertData == null) {
+
+    if (alertData == null || forceUpdate) {
       final url = '$_baseUrl/application/alert/$id/$lang';
+      print("Requesting data from $url");
       final response =
           await http.get(url, headers: {'Content-Type': 'application/json'});
       if (response.statusCode != 200) {

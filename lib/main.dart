@@ -4,7 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/networking/db.dart';
+import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/tracker_colors.dart';
 
@@ -38,7 +40,46 @@ class MyApp extends StatelessWidget {
         // Built-in localization for text direction LTR/RTL
         GlobalWidgetsLocalizations.delegate,
       ],
-      home: WelcomeScreen(),
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder:
+          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        if (snapshot.hasData && snapshot.data != null) {
+          final pref = snapshot.data;
+          String language = pref.getString("language");
+          print("Languge $language");
+          if (language != null) {
+            if (language == "en") {
+              AppLocalizations.of(context).load(Locale("en", "US"));
+            } else if (language == "ti") {
+              AppLocalizations.of(context).load(Locale("ti", "TA"));
+            } else {
+              AppLocalizations.of(context).load(Locale("si", "LK"));
+            }
+
+            return RootScreen();
+          }
+          return WelcomeScreen();
+        }
+        return Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/images/bg.png"), fit: BoxFit.fill)),
+        ); // or some other widget
+      },
     );
   }
 }

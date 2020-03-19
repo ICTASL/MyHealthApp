@@ -4,6 +4,7 @@ import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_localizations.dart';
 import '../../utils/tracker_colors.dart';
@@ -28,7 +29,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -236,11 +236,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           _nextBtnWidth = 100.0;
                           _nextBtnHeight = 60.0;
                           _nextBtnChild = _registerCircleProgress;
-                          Future.delayed(Duration(seconds: 3), () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RootScreen()));
+
+                          SharedPreferences.getInstance().then((pref) {
+                            String language = AppLocalizations.of(context)
+                                .locale
+                                .languageCode;
+                            pref.setString("language", language);
+                            print("Languge $language");
+                            Future.delayed(Duration(seconds: 1), () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RootScreen()));
+                            });
                           });
                         });
                       },
