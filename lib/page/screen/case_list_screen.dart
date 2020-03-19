@@ -94,7 +94,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                                 .clear();
                           });
                         },
-                        child: Text(AppLocalizations.of(context).translate('case_screen_remove_text')),
+                        child: Text(AppLocalizations.of(context).translate('case_list_screen_remove_text')),
                       ),
                       RaisedButton(
                         shape: RoundedRectangleBorder(
