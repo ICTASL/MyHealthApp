@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:package_info/package_info.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
@@ -26,10 +27,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     "Next",
     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
   );
+  String _appName = "Sri Lanka COVID-19";
+  String _version = "1.0.0";
 
   @override
   void initState() {
     super.initState();
+
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      _appName = packageInfo.appName;
+      _version = packageInfo.version;
+    });
   }
 
   @override
@@ -42,12 +50,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Scrollbar(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30.0,
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          _appName,
+                          style: Theme.of(context).textTheme.headline.copyWith(
+                            fontWeight: FontWeight.bold
+                          )
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          _version,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Image.asset(
