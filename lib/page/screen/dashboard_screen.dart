@@ -161,11 +161,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_suspected_card_text"),
-                      "$recovered"),
+                      "$suspected"),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_recovered_card_text"),
-                      "$suspected"),
+                      "$recovered"),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_deaths_card_text"),
@@ -426,13 +426,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: 5.0,
             ),
-            Text(
-              title,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20.0,
-                  color: Colors.white),
+            Expanded(
+              child: Text(
+                title,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.0,
+                    color: Colors.white),
+              ),
             ),
           ],
         ),
