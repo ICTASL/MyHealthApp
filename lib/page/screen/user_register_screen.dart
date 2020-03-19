@@ -62,7 +62,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
       appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          title: Text("Register", style: TextStyle(color: Colors.black))),
+          title: Text(AppLocalizations.of(context).translate('user_register_bar_title_text'), style: TextStyle(color: Colors.black))),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
@@ -91,7 +91,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                "Cases You've Selected:",
+                AppLocalizations.of(context).translate("user_register_screen_selected_text"),
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text("+ Add more cases"),
+                            child: Text(AppLocalizations.of(context).translate("user_register_screen_add_text")),
                           ),
                         ),
                         alignment: Alignment.bottomRight,
@@ -159,7 +159,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               } else {
                 return SliverToBoxAdapter(
                     child: Padding(
-                        child: Text("No cases selected to register."),
+                        child: Text(AppLocalizations.of(context).translate("user_registration_screen_no_text")),
                         padding: const EdgeInsets.only(left: 20.0, top: 10.0)));
               }
             },

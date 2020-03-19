@@ -46,7 +46,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: TrackerColors.primaryColor),
                   labelText: AppLocalizations.of(context)
-                      .translate("case_screen_search"),
+                      .translate("case_list_screen_search"),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -94,7 +94,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                                 .clear();
                           });
                         },
-                        child: Text("Remove all"),
+                        child: Text(AppLocalizations.of(context).translate('case_screen_remove_text')),
                       ),
                       RaisedButton(
                         shape: RoundedRectangleBorder(
@@ -120,7 +120,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "See Added (${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
+                                AppLocalizations.of(context).translate("cse_list_screen_see-text") +
+                                "(${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
