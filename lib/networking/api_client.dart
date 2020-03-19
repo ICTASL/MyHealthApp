@@ -12,7 +12,7 @@ class ApiClient {
 //  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
   final String _baseUrl = 'http://covid19.egreen.io:8000';
 
-  Future<bool> registerUser() async {
+  Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
     final response = await http.post(url);
     // Was this not a success?
