@@ -38,7 +38,16 @@
     "dashboard_screen_ok_button": "OK",
     "case_details_screen_title": "வழக்கு விரிவான",
     "ui_general_next": "Next",
-    "ui_general_welcome": "Welcome"    
+    "ui_general_welcome": "Welcome"    ,
     "news_detail_page_title": "Register",    
-    "case_screen_search": "தேடல்"
+    "case_screen_search": "தேடல்",
+    "welcome_screen_tamil_button_text": "தமிழ்",
+    "dashboard_screen_figures": "Here are the Latest Figures",
+    "dashboard_screen_confirmed": "Confirmed",
+    "dashboard_screen_suspected": "Suspected",
+    "dashboard_screen_recovered": "Recovered",
+    "dashboard_screen_deaths": "Deaths",
+    "dashboard_screen_news": "News",
+    "dashboard_screen_last_updated": "Last Updated:",
+
 }

@@ -37,6 +37,15 @@
   "contact_us_screen_contact_us_title": "Get in touch.",
   "dashboard_screen_ok_button": "OK",
   "case_details_screen_title": "සිද්ධි විස්තරය",
-  "news_detail_page_title": "Register"   
+  "news_detail_page_title": "Register",
+  "dashboard_screen_figures": "මෙන්න නවතම රූප",
+  "dashboard_screen_confirmed": "තහවුරු කර ඇත",
+  "dashboard_screen_suspected": "සැකයි",
+  "dashboard_screen_recovered": "සොයා ගන්නා ලදි",
+  "dashboard_screen_deaths": "මරණ",
+  "dashboard_screen_news": "පුවත්",
+  "dashboard_screen_last_updated": "අවසන් වරට යාවත්කාලීන කළේ:",
+  "ui_general_next": "ඊළඟ",
+  "ui_general_welcome": "අයුබෝවන්",
   "case_screen_search": "සෙවුම"
 }
