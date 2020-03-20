@@ -45,8 +45,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     _articleFetch = fetchArticles();
     updateRemoteConfig();
+
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
-      updateRemoteConfig();
+      updateDashboard();
     });
   }
 
@@ -82,27 +83,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  Future<void> updateRemoteConfig() async {
+  Future<void> updateDashboard() async {
+    var map = await ApiClient().getDashboardStatus();
+    setState(() {
+      confirmed = map['lk_total_case'] ?? 57;
+      recovered = map['lk_recovered_case'] ?? 2;
+      suspected = map['lk_total_suspect'] ?? 243;
+      deaths = map['lk_total_deaths'] ?? 0;
+      String dt = map['last_update_time'] ?? '2020-03-20 09:39';
+      lastUpdated = DateTime.parse(dt);
+    });
+    // Keep updating reset index via Remote Config
     config = await RemoteConfig.instance;
-    final defaults = <String, dynamic>{
-      'last_updated': '2020-03-17 10:15',
-      'confirmed': 28,
-      'recovered': 1,
-      'suspected': 212,
-      'deaths': 0,
-      "reset_index": 0
-    };
+    final defaults = <String, dynamic>{"reset_index": 0};
     await config.setDefaults(defaults);
     await config.fetch(expiration: Duration(minutes: 15 - 1));
     await config.activateFetched();
     setState(() {
       resetIndexServer = config.getInt('reset_index');
-      confirmed = config.getInt('confirmed');
-      recovered = config.getInt('recovered');
-      suspected = config.getInt('suspected');
-      deaths = config.getInt('deaths');
-      String dt = config.getString('last_updated');
-      lastUpdated = DateTime.parse(dt);
     });
   }
 

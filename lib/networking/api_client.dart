@@ -5,12 +5,18 @@ import 'package:http/http.dart' as http;
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/news_article.dart';
 
 class ApiClient {
   //final String _baseUrl = 'https://api.covid-19.health.gov.lk';
-  final String _baseUrl = 'http://covid19.egreen.io:8000';
+ // final String _baseUrl = 'http://covid19.egreen.io:8000';
+
+  ApiClient()
+      : _baseUrl = kReleaseMode
+            ? 'http://covid19.egreen.io:8000'
+            : 'https://api.covid-19.health.gov.lk';
 
   Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
@@ -154,5 +160,21 @@ class ApiClient {
     }
 
     return lastMessageId;
+  }
+
+  Future<Map<String, dynamic>> getDashboardStatus() async {
+    var result = Map<String, dynamic>();
+    final url = '$_baseUrl/application/dashboard/status';
+    // print('Get Dashboard status: $url');
+    final response = await http.get(url);
+    // Was this not a success?
+    if (response.statusCode != 200) {
+      print('Error getting Dashboard status. Status: ' +
+          response.statusCode.toString());
+      return result;
+    }
+    result = jsonDecode(response.body) as Map<String, dynamic>;
+    // print('Dashboard info: $result');
+    return result;
   }
 }
