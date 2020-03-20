@@ -24,8 +24,10 @@
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need location information to check whether you were present in any contaminated area</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need location information to check whether you were present in any contaminated area</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need this to get information relevent to your current location</string>
+	<string>We need location information to check whether you were present in any contaminated area</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
