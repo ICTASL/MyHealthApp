@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:selftrackingapp/constants.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
@@ -46,7 +47,8 @@ class _RootScreenState extends State<RootScreen> {
   void initState() {
     super.initState();
     _configureFCM();
-    _messaging.subscribeToTopic("mobile_message");
+    _messaging.subscribeToTopic(
+        debugRelease ? "mobile_message_test" : "mobile_message");
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       var name = packageInfo.appName;

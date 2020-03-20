@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:selftrackingapp/constants.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,8 +13,6 @@ import '../models/news_article.dart';
 class ApiClient {
 //  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
   final String _baseUrl;
-
-  static final bool debugRelease = true;
 
   ApiClient()
       : _baseUrl = debugRelease
