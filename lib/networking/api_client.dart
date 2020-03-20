@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import '../models/news_article.dart';
 
 class ApiClient {
-//  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
   final String _baseUrl;
 
   ApiClient()

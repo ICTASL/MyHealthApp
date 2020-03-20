@@ -19,6 +19,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   static const MethodChannel _channel = MethodChannel('location');
 
   Completer<GoogleMapController> _controller = Completer();
+
   Position currentLocation;
   List<Location> entries = List();
   Timer _locationTimer;
@@ -47,7 +48,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         }
       });
 
-      _currentLoctimer = Timer.periodic(Duration(seconds: 3), (_) {
+      _currentLoctimer = Timer.periodic(Duration(seconds: 2), (_) {
         Geolocator()
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
             .then((position) {
@@ -63,6 +64,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
                     address: 'Current Location');
                 _isInitialLocationAdded = true;
                 entries.add(location);
+                moveMapToCurrentLoc();
               }
               currentLocation = position;
             });
@@ -71,6 +73,14 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         print("Current Location Updated");
       });
     });
+  }
+
+  void moveMapToCurrentLoc() async {
+    final GoogleMapController controller = await _controller.future;
+    final CameraPosition _camPos = CameraPosition(
+        zoom: 15.0,
+        target: LatLng(currentLocation.latitude, currentLocation.longitude));
+    controller.animateCamera(CameraUpdate.newCameraPosition(_camPos));
   }
 
   @override

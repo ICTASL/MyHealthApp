@@ -43,11 +43,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    updateDashboard().then((val) {
-      fetchArticles();
-    });
+    updateDashboard();
     _articleFetch = fetchArticles();
-//    updateRemoteConfig();
+
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
       updateDashboard();
     });
