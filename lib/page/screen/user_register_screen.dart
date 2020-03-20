@@ -62,7 +62,10 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
       appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          title: Text(AppLocalizations.of(context).translate('user_register_bar_title_text'), style: TextStyle(color: Colors.black))),
+          title: Text(
+              AppLocalizations.of(context)
+                  .translate('user_register_bar_title_text'),
+              style: TextStyle(color: Colors.black))),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
@@ -73,13 +76,16 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               children: <Widget>[
                 Container(
                     child: Text(
-                      AppLocalizations.of(context).translate("user_register_screen_title"),
+                        AppLocalizations.of(context)
+                            .translate("user_register_screen_title"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    child: Text(AppLocalizations.of(context).translate("user_register_screen_subtitle"),
+                    child: Text(
+                        AppLocalizations.of(context)
+                            .translate("user_register_screen_subtitle"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 20.0,
@@ -91,7 +97,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                AppLocalizations.of(context).translate("user_register_screen_selected_text"),
+                AppLocalizations.of(context)
+                    .translate("user_register_screen_selected_text"),
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -112,7 +119,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text(AppLocalizations.of(context).translate("user_register_screen_add_text")),
+                            child: Text(AppLocalizations.of(context)
+                                .translate("user_register_screen_add_text")),
                           ),
                         ),
                         alignment: Alignment.bottomRight,
@@ -159,7 +167,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               } else {
                 return SliverToBoxAdapter(
                     child: Padding(
-                        child: Text(AppLocalizations.of(context).translate("user_registration_screen_no_text")),
+                        child: Text(AppLocalizations.of(context)
+                            .translate("user_registration_screen_no_text")),
                         padding: const EdgeInsets.only(left: 20.0, top: 10.0)));
               }
             },
@@ -183,6 +192,29 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 .translate("user_register_screen_name"),
                             icon: Icon(
                               Icons.account_circle,
+                              color: TrackerColors.primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: TrackerColors.primaryColor,
+                              ),
+                            ))),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    TextFormField(
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return AppLocalizations.of(context)
+                                .translate("user_register_screen_invalid_age");
+                          }
+                        },
+                        decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)
+                                .translate("user_register_screen_age"),
+                            icon: Icon(
+                              Icons.date_range,
                               color: TrackerColors.primaryColor,
                             ),
                             border: OutlineInputBorder(
