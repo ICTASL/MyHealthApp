@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/models/news_article.dart';
@@ -10,11 +7,8 @@ import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
-import 'package:selftrackingapp/page/screen/case_list_screen.dart';
-import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
-import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
@@ -35,7 +29,6 @@ class _RootScreenState extends State<RootScreen> {
   String _appName = "Sri Lanka COVID-19";
   String _version = "1.0.0";
 
-
   int _currentIndex = 0;
   final _homeTabs = {
     DashboardScreen(),
@@ -53,8 +46,14 @@ class _RootScreenState extends State<RootScreen> {
     _messaging.subscribeToTopic("mobile_message");
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      _appName = packageInfo.appName;
-      _version = packageInfo.version;
+      var name = packageInfo.appName;
+      var version = packageInfo.version;
+      if (name != null) {
+        _appName = name;
+      }
+      if (version != null) {
+        _version = version;
+      }
     });
   }
 
@@ -114,14 +113,16 @@ class _RootScreenState extends State<RootScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            _appName,
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0),
-          )),
+        backgroundColor: Colors.white,
+        title: Text(
+          _appName,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
       body: Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
