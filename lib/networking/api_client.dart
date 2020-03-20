@@ -10,12 +10,15 @@ import 'package:flutter/foundation.dart';
 import '../models/news_article.dart';
 
 class ApiClient {
+//  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
   final String _baseUrl;
 
+  static final bool debugRelease = true;
+
   ApiClient()
-      : _baseUrl = kReleaseMode
-            ? 'https://api.covid-19.health.gov.lk'
-            : 'http://covid19.egreen.io:8000';
+      : _baseUrl = debugRelease
+            ? 'http://covid19.egreen.io:8000'
+            : 'https://api.covid-19.health.gov.lk';
 
   Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
