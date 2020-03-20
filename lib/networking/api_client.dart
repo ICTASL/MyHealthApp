@@ -155,4 +155,20 @@ class ApiClient {
 
     return lastMessageId;
   }
+
+  Future<Map<String, dynamic>> getDashboardStatus() async {
+    var result = Map<String, dynamic>();
+    final url = '$_baseUrl/application/dashboard/status';
+    // print('Get Dashboard status: $url');
+    final response = await http.get(url);
+    // Was this not a success?
+    if (response.statusCode != 200) {
+      print('Error getting Dashboard status. Status: ' +
+          response.statusCode.toString());
+      return result;
+    }
+    result = jsonDecode(response.body) as Map<String, dynamic>;
+    // print('Dashboard info: $result');
+    return result;
+  }
 }
