@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/news_article.dart';
 
 class ApiClient {
-  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
-  // final String _baseUrl = 'http://covid19.egreen.io:8000';
+  //final String _baseUrl = 'https://api.covid-19.health.gov.lk';
+  final String _baseUrl = 'http://covid19.egreen.io:8000';
 
   Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
@@ -56,6 +56,7 @@ class ApiClient {
 //
     for (var i = startId; i <= endId; i++) {
       NewsArticle article = await getMessage(i, forceUpdate: forceUpdate);
+      print("FETCHED ARTICLE: ${article.id}");
       if (article != null) articles.add(article);
     }
 
@@ -71,7 +72,6 @@ class ApiClient {
 
     if (alertData == null || forceUpdate) {
       final url = '$_baseUrl/application/alert/$id/$lang';
-      print("Requesting data from $url");
       final response =
           await http.get(url, headers: {'Content-Type': 'application/json'});
       if (response.statusCode != 200) {
