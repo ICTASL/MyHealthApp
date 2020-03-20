@@ -37,16 +37,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int suspected = 0;
   int deaths = 0;
   int resetIndexServer = 0;
-
+  Future<void> _articleFetch;
   Timer _timer;
 
   @override
   void initState() {
     super.initState();
-
     updateDashboard().then((val) {
       fetchArticles();
     });
+    _articleFetch = fetchArticles();
+//    updateRemoteConfig();
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
       updateDashboard();
     });
@@ -210,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Divider(),
           ),
           FutureBuilder(
-            future: fetchArticles(),
+            future: _articleFetch,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:

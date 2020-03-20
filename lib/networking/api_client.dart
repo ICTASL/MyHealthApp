@@ -11,7 +11,7 @@ import '../models/news_article.dart';
 
 class ApiClient {
 //  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
-D  final String _baseUrl;
+  final String _baseUrl;
 
   ApiClient()
       : _baseUrl = kReleaseMode
@@ -62,6 +62,7 @@ D  final String _baseUrl;
 //
     for (var i = startId; i <= endId; i++) {
       NewsArticle article = await getMessage(i, forceUpdate: forceUpdate);
+      print("FETCHED ARTICLE: ${article.id}");
       if (article != null) articles.add(article);
     }
 
@@ -77,7 +78,6 @@ D  final String _baseUrl;
 
     if (alertData == null || forceUpdate) {
       final url = '$_baseUrl/application/alert/$id/$lang';
-      print("Requesting data from $url");
       final response =
           await http.get(url, headers: {'Content-Type': 'application/json'});
       if (response.statusCode != 200) {

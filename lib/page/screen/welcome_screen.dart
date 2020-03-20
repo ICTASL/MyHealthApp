@@ -11,6 +11,8 @@ import '../../app_localizations.dart';
 import '../../utils/tracker_colors.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({Key key}) : super(key: key);
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -58,12 +60,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        Text(
-                          _appName,
-                          style: Theme.of(context).textTheme.headline.copyWith(
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
+                        Text(_appName,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline
+                                .copyWith(fontWeight: FontWeight.bold)),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -73,7 +74,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20.0,),
+                    SizedBox(
+                      height: 20.0,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,

@@ -9,10 +9,13 @@ import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
+import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
+import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 import '../../app_localizations.dart';
+import '../ios_faq.dart';
 import 'case_details_screen.dart';
 
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
@@ -25,7 +28,7 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
   final StoriesModel _storiesModel = StoriesModel();
-
+  final List<String> values = List();
   String _appName = "Sri Lanka COVID-19";
   String _version = "1.0.0";
 
@@ -114,6 +117,36 @@ class _RootScreenState extends State<RootScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (val) {
+              switch (val) {
+                case "change_lan":
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                  break;
+                case "ios_faq":
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
+                  break;
+                case "see_priv":
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                    child: Text('Change Language'), value: 'change_lan'),
+                PopupMenuItem<String>(child: Text('iOS FAQ'), value: 'ios_faq'),
+                PopupMenuItem<String>(
+                    child: Text('See Privacy Policy'), value: 'see_priv'),
+              ];
+            },
+          ),
+        ],
         title: Text(
           _appName,
           style: TextStyle(
