@@ -29,8 +29,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
       return _cases;
     }
     for (var i = id; i > 0; i--) {
-      ReportedCase article = await ApiClient().getCase(i);
-
+      ReportedCase article = await ApiClient().getCase(i, forceUpdate: true);
+      print(article);
       _cases.add(article);
     }
     return _cases;
@@ -101,7 +101,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                                 .clear();
                           });
                         },
-                        child: Text(AppLocalizations.of(context).translate('case_list_screen_remove_text')),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('case_list_screen_remove_text')),
                       ),
                       RaisedButton(
                         shape: RoundedRectangleBorder(
@@ -127,8 +128,9 @@ class _CaseListScreenState extends State<CaseListScreen> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                AppLocalizations.of(context).translate("cse_list_screen_see-text") +
-                                "(${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
+                                AppLocalizations.of(context)
+                                        .translate("cse_list_screen_see-text") +
+                                    "(${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,

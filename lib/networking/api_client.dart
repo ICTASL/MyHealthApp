@@ -14,8 +14,8 @@ class ApiClient {
 
   ApiClient()
       : _baseUrl = kReleaseMode
-            ? 'http://covid19.egreen.io:8000'
-            : 'https://api.covid-19.health.gov.lk';
+            ? 'https://api.covid-19.health.gov.lk'
+            : 'http://covid19.egreen.io:8000';
 
   Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
