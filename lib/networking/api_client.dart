@@ -13,8 +13,10 @@ class ApiClient {
 //  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
   final String _baseUrl;
 
+  static final bool debugRelease = true;
+
   ApiClient()
-      : _baseUrl = kReleaseMode
+      : _baseUrl = debugRelease
             ? 'http://covid19.egreen.io:8000'
             : 'https://api.covid-19.health.gov.lk';
 
