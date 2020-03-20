@@ -5,12 +5,18 @@ import 'package:http/http.dart' as http;
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/news_article.dart';
 
 class ApiClient {
-  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
-  // final String _baseUrl = 'http://covid19.egreen.io:8000';
+//  final String _baseUrl = 'https://api.covid-19.health.gov.lk';
+  final String _baseUrl;
+
+  ApiClient()
+      : _baseUrl = kReleaseMode
+            ? 'http://covid19.egreen.io:8000'
+            : 'https://api.covid-19.health.gov.lk';
 
   Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
