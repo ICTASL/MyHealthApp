@@ -57,5 +57,8 @@
     "dashboard_screen_recovered": "Recovered",
     "dashboard_screen_deaths": "Deaths",
     "dashboard_screen_news": "News",
-    "dashboard_screen_last_updated": "Last Updated:"
+    "dashboard_screen_last_updated": "Last Updated:",
+    "popmenu_language":"மொழி",
+  "popmenu_faq":"அடிக்கடி கேட்கப்படும் கேள்விகள்",
+  "popmenu_privpolicy":"தனியுரிமைக் கொள்கை"
 }
