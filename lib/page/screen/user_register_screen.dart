@@ -1,9 +1,21 @@
+import 'dart:convert';
+
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
+import 'package:selftrackingapp/exceptions/data_fetch_exception.dart';
+import 'package:selftrackingapp/exceptions/data_write_exception.dart';
+import 'package:selftrackingapp/models/registration.dart';
+import 'package:selftrackingapp/models/reported_case.dart';
+import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
+import 'package:package_info/package_info.dart';
 
 import '../../app_localizations.dart';
 import '../../app_localizations.dart';
@@ -40,15 +52,46 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
       ),
     ],
   );
+  final Widget _registerFailed = Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Text(
+        "Error registering, try again later.",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+    ],
+  );
+
   bool _registerBtnStatus = true;
   double _registerBtnWidth = 400.0;
   double _registerBtnHeight = 30.0;
   Widget _currentBtnChild;
 
+  String _name;
+  String _age;
+  String _email;
+  String _mobileNumber;
+  String _address;
+  String _citizenStatus = "Yes";
+  String _nic = "";
+  String _country;
+  String _passport = "";
+  String _gender;
+
+  final AsyncMemoizer<List<String>> _memorizier = AsyncMemoizer<List<String>>();
+
   @override
   void initState() {
     super.initState();
     _currentBtnChild = _registerTextChild;
+    print("Getting countries");
+  }
+
+  Future<List<String>> _fetchCountries() {
+    return _memorizier.runOnce(() {
+      return GetIt.instance<DataRepository>().fetchCountryList();
+    });
   }
 
   @override
@@ -146,7 +189,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                     0) {
                                   Navigator.of(context).pop();
                                 }
-                                print("removed");
                               },
                               child: Icon(Icons.remove_circle),
                             ),
@@ -187,6 +229,11 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 .translate("user_register_screen_invalid_name");
                           }
                         },
+                        onSaved: (val) {
+                          setState(() {
+                            _name = val;
+                          });
+                        },
                         decoration: InputDecoration(
                             labelText: AppLocalizations.of(context)
                                 .translate("user_register_screen_name"),
@@ -210,6 +257,12 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 .translate("user_register_screen_invalid_age");
                           }
                         },
+                        onSaved: (val) {
+                          setState(() {
+                            _age = val;
+                          });
+                        },
+                        keyboardType: TextInputType.numberWithOptions(),
                         decoration: InputDecoration(
                             labelText: AppLocalizations.of(context)
                                 .translate("user_register_screen_age"),
@@ -233,6 +286,11 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 "user_register_screen_invalid_email");
                           }
                         },
+                        onSaved: (val) {
+                          setState(() {
+                            _email = val;
+                          });
+                        },
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             labelText: AppLocalizations.of(context)
@@ -253,9 +311,236 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     TextFormField(
                         validator: (val) {
                           if (val.isEmpty) {
+                            return "Enter a valid home address";
+                          }
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            _address = val;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            labelText: "Home Address",
+                            icon: Icon(
+                              Icons.home,
+                              color: TrackerColors.primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: TrackerColors.primaryColor,
+                              ),
+                            ))),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text("Are you a Sri Lankan Citizen?"),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text("Yes", style: TextStyle(color: Colors.black)),
+                            Radio(
+                              value: "Yes",
+                              groupValue: _citizenStatus,
+                              onChanged: (value) {
+                                setState(() {
+                                  _citizenStatus = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text("No", style: TextStyle(color: Colors.black)),
+                            Radio(
+                              value: "No",
+                              groupValue: _citizenStatus,
+                              onChanged: (value) {
+                                setState(() {
+                                  _citizenStatus = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    _citizenStatus == "Yes"
+                        ? TextFormField(
+                            validator: (val) {
+                              if (!val.isEmpty) {
+                                RegExp regExp = new RegExp(
+                                  r"^([0-9]{9}[x|X|v|V]|[0-9]{12})$",
+                                  caseSensitive: false,
+                                  multiLine: false,
+                                );
+                                if (!regExp.hasMatch(val)) {
+                                  return "Number is invalid";
+                                }
+                              } else {
+                                return "Number is invalid";
+                              }
+                            },
+                            onSaved: (val) {
+                              setState(() {
+                                _nic = val;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                labelText: "NIC or SLIN Number",
+                                icon: Icon(
+                                  Icons.account_box,
+                                  color: TrackerColors.primaryColor,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide: BorderSide(
+                                    color: TrackerColors.primaryColor,
+                                  ),
+                                )))
+                        : Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              FutureBuilder<List<String>>(
+                                future: _fetchCountries(),
+                                builder: (context, snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return Center(
+                                        child: Text(
+                                            "Whoops, something has gone wrong, try again."),
+                                      );
+                                      break;
+                                    case ConnectionState.waiting:
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                      break;
+                                    case ConnectionState.active:
+                                      return Center(
+                                        child: Text(
+                                            "Whoops, something has gone wrong, try again."),
+                                      );
+                                      break;
+                                    case ConnectionState.done:
+                                      return Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Icon(Icons.flag),
+                                          Expanded(
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 15.0),
+                                              height: 60.0,
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                      child: DropdownButton<
+                                                          String>(
+                                                hint: Padding(
+                                                  child: Text(
+                                                      "Select your country"),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                ),
+                                                items: snapshot.data
+                                                    .map((value) =>
+                                                        DropdownMenuItem(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .all(
+                                                                      10.0),
+                                                              child:
+                                                                  Text(value),
+                                                            ),
+                                                            value: value))
+                                                    .toList(),
+                                                onChanged: (String value) {
+                                                  setState(() {
+                                                    _country = value;
+                                                  });
+                                                },
+                                                value: _country,
+                                              )),
+                                              decoration: ShapeDecoration(
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      width: 1.0,
+                                                      style: BorderStyle.solid,
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              15.0)),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    default:
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              TextFormField(
+                                  validator: (val) {
+                                    if (val.isEmpty) {
+                                      "Passport number is invalid";
+                                    }
+                                  },
+                                  onSaved: (val) {
+                                    setState(() {
+                                      _passport = val;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                      labelText: "Passport Number",
+                                      icon: Icon(
+                                        Icons.card_travel,
+                                        color: TrackerColors.primaryColor,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: TrackerColors.primaryColor,
+                                        ),
+                                      ))),
+                            ],
+                          ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    TextFormField(
+                        validator: (val) {
+                          if (val.isEmpty) {
                             return AppLocalizations.of(context).translate(
                                 "user_register_screen_invalid_number");
                           }
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            _mobileNumber = val;
+                          });
                         },
                         maxLength: 12,
                         keyboardType: TextInputType.numberWithOptions(
@@ -276,43 +561,62 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 15.0,
                     ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Icon(Icons.person),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 15.0),
+                            height: 60.0,
+                            child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Select a Gender"),
+                              ),
+                              items: ['Male', 'Female', "Other"]
+                                  .map((value) => DropdownMenuItem(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(value),
+                                      ),
+                                      value: value))
+                                  .toList(),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _gender = value;
+                                });
+                              },
+                              value: _gender,
+                            )),
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    width: 1.0,
+                                    style: BorderStyle.solid,
+                                    color: Colors.grey),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
                     AnimatedTrackerButton(
                       child: _currentBtnChild,
                       active: _registerBtnStatus,
                       width: _registerBtnWidth,
                       height: _registerBtnHeight,
-                      onPressed: () async {
+                      onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
-                          //HANDLE the DB call to save here
-                          //init a loading state
-                          setState(() {
-                            _currentBtnChild = _registerCircleProgress;
-                            _registerBtnWidth = 100.0;
-                            _registerBtnHeight = 50.0;
-                            _registerBtnStatus = false;
-                          });
-
-                          //init a success state
-                          await Future.delayed(Duration(seconds: 2), () {
-                            setState(() {
-                              _currentBtnChild = _registerSuccess;
-                              _registerBtnHeight = 30.0;
-                              _registerBtnWidth = 400.0;
-                              _registerBtnStatus = false;
-                            });
-                          });
-
-                          //init the starting state
-                          await Future.delayed(Duration(seconds: 2), () {
-                            setState(() {
-                              _currentBtnChild = _registerTextChild;
-                              _registerBtnStatus = true;
-
-                              _registerBtnHeight = 30.0;
-                              _registerBtnWidth = 400.0;
-                            });
-                          });
+                          _saveRegistration();
                         }
                       },
                     )
@@ -324,5 +628,66 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         ],
       ),
     );
+  }
+
+  void _saveRegistration() async {
+    setState(() {
+      _currentBtnChild = _registerCircleProgress;
+      _registerBtnWidth = 100.0;
+      _registerBtnHeight = 50.0;
+      _registerBtnStatus = false;
+    });
+
+    List<ReportedCase> _cases =
+        Provider.of<RegisteredCasesModel>(context, listen: false).reportedCases;
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    Registration registration = Registration(
+        name: _name,
+        email: _email,
+        address: _address,
+        longitude: position.longitude,
+        lattitude: position.latitude,
+        age: _age,
+        nic: _nic,
+        mobileImei: "1234",
+        caseList: _cases.map((rCase) => rCase.caseNumber).toList(),
+        passport: _passport,
+        country: _country,
+        gender: _gender);
+
+    try {
+      await GetIt.instance<DataRepository>().registerUser(registration);
+
+      setState(() {
+        _currentBtnChild = _registerSuccess;
+        _registerBtnHeight = 30.0;
+        _registerBtnWidth = 400.0;
+        _registerBtnStatus = false;
+      });
+
+      await Future.delayed(Duration(seconds: 3), () {
+        Navigator.of(context).pop();
+        Provider.of<RegisteredCasesModel>(context, listen: false)
+            .reportedCases
+            .clear();
+      });
+    } on DataWriteException catch (e) {
+      setState(() {
+        _currentBtnChild = _registerFailed;
+        _registerBtnHeight = 30.0;
+        _registerBtnWidth = 400.0;
+        _registerBtnStatus = false;
+      });
+
+      await Future.delayed(Duration(seconds: 3), () {
+        setState(() {
+          _currentBtnChild = _registerTextChild;
+          _registerBtnHeight = 30.0;
+          _registerBtnWidth = 400.0;
+          _registerBtnStatus = true;
+        });
+      });
+    }
   }
 }

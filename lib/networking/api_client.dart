@@ -133,8 +133,8 @@ class ApiClient {
 
     // Create message
     var body = jsonDecode(alertData) as Map<String, dynamic>;
-
     ReportedCase article = ReportedCase.fromJson(body);
+
     return article;
   }
 
