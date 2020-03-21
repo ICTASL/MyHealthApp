@@ -13,7 +13,7 @@ class _IOSFAQScreenState extends State<IOSFAQScreen> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          "iOS FAQ",
+          "FAQ",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
