@@ -11,7 +11,7 @@
   "dashboard_news_text": "News",
   "dashboard_home_tab_text": "Home",
   "dashboard_location_tab_text": "Location",
-  "dashboard_safe_track_tab_text": "Safe Track",
+  "dashboard_safe_track_tab_text": "My Location",
   "dashboard_contact_tab_text": "Contact Us",
   "dashboard_case_list_tab_text": "Case List",
   "dashboard_register_tab_text": "Register",
@@ -21,7 +21,7 @@
   "user_register_screen_name": "Name",
   "user_register_screen_age": "Age",
   "user_register_screen_email": "E-mail",
-  "user_register_screen_phone": "Mobile Number (Ex. 94 76 000 0000)",
+  "user_register_screen_phone": "Mobile Number (94760000000)",
   "user_register_screen_invalid_name": "Enter a valid name",
   "user_register_screen_invalid_age": "Enter a valid age.",
   "user_register_screen_invalid_number": "Enter a valid number",
@@ -48,5 +48,8 @@
   "news_detail_page_title": "Register",
   "language_screen_choose": "Choose Your Preferred language.",
   "language_screen_choose_sub": "Please select a language below.",
-  "dashboard_screen_figures": "Here are the Latest Figures"
+  "dashboard_screen_figures": "Here are the Latest Figures",
+  "popmenu_language": "Language",
+  "popmenu_faq": "FAQ",
+  "popmenu_privpolicy": "Privacy Policy"
 }

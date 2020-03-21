@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 
+import '../../app_localizations.dart';
+
 class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,7 +12,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           title: Text(
-            "Privacy Policy",
+            AppLocalizations.of(context)
+                              .translate("popmenu_privpolicy"),
             style: TextStyle(color: Colors.black),
           ),
         ),

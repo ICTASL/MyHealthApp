@@ -47,5 +47,8 @@
   "dashboard_screen_privacy_policy_button": "Privacy Policy",
   "contact_us_screen_contact_us_title": "Get in touch.",
   "dashboard_screen_ok_button": "OK",
-  "news_detail_page_title": "Register"
+  "news_detail_page_title": "Register",
+  "popmenu_language":"භාෂාව",
+  "popmenu_faq":"නිතර අසන පැන",
+  "popmenu_privpolicy":"රහස්යතා ප්‍රතිපත්තිය"
 }

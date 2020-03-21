@@ -141,10 +141,13 @@ class _RootScreenState extends State<RootScreen> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
-                    child: Text('Language'), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text('FAQ'), value: 'ios_faq'),
+                    child: Text( AppLocalizations.of(context)
+                              .translate("popmenu_language")), value: 'change_lan'),
+                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
+                              .translate("popmenu_faq")), value: 'ios_faq'),
                 PopupMenuItem<String>(
-                    child: Text('Privacy Policy'), value: 'see_priv'),
+                    child: Text(AppLocalizations.of(context)
+                              .translate("popmenu_privpolicy")), value: 'see_priv'),
               ];
             },
           ),

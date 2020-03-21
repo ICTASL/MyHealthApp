@@ -64,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
           if (language != null) {
             if (language == "en") {
               AppLocalizations.of(context).load(Locale("en", "US"));
-            } else if (language == "ti") {
-              AppLocalizations.of(context).load(Locale("ti", "TA"));
+            } else if (language == "ta") {
+              AppLocalizations.of(context).load(Locale("ta", "TA"));
             } else {
               AppLocalizations.of(context).load(Locale("si", "LK"));
             }
