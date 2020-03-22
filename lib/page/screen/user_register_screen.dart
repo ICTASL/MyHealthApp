@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
-import 'package:selftrackingapp/exceptions/data_fetch_exception.dart';
 import 'package:selftrackingapp/exceptions/data_write_exception.dart';
 import 'package:selftrackingapp/models/registration.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
@@ -15,9 +11,7 @@ import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
-import 'package:package_info/package_info.dart';
 
-import '../../app_localizations.dart';
 import '../../app_localizations.dart';
 import '../../utils/tracker_colors.dart';
 
@@ -320,7 +314,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           });
                         },
                         decoration: InputDecoration(
-                            labelText: "Home Address",
+                            labelText: AppLocalizations.of(context)
+                                .translate("home_address"),
                             icon: Icon(
                               Icons.home,
                               color: TrackerColors.primaryColor,
@@ -334,7 +329,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text("Are you a Sri Lankan Citizen?"),
+                    Text(AppLocalizations.of(context)
+                        .translate("sri_lankan_citizan")),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -344,7 +340,10 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("Yes", style: TextStyle(color: Colors.black)),
+                            Text(
+                                AppLocalizations.of(context)
+                                    .translate("radio_yes"),
+                                style: TextStyle(color: Colors.black)),
                             Radio(
                               value: "Yes",
                               groupValue: _citizenStatus,
@@ -359,7 +358,10 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("No", style: TextStyle(color: Colors.black)),
+                            Text(
+                                AppLocalizations.of(context)
+                                    .translate("radio_no"),
+                                style: TextStyle(color: Colors.black)),
                             Radio(
                               value: "No",
                               groupValue: _citizenStatus,
@@ -398,7 +400,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                                labelText: "NIC or SLIN Number",
+                                labelText: AppLocalizations.of(context)
+                                    .translate("nic_no"),
                                 icon: Icon(
                                   Icons.account_box,
                                   color: TrackerColors.primaryColor,
@@ -513,7 +516,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                     });
                                   },
                                   decoration: InputDecoration(
-                                      labelText: "Passport Number",
+                                      labelText: AppLocalizations.of(context)
+                                          .translate("passport_number"),
                                       icon: Icon(
                                         Icons.card_travel,
                                         color: TrackerColors.primaryColor,
@@ -574,9 +578,17 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 child: DropdownButton<String>(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select a Gender"),
+                                child: Text(AppLocalizations.of(context)
+                                    .translate("select_a_gender")),
                               ),
-                              items: ['Male', 'Female', "Other"]
+                              items: [
+                                AppLocalizations.of(context)
+                                    .translate("menu_item_male"),
+                                AppLocalizations.of(context)
+                                    .translate("menu_item_female"),
+                                AppLocalizations.of(context)
+                                    .translate("menu_item_other")
+                              ]
                                   .map((value) => DropdownMenuItem(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
