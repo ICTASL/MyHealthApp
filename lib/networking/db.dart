@@ -10,6 +10,7 @@ import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/models/registration.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 
@@ -101,11 +102,10 @@ class AppDatabase implements DB {
     print(basicAuth);
     Response response = await http.post(url,
         body: registration.toJson(),
-        headers: {
-          "Content-Type": "application/json",
-          'authorization': basicAuth
-        });
+        headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("register_id", utf8.decode(response.bodyBytes));
       print("Registered User Successfully");
       return;
     } else {
