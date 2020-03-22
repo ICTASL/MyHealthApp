@@ -38,13 +38,9 @@ dependencies:
     geolocator: ^5.1.4+2
     async: ^2.4.0
     package_info: ^0.4.0+16
-<<<<<<< HEAD
     connectivity: ^0.4.8+2
     dropdown_banner: ^1.4.0
-
-=======
     recursive_regex: ^0.1.3+2
->>>>>>> master
 
     flutter_localizations:
         sdk: flutter
