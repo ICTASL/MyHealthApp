@@ -10,6 +10,7 @@ import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
+import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
@@ -132,6 +133,10 @@ class _RootScreenState extends State<RootScreen> {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
                   break;
+                case "faq":
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => FAQScreen()));
+                  break;
                 case "see_priv":
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
@@ -142,7 +147,8 @@ class _RootScreenState extends State<RootScreen> {
               return [
                 PopupMenuItem<String>(
                     child: Text('Language'), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text('FAQ'), value: 'ios_faq'),
+                PopupMenuItem<String>(child: Text('App FAQ'), value: 'ios_faq'),
+                PopupMenuItem<String>(child: Text('FAQ'), value: 'faq'),
                 PopupMenuItem<String>(
                     child: Text('Privacy Policy'), value: 'see_priv'),
               ];
