@@ -15,12 +15,17 @@ import '../constants.dart';
 
 abstract class DB {
   Future<List<ReportedCase>> fetchCases(String lang);
+
   Future<List<NewsArticle>> fetchNewsArticles();
 
   Future<int> fetchCaseTotal();
+
   Future<String> fetchPrivacyPolicy();
+
   Future<List<ContactUsContact>> fetchContactUsContacts();
+
   Future<void> registerUser(Registration _cases);
+
   Future<List<String>> fetchCountries();
 }
 
@@ -90,11 +95,16 @@ class AppDatabase implements DB {
     Registration registration,
   ) async {
     final url = '$_baseUrl/dhis/patients';
-    print("Registering the user....");
+    print("Registering the user.... $url");
     print(registration.toJson());
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('admin:admin@123'));
+    print(basicAuth);
     Response response = await http.post(url,
         body: registration.toJson(),
-        headers: {"Content-Type": "application/json"});
+        headers: {
+          "Content-Type": "application/json",
+          'authorization': basicAuth
+        });
     if (response.statusCode == 200) {
       print("Registered User Successfully");
       return;

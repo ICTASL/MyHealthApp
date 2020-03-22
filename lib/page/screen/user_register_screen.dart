@@ -75,7 +75,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   String _address;
   String _citizenStatus = "Yes";
   String _nic = "";
-  String _country;
+  String _country = "Sri Lanka";
   String _passport = "";
   String _gender;
 
