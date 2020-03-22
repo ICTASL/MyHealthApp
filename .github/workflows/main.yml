@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]
+      - v[0-9]+.[0-9]+.[0-9]-alpha*
+      - v[0-9]+.[0-9]+.[0-9]-beta*
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8.x'
+
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '1.12.13+hotfix.5'
+
+    - run: flutter pub get
+
+    # - run: flutter analyze TODO: enable after fixing the issues in code
+
+    - run: flutter test
+
+    - name: Generate Android key store file
+      run: echo "${SIGNING_KEY}" | openssl base64 -d -out key.jks
+      working-directory: ${{ github.workspace }}/android
+      env:
+        SIGNING_KEY: ${{ secrets.AndroidSigningKeyBase64 }}
+
+    - name: Generate Android key.properties file
+      run: |
+        echo "storePassword=${STORE_PASSWORD}" >> key.properties
+        echo "keyPassword=${KEY_PASSWORD}" >> key.properties
+        echo "keyAlias=key" >> key.properties
+        echo "storeFile=../key.jks" >> key.properties
+      working-directory: ${{ github.workspace }}/android
+      env:
+        STORE_PASSWORD: ${{ secrets.AndroidStorePassword }}
+        KEY_PASSWORD: ${{ secrets.AndroidKeyPassword }}
+
+    - run: flutter build apk --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: android_release
+        path: "build/app/outputs/apk/release"
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: success() && startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - name: Generate version string
+      run: echo "::set-env name=VERSION_STR::${GITHUB_REF##*/}"
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: android_release
+
+    - uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: "android_release/*.apk"
+        name: Release ${{ env.VERSION_STR }}
+        prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
+        tag: ${{ env.VERSION_STR }}
+        token: ${{ secrets.GITHUB_TOKEN }}
