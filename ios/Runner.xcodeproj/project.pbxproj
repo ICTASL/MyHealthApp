@@ -16,6 +16,10 @@
 		B7C0E260241EA24F00CCF392 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0E25F241EA24F00CCF392 /* Location.swift */; };
 		B7C0E262241EA34B00CCF392 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0E261241EA34B00CCF392 /* LocationStore.swift */; };
 		BBCD2C901F384000E7FADB16 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43350230E19D93690A620EBE /* Pods_Runner.framework */; };
+		DD0160E62426F33F00B458F5 /* Flutter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0160E42426F33F00B458F5 /* Flutter.framework */; };
+		DD0160E72426F33F00B458F5 /* Flutter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DD0160E42426F33F00B458F5 /* Flutter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DD0160E82426F33F00B458F5 /* App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0160E52426F33F00B458F5 /* App.framework */; };
+		DD0160E92426F33F00B458F5 /* App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DD0160E52426F33F00B458F5 /* App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DDC38DD4241F1E5300A0ECBB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DDC38DD3241F1E5300A0ECBB /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +30,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DD0160E92426F33F00B458F5 /* App.framework in Embed Frameworks */,
+				DD0160E72426F33F00B458F5 /* Flutter.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +58,8 @@
 		B2802931FCC7C305FF71A4C3 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		B7C0E25F241EA24F00CCF392 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		B7C0E261241EA34B00CCF392 /* LocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStore.swift; sourceTree = "<group>"; };
+		DD0160E42426F33F00B458F5 /* Flutter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flutter.framework; path = Flutter/Flutter.framework; sourceTree = "<group>"; };
+		DD0160E52426F33F00B458F5 /* App.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = App.framework; path = Flutter/App.framework; sourceTree = "<group>"; };
 		DDC38DD3241F1E5300A0ECBB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DDC38DD524209E9200A0ECBB /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +70,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBCD2C901F384000E7FADB16 /* Pods_Runner.framework in Frameworks */,
+				DD0160E82426F33F00B458F5 /* App.framework in Frameworks */,
+				DD0160E62426F33F00B458F5 /* Flutter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +81,8 @@
 		27063F63C8E91B8D4F42D03F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD0160E52426F33F00B458F5 /* App.framework */,
+				DD0160E42426F33F00B458F5 /* Flutter.framework */,
 				43350230E19D93690A620EBE /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
