@@ -632,12 +632,12 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
   void _saveRegistration() async {
     print("Working...");
-//    setState(() {
-//      _currentBtnChild = _registerCircleProgress;
-//      _registerBtnWidth = 100.0;
-//      _registerBtnHeight = 50.0;
-//      _registerBtnStatus = false;
-//    });
+    setState(() {
+      _currentBtnChild = _registerCircleProgress;
+      _registerBtnWidth = 100.0;
+      _registerBtnHeight = 50.0;
+      _registerBtnStatus = false;
+    });
 
     List<ReportedCase> _cases =
         Provider.of<RegisteredCasesModel>(context, listen: false).reportedCases;
