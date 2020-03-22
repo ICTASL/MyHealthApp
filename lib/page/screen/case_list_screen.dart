@@ -178,8 +178,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                   );
                   break;
                 case ConnectionState.done:
-                  print("DATA: ");
-                  print(snapshot.data);
+                  // print('DATA: ${snapshot.data}');
                   if (snapshot.hasData) {
                     List<ReportedCase> _cases = List();
                     _cases = snapshot.data

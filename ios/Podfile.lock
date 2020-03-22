@@ -123,7 +123,7 @@ PODS:
     - Flutter
   - path_provider_macos (0.0.1):
     - Flutter
-  - Protobuf (3.10.0)
+  - Protobuf (3.11.4)
   - share (0.5.2):
     - Flutter
   - shared_preferences (0.0.1):
@@ -164,14 +164,8 @@ DEPENDENCIES:
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
-    - FirebaseAnalyticsInterop
-    - FirebaseCore
-    - FirebaseInstanceID
-    - FirebaseRemoteConfig
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Firebase
-    - FirebaseABTesting
     - FirebaseAnalytics
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
@@ -183,6 +177,12 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - nanopb
+  trunk:
+    - FirebaseABTesting
+    - FirebaseAnalyticsInterop
+    - FirebaseCore
+    - FirebaseInstanceID
+    - FirebaseRemoteConfig
     - Protobuf
 
 EXTERNAL SOURCES:
@@ -254,7 +254,7 @@ SPEC CHECKSUMS:
   package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
-  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
@@ -266,4 +266,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4

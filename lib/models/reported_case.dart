@@ -7,6 +7,9 @@ class ReportedCase extends Equatable {
   List<Location> locations;
   String message;
   DateTime createdAt;
+  // New properties - need to be added to backend
+  bool isLocal = true;
+  bool isFromFacility = true;
 
   ReportedCase(
       {this.id, this.caseNumber, this.locations, this.message, this.createdAt});
@@ -23,8 +26,16 @@ class ReportedCase extends Equatable {
         locations: _locations,
         message: json['message'],
         createdAt: DateTime.parse(json['created']));
-
-    print("CASE HAS BEEN REPORTED: ${_case.id}");
+    // isLocal
+    if (json.containsKey('isLocal')) {
+      _case.isLocal = json['isLocal'] as bool;
+    }
+    // Quarantine/home
+    if (json.containsKey('detectedFrom')) {
+      var from = json['detectedFrom'] as String;
+      _case.isFromFacility = from == 'quarantine';
+    }
+    // print("CASE HAS BEEN REPORTED: ${_case.id}");
     return _case;
   }
 

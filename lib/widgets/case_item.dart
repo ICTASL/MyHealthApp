@@ -15,6 +15,9 @@ class CaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var source = _case.isLocal ? 'Local' : 'Imported';
+    source += ', from: ' +
+        (_case.isFromFacility ? 'Quarantine Facility' : 'Community');
     return GestureDetector(
       child: Container(
         width: 100.0,
@@ -51,6 +54,10 @@ class CaseItem extends StatelessWidget {
                       formatDate(_case.createdAt,
                           [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
                       style: TextStyle(fontSize: 12.0),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      source,
                     ),
                     SizedBox(height: 16.0),
                     Text(
