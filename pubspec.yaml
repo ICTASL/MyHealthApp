@@ -38,6 +38,7 @@ dependencies:
     geolocator: ^5.1.4+2
     async: ^2.4.0
     package_info: ^0.4.0+16
+    connectivity: ^0.4.8+2
 
     flutter_localizations:
         sdk: flutter
