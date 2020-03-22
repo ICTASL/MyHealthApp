@@ -172,17 +172,12 @@ DEPENDENCIES:
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - Firebase
-    - FirebaseABTesting
     - FirebaseAnalytics
-    - FirebaseAnalyticsInterop
-    - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
-    - FirebaseInstanceID
     - FirebaseMessaging
-    - FirebaseRemoteConfig
     - FMDB
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -190,6 +185,12 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - nanopb
+  trunk:
+    - FirebaseABTesting
+    - FirebaseAnalyticsInterop
+    - FirebaseCore
+    - FirebaseInstanceID
+    - FirebaseRemoteConfig
     - Protobuf
     - Reachability
 
@@ -241,7 +242,7 @@ SPEC CHECKSUMS:
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   connectivity_macos: e2e9731b6b22dda39eb1b128f6969d574460e191
   Firebase: 5e6b7b12bf9adb90986688edc06b156c37e109cd
-  firebase_messaging: edab61b94fb3bfb399f32f9d4dedb5196d680084
+  firebase_messaging: cffb57ce40958c6204f03fb0c81713e4cd1e240c
   firebase_remote_config: f3581c5addecc691a968f2a7f2bcdf0878509bfd
   FirebaseABTesting: 821a3a3e4a145987e80fee3657c4de1cb9adf693
   FirebaseAnalytics: 0e3ecff2c5d86070f7d4325e21f1edabfbd558dc

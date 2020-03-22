@@ -1,10 +1,11 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
+import 'package:selftrackingapp/page/screen/case_details_screen.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
+import 'package:selftrackingapp/page/screen/selected_case_detail_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 
 class CaseItem extends StatelessWidget {
@@ -14,6 +15,9 @@ class CaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var source = _case.isLocal ? 'Local' : 'Imported';
+    source += ', from: ' +
+        (_case.isFromFacility ? 'Quarantine Facility' : 'Community');
     return GestureDetector(
       child: Container(
         width: 100.0,
@@ -50,6 +54,10 @@ class CaseItem extends StatelessWidget {
                       formatDate(_case.createdAt,
                           [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
                       style: TextStyle(fontSize: 12.0),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      source,
                     ),
                     SizedBox(height: 16.0),
                     Text(
@@ -160,9 +168,11 @@ class CaseItem extends StatelessWidget {
   }
 
   void _showCasDetails(BuildContext context, int id) {
-    //Uncomment this after implementing case details screen
-
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => CaseDetailScreen(id)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SelectedCaseDetailScreen(
+                  reportedCase: _case,
+                )));
   }
 }

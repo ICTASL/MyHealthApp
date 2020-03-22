@@ -1,13 +1,9 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
-import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
-import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
@@ -20,27 +16,27 @@ class CaseListScreen extends StatefulWidget {
 
 class _CaseListScreenState extends State<CaseListScreen> {
   String _searchKey = "";
-  List<ReportedCase> _cases = [];
-
+  final AsyncMemoizer<List<ReportedCase>> _memorizer = AsyncMemoizer();
   @override
   void initState() {
-    // Get latest message ID
-  } //  final AsyncMemoizer<List<ReportedCase>> _memoizer = AsyncMemoizer();
+    super.initState();
+  }
 
   Future<List<ReportedCase>> _fetchCases() async {
-    _cases = [];
-    int id = await ApiClient().getLastCaseId();
-    if (id == -1) {
+    return this._memorizer.runOnce(() async {
+      List<ReportedCase> _cases = [];
+      int id = await ApiClient().getLastCaseId();
+      if (id == -1) {
+        return _cases;
+      }
+      for (int i = id; i > 0; i--) {
+        ReportedCase reportedCase =
+            await ApiClient().getCase(i, forceUpdate: true);
+        _cases.add(reportedCase);
+      }
+      print("Cases found Retreived: ${_cases.length}");
       return _cases;
-    }
-    // Get all messages up to latest
-    // TODO: Add saving fetched messages and also a better way to fetch messages instead of one by one after API endpoint is fixed
-    for (var i = id; i > 0; i--) {
-      ReportedCase article = await ApiClient().getCase(i);
-
-      _cases.add(article);
-    }
-    return _cases;
+    });
   }
 
   @override
@@ -60,7 +56,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: TrackerColors.primaryColor),
                   labelText: AppLocalizations.of(context)
-                      .translate("case_screen_search"),
+                      .translate("case_list_screen_search"),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -108,7 +104,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                                 .clear();
                           });
                         },
-                        child: Text("Remove all"),
+                        child: Text(AppLocalizations.of(context)
+                            .translate('case_list_screen_remove_text')),
                       ),
                       RaisedButton(
                         shape: RoundedRectangleBorder(
@@ -134,7 +131,9 @@ class _CaseListScreenState extends State<CaseListScreen> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "See Added (${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
+                                AppLocalizations.of(context)
+                                        .translate("cse_list_screen_see-text") +
+                                    "(${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -152,7 +151,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
               : SliverToBoxAdapter(
                   child: Container(),
                 ),
-          FutureBuilder(
+          FutureBuilder<List<ReportedCase>>(
             future: _fetchCases(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<ReportedCase>> snapshot) {
@@ -179,7 +178,9 @@ class _CaseListScreenState extends State<CaseListScreen> {
                   );
                   break;
                 case ConnectionState.done:
+                  // print('DATA: ${snapshot.data}');
                   if (snapshot.hasData) {
+                    List<ReportedCase> _cases = List();
                     _cases = snapshot.data
                         .where((_) => _.locations
                             .where((location) => location.address
@@ -206,12 +207,15 @@ class _CaseListScreenState extends State<CaseListScreen> {
                     return SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.all(30.0),
-                        child: Center(
-                            child: Text("No cases found for that search.")),
+                        child: Center(child: Text("No cases found.")),
                       ),
                     );
                   }
                   break;
+                default:
+                  return SliverToBoxAdapter(
+                    child: Center(child: Text("")),
+                  );
               }
             },
           ),
@@ -219,10 +223,4 @@ class _CaseListScreenState extends State<CaseListScreen> {
       ),
     );
   }
-
-// _changeTab(int tab) {
-//   setState(() {
-//     // _selectedTab = tab;
-//   });
-// }
 }

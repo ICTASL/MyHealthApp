@@ -1,24 +1,22 @@
-import 'dart:async';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:selftrackingapp/constants.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
-import 'package:selftrackingapp/page/screen/case_list_screen.dart';
-import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
-import 'package:selftrackingapp/page/screen/user_register_screen.dart';
+import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
+import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 import '../../app_localizations.dart';
+import '../ios_faq.dart';
 import 'case_details_screen.dart';
 
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
@@ -31,10 +29,9 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
   final StoriesModel _storiesModel = StoriesModel();
-
+  final List<String> values = List();
   String _appName = "Sri Lanka COVID-19";
   String _version = "1.0.0";
-
 
   int _currentIndex = 0;
   final _homeTabs = {
@@ -50,11 +47,18 @@ class _RootScreenState extends State<RootScreen> {
   void initState() {
     super.initState();
     _configureFCM();
-    _messaging.subscribeToTopic("mobile_message");
+    _messaging.subscribeToTopic(
+        debugRelease ? "mobile_message_test" : "mobile_message");
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      _appName = packageInfo.appName;
-      _version = packageInfo.version;
+      var name = packageInfo.appName;
+      var version = packageInfo.version;
+      if (name != null) {
+        _appName = name;
+      }
+      if (version != null) {
+        _version = version;
+      }
     });
   }
 
@@ -100,7 +104,7 @@ class _RootScreenState extends State<RootScreen> {
           icon: Icons.home),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
-              .translate('dashboard_screen_case_list_button'),
+              .translate('dashboard_case_list_tab_text'),
           icon: Icons.location_searching),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
@@ -114,14 +118,49 @@ class _RootScreenState extends State<RootScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            _appName,
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0),
-          )),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (val) {
+              switch (val) {
+                case "change_lan":
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                  break;
+                case "ios_faq":
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
+                  break;
+                case "see_priv":
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                    child: Text( AppLocalizations.of(context)
+                              .translate("popmenu_language")), value: 'change_lan'),
+                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
+                              .translate("popmenu_faq")), value: 'ios_faq'),
+                PopupMenuItem<String>(
+                    child: Text(AppLocalizations.of(context)
+                              .translate("popmenu_privpolicy")), value: 'see_priv'),
+              ];
+            },
+          ),
+        ],
+        title: Text(
+          _appName,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
       body: Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,

@@ -66,6 +66,47 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Widget _screen;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _screen = _createSplashScreen();
+
+    loadLang();
+  }
+
+  Future<void> loadLang() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    String language = pref.getString("language");
+    if (language != null) {
+      if (language == "en") {
+        AppLocalizations.of(context).load(Locale("en", "US"));
+      } else if (language == "ta") {
+        AppLocalizations.of(context).load(Locale("ta", "TA"));
+      } else {
+        AppLocalizations.of(context).load(Locale("si", "LK"));
+      }
+      setState(() {
+        _screen = RootScreen();
+      });
+    } else {
+      setState(() {
+        _screen = WelcomeScreen();
+      });
+    }
+  }
+
+  Widget _createSplashScreen() {
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/bg.png"), fit: BoxFit.fill)),
+    ); // or some other widget
+  }
+
   void reachabilityFailedFail() {
     DropdownBanner.showBanner(
         text: 'Please check your WiFi or mobile data connection',
@@ -87,33 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     checkReachability();
-    return FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(),
-      builder:
-          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        if (snapshot.hasData && snapshot.data != null) {
-          final pref = snapshot.data;
-          String language = pref.getString("language");
-          print("Languge $language");
-          if (language != null) {
-            if (language == "en") {
-              AppLocalizations.of(context).load(Locale("en", "US"));
-            } else if (language == "ti") {
-              AppLocalizations.of(context).load(Locale("ti", "TA"));
-            } else {
-              AppLocalizations.of(context).load(Locale("si", "LK"));
-            }
-
-            return RootScreen();
-          }
-          return WelcomeScreen();
-        }
-        return Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/bg.png"), fit: BoxFit.fill)),
-        ); // or some other widget
-      },
-    );
+    return _screen;
   }
 }

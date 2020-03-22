@@ -11,7 +11,7 @@ description: Self tracking app
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.1+8
+version: 1.2.5+10
 
 environment:
     sdk: ">=2.1.0 <3.0.0"
@@ -38,9 +38,13 @@ dependencies:
     geolocator: ^5.1.4+2
     async: ^2.4.0
     package_info: ^0.4.0+16
+<<<<<<< HEAD
     connectivity: ^0.4.8+2
     dropdown_banner: ^1.4.0
 
+=======
+    recursive_regex: ^0.1.3+2
+>>>>>>> master
 
     flutter_localizations:
         sdk: flutter
@@ -71,7 +75,10 @@ flutter:
         - assets/lang/si.json
         - assets/lang/ta.json
         - assets/images/logo.png
+        - assets/images/suspected_icon.png
+        - assets/images/user_icon.png
         - assets/data/constant_data.json
+        - assets/data/countries.json
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
     # For details regarding adding assets from package dependencies, see

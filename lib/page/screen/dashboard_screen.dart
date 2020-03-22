@@ -29,6 +29,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   RemoteConfig config;
+  PageController _pageController;
 
   // Remotely configured values
   DateTime lastUpdated = DateTime.now();
@@ -37,18 +38,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int suspected = 0;
   int deaths = 0;
   int resetIndexServer = 0;
-
+  Future<void> _articleFetch;
   Timer _timer;
 
   @override
   void initState() {
     super.initState();
 
-    updateRemoteConfig().then((val) {
-      fetchArticles();
-    });
+    _pageController = PageController();
+
+    updateDashboard();
+    _articleFetch = fetchArticles();
+
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
-      updateRemoteConfig();
+      updateDashboard();
     });
   }
 
@@ -84,27 +87,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  Future<void> updateRemoteConfig() async {
+  Future<void> updateDashboard() async {
+    var map = await ApiClient().getDashboardStatus();
+    setState(() {
+      confirmed = map['lk_total_case'] ?? 57;
+      recovered = map['lk_recovered_case'] ?? 2;
+      suspected = map['lk_total_suspect'] ?? 243;
+      deaths = map['lk_total_deaths'] ?? 0;
+      String dt = map['last_update_time'] ?? '2020-03-20 09:39';
+      lastUpdated = DateTime.parse(dt);
+    });
+    // Keep updating reset index via Remote Config
     config = await RemoteConfig.instance;
-    final defaults = <String, dynamic>{
-      'last_updated': '2020-03-17 10:15',
-      'confirmed': 28,
-      'recovered': 1,
-      'suspected': 212,
-      'deaths': 0,
-      "reset_index": 0
-    };
+    final defaults = <String, dynamic>{"reset_index": 0};
     await config.setDefaults(defaults);
     await config.fetch(expiration: Duration(minutes: 15 - 1));
     await config.activateFetched();
     setState(() {
       resetIndexServer = config.getInt('reset_index');
-      confirmed = config.getInt('confirmed');
-      recovered = config.getInt('recovered');
-      suspected = config.getInt('suspected');
-      deaths = config.getInt('deaths');
-      String dt = config.getString('last_updated');
-      lastUpdated = DateTime.parse(dt);
     });
   }
 
@@ -119,144 +119,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     print(Provider.of<StoriesModel>(context).articles.length);
-    return Container(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-              child: Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: <Widget>[
+          TabBar(
+            labelColor: Colors.black,
+            tabs: [
+              Tab(
+                text: AppLocalizations.of(context)
+                    .translate("dashboard_news_text"),
+              ),
+              Tab(
+                text: AppLocalizations.of(context)
+                    .translate("dashboard_latest_figures_title"),
+              ),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
               children: <Widget>[
-                Container(
-                    child: Text(
-                        AppLocalizations.of(context)
-                            .translate("dashboard_welcome_title"),
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold))),
-                Container(
-                    child: Text(
-                        AppLocalizations.of(context)
-                            .translate("dashboard_latest_figures_title"),
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.normal))),
+                _buildNewsScreen(),
+                _buildStatScreen(),
               ],
             ),
-          )),
-          SliverPadding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            sliver: SliverGrid.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10.0,
-                childAspectRatio: 7 / 6,
-                children: [
-                  _createCountCard(
-                      AppLocalizations.of(context)
-                          .translate("dashboard_confirmed_card_text"),
-                      "$confirmed"),
-                  _createCountCard(
-                      AppLocalizations.of(context)
-                          .translate("dashboard_suspected_card_text"),
-                      "$suspected"),
-                  _createCountCard(
-                      AppLocalizations.of(context)
-                          .translate("dashboard_recovered_card_text"),
-                      "$recovered"),
-                  _createCountCard(
-                      AppLocalizations.of(context)
-                          .translate("dashboard_deaths_card_text"),
-                      "$deaths"),
-                ]),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                "${AppLocalizations.of(context).translate('dashboard_last_updated_text')} ${dateFormat.format(lastUpdated)}",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-            sliver: SliverToBoxAdapter(
-              child: Container(),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Divider(),
-          ),
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            pinned: true,
-            backgroundColor: Theme.of(context).backgroundColor,
-            title: PreferredSize(
-                preferredSize: Size.fromHeight(30.0),
-                child: Container(
-                    child: RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                        text:
-                            " ${AppLocalizations.of(context).translate('dashboard_news_text')}",
-                        style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black))
-                  ]),
-                ))),
-          ),
-          SliverToBoxAdapter(
-            child: Divider(),
-          ),
-          FutureBuilder(
-            future: fetchArticles(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: Text("An error has occured, try again"),
-                    ),
-                  );
-                  break;
-                case ConnectionState.waiting:
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                  break;
-                case ConnectionState.active:
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: Text("An error has occured, try again"),
-                    ),
-                  );
-                  break;
-                case ConnectionState.done:
-                  return Consumer<StoriesModel>(
-                    builder: (context, model, child) {
-                      print("CHANGED: ${model.articles.length}");
-                      List<NewsArticle> stories = model.articles;
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return _createNewsArticle(stories[index]);
-                        }, childCount: stories.length),
-                      );
-                    },
-                  );
-                  break;
-                default:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-              }
-            },
-          )
         ],
       ),
     );
@@ -546,5 +433,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           );
         });
+  }
+
+  Widget _buildNewsScreen() {
+    return FutureBuilder(
+      future: _articleFetch,
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return Center(
+              child: Text("An error has occured, try again"),
+            );
+            break;
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+            break;
+          case ConnectionState.active:
+            return Center(
+              child: Text("An error has occured, try again"),
+            );
+            break;
+          case ConnectionState.done:
+            return Consumer<StoriesModel>(
+              builder: (context, model, child) {
+                print("CHANGED: ${model.articles.length}");
+                List<NewsArticle> stories = model.articles;
+                return ListView.builder(
+                    itemCount: stories.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _createNewsArticle(stories[index]);
+                    });
+              },
+            );
+            break;
+          default:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+        }
+      },
+    );
+  }
+
+  Widget _buildStatScreen() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: GridView.count(
+                padding: const EdgeInsets.all(10.0),
+                crossAxisCount: 2,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 7 / 6,
+                children: [
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_confirmed_card_text"),
+                      "$confirmed"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_suspected_card_text"),
+                      "$suspected"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_recovered_card_text"),
+                      "$recovered"),
+                  _createCountCard(
+                      AppLocalizations.of(context)
+                          .translate("dashboard_deaths_card_text"),
+                      "$deaths"),
+                ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              "${AppLocalizations.of(context).translate('dashboard_last_updated_text')} ${dateFormat.format(lastUpdated)}",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
