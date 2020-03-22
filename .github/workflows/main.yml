@@ -68,6 +68,7 @@ jobs:
 
     - uses: ncipollo/release-action@v1
       with:
+        allowUpdates: true
         artifacts: "android_release/*.apk"
         name: Release ${{ env.VERSION_STR }}
         prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
