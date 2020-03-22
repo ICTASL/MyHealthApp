@@ -30,22 +30,21 @@ class AppDatabase implements DB {
   final String _baseUrl;
 
   AppDatabase()
-      : _baseUrl = debugRelease
-            ? 'http://covid19.egreen.io:8000'
-            : 'https://api.covid-19.health.gov.lk';
+      : _baseUrl =
+            debugRelease ? testingServer : 'https://api.covid-19.health.gov.lk';
 
   @override
   Future<List<ReportedCase>> fetchCases(String lang) async {
     List<ReportedCase> _cases = [];
 
     http.Response response =
-        await http.get('http://covid19.egreen.io:8000/application/case/latest');
+        await http.get('$testingServer/application/case/latest');
 
     int casesLength = json.decode(response.body);
 
     for (int i = 1; i < casesLength + 1; i++) {
       http.Response res = await http.get(
-          'http://covid19.egreen.io:8000/application/case/$i/$lang',
+          '$testingServer/application/case/$i/$lang',
           headers: {'Content-Type': 'application/json'});
 
       _cases.add(ReportedCase.fromJson(json.decode(res.body)));
