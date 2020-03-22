@@ -46,7 +46,7 @@ class CaseItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "CASE " + _case.id.toString(),
+                      _case.caseNumber,
                       style: TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w800),
                     ),
@@ -157,7 +157,7 @@ class CaseItem extends StatelessWidget {
                             ? RaisedButton(
                                 color: TrackerColors.primaryColor,
                                 child: Text(
-                                  "REGISTER ME, I WAS THERE",
+                                  "REGISTER",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 shape: RoundedRectangleBorder(
