@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 
 class IOSFAQScreen extends StatefulWidget {
   @override
@@ -13,7 +14,8 @@ class _IOSFAQScreenState extends State<IOSFAQScreen> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          "iOS FAQ",
+          AppLocalizations.of(context)
+                              .translate("popmenu_faq"),
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

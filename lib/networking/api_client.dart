@@ -15,9 +15,8 @@ class ApiClient {
   final String _baseUrl;
 
   ApiClient()
-      : _baseUrl = debugRelease
-            ? 'http://covid19.egreen.io:8000'
-            : 'https://api.covid-19.health.gov.lk';
+      : _baseUrl =
+            debugRelease ? testingServer : 'https://api.covid-19.health.gov.lk';
 
   Future<bool> registerUser(u) async {
     final url = '$_baseUrl/user/register';
@@ -133,8 +132,8 @@ class ApiClient {
 
     // Create message
     var body = jsonDecode(alertData) as Map<String, dynamic>;
-
     ReportedCase article = ReportedCase.fromJson(body);
+
     return article;
   }
 

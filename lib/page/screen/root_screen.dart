@@ -38,7 +38,7 @@ class _RootScreenState extends State<RootScreen> {
   final _homeTabs = {
     DashboardScreen(),
     CaseListScreen(),
-    CaseDetailScreen(),
+//    CaseDetailScreen(),
     ContactUsScreen(),
   };
 
@@ -82,13 +82,23 @@ class _RootScreenState extends State<RootScreen> {
     _messaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage");
+        await setState(() {
+          _currentIndex = 0;
+        });
         _handleFCM(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume");
+        await setState(() {
+          _currentIndex = 0;
+        });
         _handleFCM(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch");
+        await setState(() {
+          _currentIndex = 0;
+        });
         _handleFCM(message);
       },
     );
@@ -107,10 +117,10 @@ class _RootScreenState extends State<RootScreen> {
           title: AppLocalizations.of(context)
               .translate('dashboard_case_list_tab_text'),
           icon: Icons.location_searching),
-      TitledNavigationBarItem(
-          title: AppLocalizations.of(context)
-              .translate('dashboard_safe_track_tab_text'),
-          icon: Icons.map),
+//      TitledNavigationBarItem(
+//          title: AppLocalizations.of(context)
+//              .translate('dashboard_safe_track_tab_text'),
+//          icon: Icons.map),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
               .translate('dashboard_contact_tab_text'),
@@ -147,10 +157,12 @@ class _RootScreenState extends State<RootScreen> {
               return [
                 PopupMenuItem<String>(
                     child: Text('Language'), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text('App FAQ'), value: 'ios_faq'),
-                PopupMenuItem<String>(child: Text('FAQ'), value: 'faq'),
+                PopupMenuItem<String>(child: Text('FAQ'), value: 'ios_faq'),
+                PopupMenuItem<String>(child: Text('Corona FAQ'), value: 'faq'),
                 PopupMenuItem<String>(
-                    child: Text('Privacy Policy'), value: 'see_priv'),
+                    child: Text(AppLocalizations.of(context)
+                        .translate("popmenu_privpolicy")),
+                    value: 'see_priv'),
               ];
             },
           ),

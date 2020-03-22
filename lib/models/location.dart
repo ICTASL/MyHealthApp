@@ -17,12 +17,13 @@ class Location extends Equatable {
 
   factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
-        latitude: double.parse(json["latitude"]),
-        longitude: double.parse(json["longitude"]),
-        address: json['address'],
+        latitude: json["latitude"] == "" ? 0 : double.parse(json['latitude']),
+        longitude:
+            json["longitude"] == "" ? 0 : double.parse(json['longitude']),
+        address: json['area'],
         date: DateTime.parse(json['date']),
-        from: DateTime.parse(json['from']),
-        to: DateTime.parse(json['to']));
+        from: DateTime.now(),
+        to: DateTime.now());
   }
 
   factory Location.fromBackgroundJson(Map<String, dynamic> json) {
