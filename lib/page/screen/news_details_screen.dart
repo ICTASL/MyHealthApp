@@ -24,7 +24,7 @@ class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
       // Get all messages up to latest
       // TODO: Add saving fetched messages and also a better way to fetch messages instead of one by one after API endpoint is fixed
       for (var i = id; i > 0; i--) {
-        ApiClient().getMessage(i).then((article) {
+        ApiClient().getMessage(i, forceUpdate: true).then((article) {
           // Save article for display
           setState(() {
             stories.add(article);

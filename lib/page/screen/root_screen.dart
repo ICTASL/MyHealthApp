@@ -10,6 +10,7 @@ import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/case_list_screen.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
+import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
@@ -37,7 +38,7 @@ class _RootScreenState extends State<RootScreen> {
   final _homeTabs = {
     DashboardScreen(),
     CaseListScreen(),
-    CaseDetailScreen(),
+//    CaseDetailScreen(),
     ContactUsScreen(),
   };
 
@@ -81,13 +82,23 @@ class _RootScreenState extends State<RootScreen> {
     _messaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage");
+        await setState(() {
+          _currentIndex = 0;
+        });
         _handleFCM(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume");
+        await setState(() {
+          _currentIndex = 0;
+        });
         _handleFCM(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch");
+        await setState(() {
+          _currentIndex = 0;
+        });
         _handleFCM(message);
       },
     );
@@ -106,10 +117,10 @@ class _RootScreenState extends State<RootScreen> {
           title: AppLocalizations.of(context)
               .translate('dashboard_case_list_tab_text'),
           icon: Icons.location_searching),
-      TitledNavigationBarItem(
-          title: AppLocalizations.of(context)
-              .translate('dashboard_safe_track_tab_text'),
-          icon: Icons.map),
+//      TitledNavigationBarItem(
+//          title: AppLocalizations.of(context)
+//              .translate('dashboard_safe_track_tab_text'),
+//          icon: Icons.map),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
               .translate('dashboard_contact_tab_text'),
@@ -132,6 +143,10 @@ class _RootScreenState extends State<RootScreen> {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
                   break;
+                case "faq":
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => FAQScreen()));
+                  break;
                 case "see_priv":
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
@@ -141,13 +156,13 @@ class _RootScreenState extends State<RootScreen> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
-                    child: Text( AppLocalizations.of(context)
-                              .translate("popmenu_language")), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
-                              .translate("popmenu_faq")), value: 'ios_faq'),
+                    child: Text('Language'), value: 'change_lan'),
+                PopupMenuItem<String>(child: Text('FAQ'), value: 'ios_faq'),
+                PopupMenuItem<String>(child: Text('Corona FAQ'), value: 'faq'),
                 PopupMenuItem<String>(
                     child: Text(AppLocalizations.of(context)
-                              .translate("popmenu_privpolicy")), value: 'see_priv'),
+                        .translate("popmenu_privpolicy")),
+                    value: 'see_priv'),
               ];
             },
           ),

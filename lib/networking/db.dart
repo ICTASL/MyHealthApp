@@ -10,17 +10,23 @@ import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/models/registration.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 
 abstract class DB {
   Future<List<ReportedCase>> fetchCases(String lang);
+
   Future<List<NewsArticle>> fetchNewsArticles();
 
   Future<int> fetchCaseTotal();
+
   Future<String> fetchPrivacyPolicy();
+
   Future<List<ContactUsContact>> fetchContactUsContacts();
+
   Future<void> registerUser(Registration _cases);
+
   Future<List<String>> fetchCountries();
 }
 
@@ -30,22 +36,21 @@ class AppDatabase implements DB {
   final String _baseUrl;
 
   AppDatabase()
-      : _baseUrl = debugRelease
-            ? 'http://covid19.egreen.io:8000'
-            : 'https://api.covid-19.health.gov.lk';
+      : _baseUrl =
+            debugRelease ? testingServer : 'https://api.covid-19.health.gov.lk';
 
   @override
   Future<List<ReportedCase>> fetchCases(String lang) async {
     List<ReportedCase> _cases = [];
 
     http.Response response =
-        await http.get('http://covid19.egreen.io:8000/application/case/latest');
+        await http.get('$testingServer/application/case/latest');
 
     int casesLength = json.decode(response.body);
 
     for (int i = 1; i < casesLength + 1; i++) {
       http.Response res = await http.get(
-          'http://covid19.egreen.io:8000/application/case/$i/$lang',
+          '$testingServer/application/case/$i/$lang',
           headers: {'Content-Type': 'application/json'});
 
       _cases.add(ReportedCase.fromJson(json.decode(res.body)));
@@ -91,12 +96,16 @@ class AppDatabase implements DB {
     Registration registration,
   ) async {
     final url = '$_baseUrl/dhis/patients';
-    print("Registering the user....");
+    print("Registering the user.... $url");
     print(registration.toJson());
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('admin:admin@123'));
+    print(basicAuth);
     Response response = await http.post(url,
         body: registration.toJson(),
         headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("register_id", utf8.decode(response.bodyBytes));
       print("Registered User Successfully");
       return;
     } else {

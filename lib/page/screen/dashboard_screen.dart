@@ -58,21 +58,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> fetchArticles() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool forceUpdate = true;
-//    if (config != null) {
-//      int resetIndex = prefs.getInt("reset_index");
-//
-//      if (resetIndex == null) {
-//        resetIndex = 0;
-//      }
-//
-//      if (resetIndexServer > resetIndex) {
-//        prefs.setInt("reset_index", resetIndex);
-//        prefs.setInt("last_message_id", 0);
-//        forceUpdate = true;
-//      }
-//
-//      print("DAta Request $resetIndex, $resetIndexServer, $forceUpdate");
-//    }
 
     print("Fetching the articles");
     int id = await ApiClient().getLastMessageId();

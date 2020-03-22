@@ -1,8 +1,8 @@
-# selftrackingapp
+# COVID-19 Self Tracking app
 
-COVID-19 Self Tracking app
+![CI](https://github.com/ayubowan/selft_tracking_app/workflows/CI/badge.svg)
 
-#Introduction 
+## Introduction 
 
 Under the leadership of the Ministry of Health, we have already established a protocol for all incoming travelers to complete a declaration form, for that information to be entered into a disease surveillance platform and for that information to be shared with the public health monitoring system for active surveillance.
 

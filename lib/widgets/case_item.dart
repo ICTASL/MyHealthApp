@@ -15,9 +15,9 @@ class CaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var source = _case.isLocal ? 'Local' : 'Imported';
-    source += ', from: ' +
-        (_case.isFromFacility ? 'Quarantine Facility' : 'Community');
+//    var source = _case.isLocal ? 'Local' : 'Imported';
+//    source += ', from: ' +
+//        (_case.isFromFacility ? 'Quarantine Facility' : 'Community');
     return GestureDetector(
       child: Container(
         width: 100.0,
@@ -46,8 +46,9 @@ class CaseItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "CASE " + _case.id.toString(),
-                      style: TextStyle(fontSize: 18.0),
+                      _case.caseNumber,
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.w800),
                     ),
                     SizedBox(height: 6.0),
                     Text(
@@ -56,8 +57,38 @@ class CaseItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12.0),
                     ),
                     SizedBox(height: 16.0),
-                    Text(
-                      source,
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                              color:
+                                  _case.isLocal ? Colors.green : Colors.amber,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              _case.isLocal ? "Local" : "Foreign",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          decoration: BoxDecoration(
+                              color:
+                                  _case.isLocal ? Colors.purple : Colors.blue,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              _case.isFromFacility ? "Community" : "Quarantine",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 16.0),
                     Text(
@@ -126,12 +157,12 @@ class CaseItem extends StatelessWidget {
                             ? RaisedButton(
                                 color: TrackerColors.primaryColor,
                                 child: Text(
-                                  "REGISTER ME, I WAS THERE",
+                                  "REGISTER",
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(20.0))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0))),
                                 onPressed: () {
                                   Provider.of<RegisteredCasesModel>(context,
                                           listen: false)
