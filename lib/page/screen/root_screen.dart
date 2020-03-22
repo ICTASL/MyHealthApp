@@ -147,8 +147,8 @@ class _RootScreenState extends State<RootScreen> {
               return [
                 PopupMenuItem<String>(
                     child: Text('Language'), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text('App FAQ'), value: 'ios_faq'),
-                PopupMenuItem<String>(child: Text('FAQ'), value: 'faq'),
+                PopupMenuItem<String>(child: Text('FAQ'), value: 'ios_faq'),
+                PopupMenuItem<String>(child: Text('Corona FAQ'), value: 'faq'),
                 PopupMenuItem<String>(
                     child: Text(AppLocalizations.of(context)
                         .translate("popmenu_privpolicy")),
