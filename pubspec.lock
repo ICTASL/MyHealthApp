@@ -92,6 +92,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.3"
+  dart_notification_center:
+    dependency: transitive
+    description:
+      name: dart_notification_center
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+1"
   date_format:
     dependency: "direct main"
     description:
@@ -99,6 +106,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.8"
+  dropdown_banner:
+    dependency: "direct main"
+    description:
+      name: dropdown_banner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   equatable:
     dependency: "direct main"
     description:
