@@ -73,6 +73,7 @@ class AppDataRepository implements DataRepository {
 
   @override
   Future<void> registerUser(Registration _cases) {
+    print(_cases);
     try {
       return _db.registerUser(
           _cases); //caching for news articles must also be implemented

@@ -631,23 +631,24 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   }
 
   void _saveRegistration() async {
-    setState(() {
-      _currentBtnChild = _registerCircleProgress;
-      _registerBtnWidth = 100.0;
-      _registerBtnHeight = 50.0;
-      _registerBtnStatus = false;
-    });
+    print("Working...");
+//    setState(() {
+//      _currentBtnChild = _registerCircleProgress;
+//      _registerBtnWidth = 100.0;
+//      _registerBtnHeight = 50.0;
+//      _registerBtnStatus = false;
+//    });
 
     List<ReportedCase> _cases =
         Provider.of<RegisteredCasesModel>(context, listen: false).reportedCases;
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+//    Position position = await Geolocator()
+//        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
     Registration registration = Registration(
         name: _name,
         email: _email,
         address: _address,
-        longitude: position.longitude,
-        lattitude: position.latitude,
+        longitude: 0,
+        lattitude: 0,
         age: _age,
         nic: _nic,
         mobileImei: "1234",
@@ -655,6 +656,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         passport: _passport,
         country: _country,
         gender: _gender);
+
+    print(registration);
 
     try {
       await GetIt.instance<DataRepository>().registerUser(registration);
