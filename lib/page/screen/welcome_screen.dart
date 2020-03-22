@@ -95,6 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         ),
                         Text(
                           AppLocalizations.of(context)
