@@ -59,16 +59,16 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
                   position: LatLng(l.latitude, l.longitude));
             }).toList();
 
-            locationMarkers.addAll(locations.map((l) {
-              return Marker(
-                  icon: userIcon,
-                  alpha: 0.5,
-                  infoWindow: InfoWindow(
-                      title: "You where there at ${dateFormat.format(l.date)}",
-                      snippet: ""),
-                  markerId: MarkerId("${l.date.millisecondsSinceEpoch}"),
-                  position: LatLng(l.latitude, l.longitude));
-            }).toList(growable: false));
+//            locationMarkers.addAll(locations.map((l) {
+//              return Marker(
+//                  icon: userIcon,
+//                  alpha: 0.5,
+//                  infoWindow: InfoWindow(
+//                      title: "You where there at ${dateFormat.format(l.date)}",
+//                      snippet: ""),
+//                  markerId: MarkerId("${l.date.millisecondsSinceEpoch}"),
+//                  position: LatLng(l.latitude, l.longitude));
+//            }).toList(growable: false));
           });
         });
       });
