@@ -119,7 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/welcome_screen_bg.png"), fit: BoxFit.fill)),
+              image: AssetImage("assets/images/welcome_screen_bg.png"),
+              fit: BoxFit.fill)),
     ); // or some other widget
   }
 
@@ -143,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    checkReachability();
     return _createSplashScreen();
   }
 }
