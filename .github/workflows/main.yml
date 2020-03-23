@@ -20,9 +20,11 @@ jobs:
 
     - name: Set build mode
       run: |
-        BUILD_MODE='release'
-        if [[ "${GITHUB_EVENT_NAME}" = 'pull_request' ]]; then
-            BUILD_MODE='debug'
+        BUILD_MODE='debug'
+        if [[ "${GITHUB_REF}" = ^refs\/tags\/v*' ]]
+            BUILD_MODE='release'
+        elif [[ "${GITHUB_REF}" = ^refs/heads/master' ]]
+            BUILD_MODE='release'
         fi
 
         echo "Build mode: ${BUILD_MODE}"
