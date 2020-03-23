@@ -37,8 +37,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.initState();
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      _appName = packageInfo.appName;
-      _version = packageInfo.version;
+      setState(() {
+        _appName = packageInfo.appName;
+        _version = packageInfo.version;
+      });
     });
   }
 
