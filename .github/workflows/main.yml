@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - run:
+        echo "event type ${GITHUB_EVENT_NAME}"
+
     - name: Set build mode
       run: |
         BUILD_MODE='release'
