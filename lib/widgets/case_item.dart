@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/page/screen/case_details_screen.dart';
@@ -68,7 +69,11 @@ class CaseItem extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              _case.isLocal ? "Local" : "Foreign",
+                              _case.isLocal
+                                  ? AppLocalizations.of(context)
+                                      .translate("case_item_local")
+                                  : AppLocalizations.of(context)
+                                      .translate("case_item_foreign"),
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -83,7 +88,11 @@ class CaseItem extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              _case.isFromFacility ? "Community" : "Quarantine",
+                              _case.isFromFacility
+                                  ? AppLocalizations.of(context)
+                                      .translate("case_item_community")
+                                  : AppLocalizations.of(context)
+                                      .translate("case_item_quarantine"),
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -96,7 +105,8 @@ class CaseItem extends StatelessWidget {
                     ),
                     SizedBox(height: 16.0),
                     Text(
-                      "Reported locations",
+                      AppLocalizations.of(context)
+                          .translate("case_item_reported_locations"),
                       style: TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w900),
                     ),
@@ -157,7 +167,8 @@ class CaseItem extends StatelessWidget {
                             ? RaisedButton(
                                 color: TrackerColors.primaryColor,
                                 child: Text(
-                                  "REGISTER",
+                                  AppLocalizations.of(context)
+                                      .translate("case_item_register"),
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -182,7 +193,8 @@ class CaseItem extends StatelessWidget {
                                 },
                               )
                             : Text(
-                                "Already Added for Registration",
+                                AppLocalizations.of(context)
+                                    .translate("case_item_already_register"),
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),

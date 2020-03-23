@@ -80,5 +80,13 @@
   "tos_title": "By using the Sri Lanka COVID-19 app, I understand that",
   "tos_line_one": "The app will securely record my location data within my mobile device, and the recorded location data will not be transferred out of the device without my proper prior consent.",
   "tos_line_two": "The app will securely store my registered personal information in the cloud owned and managed by the Ministry of Health Sri Lanka.",
-  "news_list_read_more_text": "Read More"
+  "news_list_read_more_text": "Read More",
+
+  "case_item_local":"Local",
+  "case_item_foreign": "Foreign",
+  "case_item_community": "Community",
+  "case_item_quarantine":  "Quarantine",
+  "case_item_reported_locations":   "Reported locations",
+  "case_item_register":   "REGISTER",
+  "case_item_already_register":    "Already Added for Registration"
 }
