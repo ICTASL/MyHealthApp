@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import androidx.annotation.NonNull
@@ -48,7 +49,12 @@ class MainActivity : FlutterActivity() {
         }
 
         Intent(this, LocationTrackingService::class.java).also { intent ->
-            startService(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            }else{
+                startService(intent);
+            }
+//            startService(intent);
         }
 
         MethodChannel(flutterEngine!!.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
