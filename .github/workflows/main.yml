@@ -49,7 +49,9 @@ jobs:
         STORE_PASSWORD: ${{ secrets.AndroidStorePassword }}
         KEY_PASSWORD: ${{ secrets.AndroidKeyPassword }}
 
-    - run: |
+    - name: Build Android packages
+      run: |
+        set -xe
         BUILD_MODE='--release'
         if [[GITHUB_EVENT_NAME = 'pull_request']]; then
             BUILD_MODE='--debug'
