@@ -26,18 +26,6 @@ jobs:
 
         echo "::set-env name=BUILD_MODE::${BUILD_MODE}"
 
-    - run: echo "${R} | ${C} | ${D}"
-      env:
-        C: ${{ env.BUILD_MODE }} == 'release'
-        D: ${{ env.BUILD_MODE }} == 'debug'
-        R: ${{ env.BUILD_MODE }}
-        
-    - run: echo "aaaaaa"
-      if: ${{ env.BUILD_MODE == 'release' }}
-        
-    - run: echo "bbbbbb"
-      if: ${{ env.BUILD_MODE == 'debug' }}
-        
     - uses: actions/checkout@v2
 
     - uses: actions/setup-java@v1
@@ -55,14 +43,14 @@ jobs:
     - run: flutter test
 
     - name: Generate Android key store file
-      if: ${{ env.BUILD_MODE }} == 'release'
+      if: ${{ env.BUILD_MODE == 'release' }}
       run: echo "${SIGNING_KEY}" | openssl base64 -d -out key.jks
       working-directory: ${{ github.workspace }}/android
       env:
         SIGNING_KEY: ${{ secrets.AndroidSigningKeyBase64 }}
 
     - name: Generate Android key.properties file
-      if: ${{ env.BUILD_MODE }} == 'release'
+      if: ${{ env.BUILD_MODE == 'release' }}
       run: |
         echo "storePassword=${STORE_PASSWORD}" >> key.properties
         echo "keyPassword=${KEY_PASSWORD}" >> key.properties
@@ -77,14 +65,14 @@ jobs:
       run: flutter build apk "--${BUILD_MODE}" --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
     - name: Upload Android release artifacts
-      if: ${{ env.BUILD_MODE }} == 'release'
+      if: ${{ env.BUILD_MODE == 'release' }}
       uses: actions/upload-artifact@v1
       with:
         name: android_release
         path: "build/app/outputs/apk/release"
-        
+
     - name: Upload Android debug artifacts
-      if: ${{ env.BUILD_MODE }} == 'debug'
+      if: ${{ env.BUILD_MODE == 'debug' }}
       uses: actions/upload-artifact@v1
       with:
         name: android_debug
