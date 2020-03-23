@@ -15,7 +15,7 @@ class _IOSFAQScreenState extends State<IOSFAQScreen> {
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           AppLocalizations.of(context)
-                              .translate("popmenu_faq"),
+                              .translate("popmenu_ios_faq"),
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

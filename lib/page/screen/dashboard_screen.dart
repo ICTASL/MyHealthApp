@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/message_type.dart';
@@ -28,6 +29,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  static const MethodChannel _channel = MethodChannel('location');
   RemoteConfig config;
   PageController _pageController;
 
@@ -52,6 +54,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
       updateDashboard();
+    });
+
+    _channel.invokeMethod('requestLocationPermission').then((res) {
+      _channel.invokeMethod('openLocationService').then((res) {});
     });
   }
 
@@ -103,7 +109,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<StoriesModel>(context).articles.length);
     return DefaultTabController(
       length: 2,
       child: Column(

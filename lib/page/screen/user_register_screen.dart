@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
-import 'package:selftrackingapp/exceptions/data_fetch_exception.dart';
 import 'package:selftrackingapp/exceptions/data_write_exception.dart';
 import 'package:selftrackingapp/models/registration.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
@@ -15,9 +11,7 @@ import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/animated_tracker_button.dart';
-import 'package:package_info/package_info.dart';
 
-import '../../app_localizations.dart';
 import '../../app_localizations.dart';
 import '../../utils/tracker_colors.dart';
 
@@ -70,12 +64,12 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
   String _name;
   String _age;
-  String _email;
+  String _email = "";
   String _mobileNumber;
   String _address;
   String _citizenStatus = "Yes";
   String _nic = "";
-  String _country = "Sri Lanka";
+  String _country;
   String _passport = "";
   String _gender;
 
@@ -85,7 +79,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   void initState() {
     super.initState();
     _currentBtnChild = _registerTextChild;
-    print("Getting countries");
   }
 
   Future<List<String>> _fetchCountries() {
@@ -279,35 +272,35 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 15.0,
                     ),
-                    TextFormField(
-                        validator: (val) {
-                          if (val.isEmpty || !val.contains("@")) {
-                            return AppLocalizations.of(context).translate(
-                                "user_register_screen_invalid_email");
-                          }
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            _email = val;
-                          });
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)
-                                .translate("user_register_screen_email"),
-                            icon: Icon(
-                              Icons.email,
-                              color: TrackerColors.primaryColor,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(
-                                color: TrackerColors.primaryColor,
-                              ),
-                            ))),
-                    SizedBox(
-                      height: 15.0,
-                    ),
+                    // TextFormField(
+                    //     validator: (val) {
+                    //       if (val.isEmpty || !val.contains("@")) {
+                    //         return AppLocalizations.of(context).translate(
+                    //             "user_register_screen_invalid_email");
+                    //       }
+                    //     },
+                    //     onSaved: (val) {
+                    //       setState(() {
+                    //         _email = val;
+                    //       });
+                    //     },
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     decoration: InputDecoration(
+                    //         labelText: AppLocalizations.of(context)
+                    //             .translate("user_register_screen_email"),
+                    //         icon: Icon(
+                    //           Icons.email,
+                    //           color: TrackerColors.primaryColor,
+                    //         ),
+                    //         border: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(15.0),
+                    //           borderSide: BorderSide(
+                    //             color: TrackerColors.primaryColor,
+                    //           ),
+                    //         ))),
+                    // SizedBox(
+                    //   height: 15.0,
+                    // ),
                     TextFormField(
                         validator: (val) {
                           if (val.isEmpty) {
@@ -320,7 +313,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           });
                         },
                         decoration: InputDecoration(
-                            labelText: "Home Address",
+                            labelText: AppLocalizations.of(context)
+                                .translate("home_address"),
                             icon: Icon(
                               Icons.home,
                               color: TrackerColors.primaryColor,
@@ -334,7 +328,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text("Are you a Sri Lankan Citizen?"),
+                    Text(AppLocalizations.of(context)
+                        .translate("sri_lankan_citizan")),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -344,13 +339,17 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("Yes", style: TextStyle(color: Colors.black)),
+                            Text(
+                                AppLocalizations.of(context)
+                                    .translate("radio_yes"),
+                                style: TextStyle(color: Colors.black)),
                             Radio(
                               value: "Yes",
                               groupValue: _citizenStatus,
                               onChanged: (value) {
                                 setState(() {
                                   _citizenStatus = value;
+                                  _passport = "";
                                 });
                               },
                             ),
@@ -359,13 +358,17 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("No", style: TextStyle(color: Colors.black)),
+                            Text(
+                                AppLocalizations.of(context)
+                                    .translate("radio_no"),
+                                style: TextStyle(color: Colors.black)),
                             Radio(
                               value: "No",
                               groupValue: _citizenStatus,
                               onChanged: (value) {
                                 setState(() {
                                   _citizenStatus = value;
+                                  _nic = "";
                                 });
                               },
                             ),
@@ -398,7 +401,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                                labelText: "NIC or SLIN Number",
+                                labelText: AppLocalizations.of(context)
+                                    .translate("nic_no"),
                                 icon: Icon(
                                   Icons.account_box,
                                   color: TrackerColors.primaryColor,
@@ -444,17 +448,27 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                             child: Container(
                                               margin: const EdgeInsets.only(
                                                   left: 15.0),
-                                              height: 60.0,
                                               child:
                                                   DropdownButtonHideUnderline(
-                                                      child: DropdownButton<
-                                                          String>(
+                                                      child:
+                                                          DropdownButtonFormField<
+                                                              String>(
+                                                validator: (val) {
+                                                  if (val == null) {
+                                                    return "Select your country.";
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    contentPadding:
+                                                        const EdgeInsets.all(
+                                                            10.0)),
                                                 hint: Padding(
                                                   child: Text(
                                                       "Select your country"),
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 10.0),
+                                                          left: 0.0),
                                                 ),
                                                 items: snapshot.data
                                                     .map((value) =>
@@ -504,7 +518,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               TextFormField(
                                   validator: (val) {
                                     if (val.isEmpty) {
-                                      "Passport number is invalid";
+                                      return "Passport number is invalid";
                                     }
                                   },
                                   onSaved: (val) {
@@ -513,7 +527,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                     });
                                   },
                                   decoration: InputDecoration(
-                                      labelText: "Passport Number",
+                                      labelText: AppLocalizations.of(context)
+                                          .translate("passport_number"),
                                       icon: Icon(
                                         Icons.card_travel,
                                         color: TrackerColors.primaryColor,
@@ -568,15 +583,31 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Icon(Icons.person),
                         Expanded(
                           child: Container(
+                            width: MediaQuery.of(context).size.width,
                             margin: const EdgeInsets.only(left: 15.0),
-                            height: 60.0,
                             child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
+                                child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(10.0)),
+                              validator: (val) {
+                                if (val == null) {
+                                  return "Choose a gender.";
+                                }
+                              },
                               hint: Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text("Select a Gender"),
+                                padding: const EdgeInsets.only(left: 0.0),
+                                child: Text(AppLocalizations.of(context)
+                                    .translate("select_a_gender")),
                               ),
-                              items: ['Male', 'Female', "Other"]
+                              items: [
+                                AppLocalizations.of(context)
+                                    .translate("menu_item_male"),
+                                AppLocalizations.of(context)
+                                    .translate("menu_item_female"),
+                                AppLocalizations.of(context)
+                                    .translate("menu_item_other")
+                              ]
                                   .map((value) => DropdownMenuItem(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
@@ -591,6 +622,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               },
                               value: _gender,
                             )),
+                            padding: const EdgeInsets.all(3.0),
                             decoration: ShapeDecoration(
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(
@@ -608,6 +640,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 15.0,
                     ),
+
                     AnimatedTrackerButton(
                       child: _currentBtnChild,
                       active: _registerBtnStatus,
@@ -638,7 +671,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
       _registerBtnHeight = 50.0;
       _registerBtnStatus = false;
     });
-
+    if (_citizenStatus == "Yes") {
+      _country = "Sri Lanka";
+    }
     List<ReportedCase> _cases =
         Provider.of<RegisteredCasesModel>(context, listen: false).reportedCases;
 //    Position position = await Geolocator()
@@ -656,8 +691,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         passport: _passport,
         country: _country,
         gender: _gender);
-
-    print(registration);
 
     try {
       await GetIt.instance<DataRepository>().registerUser(registration);
@@ -692,5 +725,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         });
       });
     }
+    print(registration);
   }
 }

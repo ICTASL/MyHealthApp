@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import androidx.annotation.NonNull
@@ -26,32 +27,20 @@ class MainActivity : FlutterActivity() {
 
 
     private lateinit var locationDao: LocationDao;
+    var isLocationServiceRunning = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this.flutterEngine!!);
 
         locationDao = LocationDatabase.getInstance(this).locationDao()
-        val permissionAccessCoarseLocationApproved = ActivityCompat
-                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED
 
-        if (permissionAccessCoarseLocationApproved) {
-            // App has permission to access location in the foreground. Start your
-            // foreground service that has a foreground service type of "location".
-        } else {
-            // Make a request for foreground-only location access.
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                    LOCATION_UPDATE_REQUEST_CODE
-            )
-        }
 
-        Intent(this, LocationTrackingService::class.java).also { intent ->
-            startService(intent);
-        }
+
 
         MethodChannel(flutterEngine!!.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
+
+
             if (call.method == "getLocation") {
 
                 val handler = Handler()
@@ -67,12 +56,38 @@ class MainActivity : FlutterActivity() {
                         jsonLocation.put("title", location.dateString)
                         locaitons.add(jsonLocation.toString(10))
                     }
-                    
+
                     handler.post {
                         result.success(locaitons);
                     }
                 }
 
+            } else if (call.method == "requestLocationPermission") {
+                val permissionAccessCoarseLocationApproved = ActivityCompat
+                        .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED
+
+                if (permissionAccessCoarseLocationApproved) {
+                    result.success("PERMISSION_GRANTED");
+                } else {
+                    // Make a request for foreground-only location access.
+                    ActivityCompat.requestPermissions(this,
+                            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                            LOCATION_UPDATE_REQUEST_CODE
+                    )
+                    result.success("PERMISSION_GRANTED");
+                }
+            } else if (call.method == "openLocationService") {
+                if (!isLocationServiceRunning)
+                    Intent(this, LocationTrackingService::class.java).also { intent ->
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startForegroundService(intent)
+                        } else {
+                            startService(intent);
+                        }
+                        isLocationServiceRunning = true
+                    }
+                result.success("LOCATION_SERVICE_RUNNING");
             }
         }
 

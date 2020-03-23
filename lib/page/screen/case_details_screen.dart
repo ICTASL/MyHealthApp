@@ -27,25 +27,35 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   Timer _currentLoctimer;
   bool _isInitialLocationAdded = false;
 
+  Future<void> updateLocation() async {
+    List<Location> newEntries = await getLocationUpdate();
+    print("LOCATIONS Fetched: ${newEntries.length}");
+    if (this.mounted) {
+      setState(() {
+        newEntries.forEach((e) {
+          if (!entries.contains(e)) {
+            entries.add(
+                e); //location id should be used here to prevent duplicate locations from being added
+          }
+        });
+        print("POLLED locations: ${newEntries.length}");
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    updateLocation();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _channel.invokeMethod('requestLocationPermission').then((res) {
+        _channel.invokeMethod('openLocationService').then((res) {});
+      });
+
       _locationTimer = Timer.periodic(Duration(minutes: 5), (timer) async {
         print("POLLING the locations");
-        List<Location> newEntries = await getLocationUpdate();
-        print("LOCATIONS Fetched: ${newEntries.length}");
-        if (this.mounted) {
-          setState(() {
-            newEntries.forEach((e) {
-              if (!entries.contains(e)) {
-                entries.add(
-                    e); //location id should be used here to prevent duplicate locations from being added
-              }
-            });
-            print("POLLED locations: ${newEntries.length}");
-          });
-        }
+        await updateLocation();
       });
 
       _currentLoctimer = Timer.periodic(Duration(seconds: 2), (_) {
@@ -116,7 +126,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         zoom: 12,
       ),
       myLocationButtonEnabled: true,
-      myLocationEnabled: true,
+//      myLocationEnabled: true,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },

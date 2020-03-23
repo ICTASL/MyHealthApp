@@ -1,11 +1,14 @@
 package app.ceylon.selftrackingapp.service
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.*
 import android.util.Log
-import android.widget.Toast
 import app.ceylon.selftrackingapp.LocationDatabase
 import app.ceylon.selftrackingapp.MainActivity
 import app.ceylon.selftrackingapp.dao.LocationDao
@@ -17,6 +20,8 @@ import java.util.*
 class LocationTrackingService : Service() {
 
     private val binder: IBinder = AppServiceBinder()
+    private val CHANNEL_ID = "11111"
+    private val CHANNEL_NAME = "ForegroundServiceChannel"
 
     inner class AppServiceBinder : Binder() {
         val service: LocationTrackingService
@@ -31,6 +36,19 @@ class LocationTrackingService : Service() {
     private val handler = Handler()
 
     override fun onCreate() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_HIGH)
+            val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+
+            val notification = Notification.Builder(applicationContext, CHANNEL_ID).build()
+            startForeground(1, notification)
+        } else {
+
+        }
+
+
         locationDao = LocationDatabase.getInstance(this).locationDao()
         startLocationUpdates();
     }

@@ -50,7 +50,8 @@
   "language_screen_choose_sub": "Please select a language below.",
   "dashboard_screen_figures": "Here are the Latest Figures",
   "popmenu_language": "Language",
-  "popmenu_faq": "FAQ",
+  "popmenu_faq": "COVID-19 FAQ",
+  "popmenu_ios_faq": "FAQ",
   "popmenu_privpolicy": "Privacy Policy",
   "faq": {
     "\"What is a coronavirus?\"": "\"Coronaviruses are a large family of viruses which may cause illness in animals or humans. In humans, several coronaviruses are known to cause respiratory infections ranging from the common cold to more severe diseases such as Middle East Respiratory Syndrome (MERS) and Severe Acute Respiratory Syndrome (SARS). The most recently discovered coronavirus causes coronavirus disease COVID-19.\"",
@@ -61,5 +62,17 @@
     "\"Can I catch COVID-19 from the feces of someone with the disease?\"": "\"The risk of catching COVID-19 from the feces of an infected person appears to below. While initial investigations suggest the virus may be present in feces in some cases, spread through this route is not a main feature of the outbreak. WHO is assessing ongoing research on the ways COVID-19 is spread and will continue to share new findings. Because this is a risk, however, it is another reason to clean hands regularly, after using the bathroom and before eating.\"",
     "\"What can I do to protect myself and prevent the spread of disease?\"": "\"Protection measures for everyone\\n Stay aware of the latest information on the COVID-19 outbreak, available on the WHO website and through your national and local public health authority. Many countries around the world have seen cases of COVID-19 and several have seen outbreaks. Authorities in China and some other countries have succeeded in slowing or stopping their outbreaks. However, the situation is unpredictable so check regularly for the latest news.\"",
     "\"How likely am I to catch COVID-19?\"": "\"The risk depends on where you are - and more specifically, whether there is a COVID-19 outbreak unfolding there.For most people in most locations the risk of catching COVID-19 is still low. However, there are now places around the world (cities or areas) where the disease is spreading. For people living in, or visiting, these areas the risk of catching COVID19 is higher. Governments and health authorities are taking vigorous action every time a new case of COVID-19 is identified. Be sure to comply with any local restrictions on travel, movement or large gatherings. Cooperating with disease control efforts will reduce your risk of catching or spreading COVID-19. COVID-19 outbreaks can be contained and transmission stopped, as has been shown in China and some other countries. Unfortunately, new outbreaks can emerge rapidly. It’s important to be aware of the situation where you are or intend to go. WHO publishes daily updates on the COVID-19 situation worldwide.\""
-  }
+  },
+
+  "home_address": "Home Address",
+  "sri_lankan_citizan": "Are you a Sri Lankan Citizen?",
+  "radio_yes": "Yes",
+  "radio_no": "No",
+  "nic_no": "NIC or SLIN Number",
+  "select_a_gender": "Select a gender",
+  "menu_item_male": "Male",
+  "menu_item_female": "Female",
+  "menu_item_other": "Other",
+  "register": "Register",
+  "passport_number": "Passport Number"
 }
