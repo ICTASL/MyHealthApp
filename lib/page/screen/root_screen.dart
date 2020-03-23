@@ -134,10 +134,10 @@ class _RootScreenState extends State<RootScreen> {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (_) => WelcomeScreen()));
                   break;
-                case "ios_faq":
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
-                  break;
+//                case "ios_faq":
+//                  Navigator.of(context)
+//                      .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
+//                  break;
                 case "faq":
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => FAQScreen()));
@@ -154,10 +154,10 @@ class _RootScreenState extends State<RootScreen> {
                     child: Text(AppLocalizations.of(context)
                         .translate("popmenu_language")),
                     value: 'change_lan'),
-                PopupMenuItem<String>(
-                    child: Text(AppLocalizations.of(context)
-                        .translate("popmenu_ios_faq")),
-                    value: 'ios_faq'),
+//                PopupMenuItem<String>(
+//                    child: Text(AppLocalizations.of(context)
+//                        .translate("popmenu_ios_faq")),
+//                    value: 'ios_faq'),
                 PopupMenuItem<String>(
                     child: Text(
                         AppLocalizations.of(context).translate("popmenu_faq")),

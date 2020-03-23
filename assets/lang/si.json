@@ -65,10 +65,10 @@
   "menu_item_other": "වෙනත්",
   "register": "ලියාපදිංචි වන්න",
   "passport_number": " විදේශ ගමන් බලපත්\u200Dර අංක\u200Bය",
-  "tos_decline_button": "එකග නොවෙමි ",
-  "tos_dialog_title": "Terms of Condition",
-  "tos_accept_button": "එකග වෙමි ",
+  "tos_decline_button": "එකඟ නොවේ",
+  "tos_dialog_title": "භාවිතය සඳහා කොන්දේසි",
+  "tos_accept_button": "එකඟයි",
   "tos_title": "By using the Sri Lanka COVID-19 app, I understand that",
-  "tos_line_one": "The app will securely record my location data within my mobile device, and the recorded location data will not be transferred out of the device without my proper prior consent.",
-  "tos_line_two": "The app will securely store my registered personal information in the cloud owned and managed by the Ministry of Health Sri Lanka."
+  "tos_line_one": "Sri Lanka COVID-19 යෙදුම මා සිටින ස්ථානය පිළිබඳ තොරතුරු මගේ ජංගම දුරකථනය/උපාංගය තුළ ආරක්ෂිතව තැන්පත් කරනු ඇති අතර, තැන්පත් කළ ස්ථානීය තොරතුරු මගේ නිසි පූර්ව කැමැත්තකින් තොරව උපාංගයෙන් පිටතට මාරු නොකෙරේ.",
+  "tos_line_two": "Sri Lanka COVID-19 යෙදුම ශ්\u200Dරී ලංකා සෞඛ්\u200Dය අමාත්\u200Dයාංශය සතු සහ කළමනාකරණය කරන ලද මේඝයෙහි (cloud) මගේ ලියාපදිංචි පෞද්ගලික තොරතුරු ආරක්ෂිතව ගබඩා කරනු ඇත."
 }
