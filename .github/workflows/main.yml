@@ -60,11 +60,13 @@ jobs:
         flutter build apk $BUILD_MODE --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
     - uses: actions/upload-artifact@v1
+      if: github.event_name != 'pull_request'
       with:
         name: android_release
         path: "build/app/outputs/apk/release"
         
     - uses: actions/upload-artifact@v1
+      if: github.event_name == 'pull_request'
       with:
         name: android_debug
         path: "build/app/outputs/apk/debug"
@@ -81,14 +83,10 @@ jobs:
       with:
         name: android_release
 
-    - uses: actions/download-artifact@v1
-      with:
-        name: android_debug
-
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        artifacts: "android_release/*.apk,android_debug/*.apk"
+        artifacts: "android_release/*.apk"
         name: Release ${{ env.VERSION_STR }}
         prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') }}
         tag: ${{ env.VERSION_STR }}
