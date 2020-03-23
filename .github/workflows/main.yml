@@ -17,6 +17,7 @@ jobs:
 
     - run:
         echo "event type ${GITHUB_EVENT_NAME}"
+        echo "ref ${GITHUB_REF}"
 
     - name: Set build mode
       run: |
