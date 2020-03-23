@@ -17,7 +17,7 @@ jobs:
 
     - name: Set build mode
       run: |
-        BUILD_MODE='release'
+        BUILD_MODE='debug'
         if [[ "${GITHUB_EVENT_NAME}" = 'pull_request' ]]; then
             BUILD_MODE='debug'
         fi
