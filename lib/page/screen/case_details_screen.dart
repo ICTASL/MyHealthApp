@@ -30,7 +30,12 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _channel.invokeMethod('requestLocationPermission').then((res) {
+        _channel.invokeMethod('openLocationService').then((res) {});
+      });
+
       _locationTimer = Timer.periodic(Duration(minutes: 5), (timer) async {
         print("POLLING the locations");
         List<Location> newEntries = await getLocationUpdate();
@@ -116,7 +121,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         zoom: 12,
       ),
       myLocationButtonEnabled: true,
-      myLocationEnabled: true,
+//      myLocationEnabled: true,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
