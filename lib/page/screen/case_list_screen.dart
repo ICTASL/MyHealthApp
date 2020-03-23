@@ -17,6 +17,7 @@ class CaseListScreen extends StatefulWidget {
 class _CaseListScreenState extends State<CaseListScreen> {
   String _searchKey = "";
   final AsyncMemoizer<List<ReportedCase>> _memorizer = AsyncMemoizer();
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +33,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
       for (int i = id; i > 0; i--) {
         ReportedCase reportedCase =
             await ApiClient().getCase(i, forceUpdate: true);
-        _cases.add(reportedCase);
+        if (reportedCase != null) _cases.add(reportedCase);
       }
       print("Cases found Retreived: ${_cases.length}");
       return _cases;
@@ -181,13 +182,22 @@ class _CaseListScreenState extends State<CaseListScreen> {
                   // print('DATA: ${snapshot.data}');
                   if (snapshot.hasData) {
                     List<ReportedCase> _cases = List();
-                    _cases = snapshot.data
-                        .where((_) => _.locations
-                            .where((location) => location.address
-                                .toLowerCase()
-                                .contains(_searchKey.toLowerCase()))
-                            .isNotEmpty)
-                        .toList();
+                    print("Error here ${snapshot.data}");
+                    if (snapshot.data != null)
+                      _cases = snapshot.data
+                          .where((_) => _.locations
+                              .where((location) => location.address
+                                  .toLowerCase()
+                                  .contains(_searchKey.toLowerCase()))
+                              .isNotEmpty)
+                          .toList();
+                    else
+                      return SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Center(child: Text("No cases found there.")),
+                        ),
+                      );
                     if (_cases.length > 0) {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate(

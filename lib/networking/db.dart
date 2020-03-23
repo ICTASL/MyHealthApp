@@ -44,13 +44,12 @@ class AppDatabase implements DB {
     List<ReportedCase> _cases = [];
 
     http.Response response =
-        await http.get('$testingServer/application/case/latest');
+        await http.get('$_baseUrl/application/case/latest');
 
     int casesLength = json.decode(response.body);
 
     for (int i = 1; i < casesLength + 1; i++) {
-      http.Response res = await http.get(
-          '$testingServer/application/case/$i/$lang',
+      http.Response res = await http.get('$_baseUrl/application/case/$i/$lang',
           headers: {'Content-Type': 'application/json'});
 
       _cases.add(ReportedCase.fromJson(json.decode(res.body)));

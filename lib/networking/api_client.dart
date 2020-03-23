@@ -140,10 +140,10 @@ class ApiClient {
 
   Future<int> getLastCaseId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int lastMessageId = prefs.getInt("last_case_id");
-    if (lastMessageId == null) {
-      lastMessageId = 0;
-    }
+    int lastMessageId = 0; // prefs.getInt("last_case_id");
+//    if (lastMessageId == null) {
+//      lastMessageId = 0;
+//    }
 
     final url = '$_baseUrl/application/case/latest';
     print('Get last message ID: $url');
