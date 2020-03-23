@@ -37,7 +37,7 @@ class _RootScreenState extends State<RootScreen> {
   final _homeTabs = {
     DashboardScreen(),
     CaseListScreen(),
-//    CaseDetailScreen(),
+    CaseDetailScreen(),
     ContactUsScreen(),
   };
 
@@ -112,10 +112,10 @@ class _RootScreenState extends State<RootScreen> {
           title: AppLocalizations.of(context)
               .translate('dashboard_case_list_tab_text'),
           icon: Icons.location_searching),
-//      TitledNavigationBarItem(
-//          title: AppLocalizations.of(context)
-//              .translate('dashboard_safe_track_tab_text'),
-//          icon: Icons.map),
+      TitledNavigationBarItem(
+          title: AppLocalizations.of(context)
+              .translate('dashboard_safe_track_tab_text'),
+          icon: Icons.map),
       TitledNavigationBarItem(
           title: AppLocalizations.of(context)
               .translate('dashboard_contact_tab_text'),
@@ -152,11 +152,16 @@ class _RootScreenState extends State<RootScreen> {
               return [
                 PopupMenuItem<String>(
                     child: Text(AppLocalizations.of(context)
-                        .translate("popmenu_language")), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
-                    .translate("popmenu_ios_faq")), value: 'ios_faq'),
-                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
-                    .translate("popmenu_faq")), value: 'faq'),
+                        .translate("popmenu_language")),
+                    value: 'change_lan'),
+                PopupMenuItem<String>(
+                    child: Text(AppLocalizations.of(context)
+                        .translate("popmenu_ios_faq")),
+                    value: 'ios_faq'),
+                PopupMenuItem<String>(
+                    child: Text(
+                        AppLocalizations.of(context).translate("popmenu_faq")),
+                    value: 'faq'),
                 PopupMenuItem<String>(
                     child: Text(AppLocalizations.of(context)
                         .translate("popmenu_privpolicy")),
