@@ -63,7 +63,6 @@
     "\"What can I do to protect myself and prevent the spread of disease?\"": "\"Protection measures for everyone\\n Stay aware of the latest information on the COVID-19 outbreak, available on the WHO website and through your national and local public health authority. Many countries around the world have seen cases of COVID-19 and several have seen outbreaks. Authorities in China and some other countries have succeeded in slowing or stopping their outbreaks. However, the situation is unpredictable so check regularly for the latest news.\"",
     "\"How likely am I to catch COVID-19?\"": "\"The risk depends on where you are - and more specifically, whether there is a COVID-19 outbreak unfolding there.For most people in most locations the risk of catching COVID-19 is still low. However, there are now places around the world (cities or areas) where the disease is spreading. For people living in, or visiting, these areas the risk of catching COVID19 is higher. Governments and health authorities are taking vigorous action every time a new case of COVID-19 is identified. Be sure to comply with any local restrictions on travel, movement or large gatherings. Cooperating with disease control efforts will reduce your risk of catching or spreading COVID-19. COVID-19 outbreaks can be contained and transmission stopped, as has been shown in China and some other countries. Unfortunately, new outbreaks can emerge rapidly. It’s important to be aware of the situation where you are or intend to go. WHO publishes daily updates on the COVID-19 situation worldwide.\""
   },
-
   "home_address": "Home Address",
   "sri_lankan_citizan": "Are you a Sri Lankan Citizen?",
   "radio_yes": "Yes",
@@ -74,5 +73,11 @@
   "menu_item_female": "Female",
   "menu_item_other": "Other",
   "register": "Register",
-  "passport_number": "Passport Number"
+  "passport_number": "Passport Number",
+  "tos_decline_button": "I Decline",
+  "tos_dialog_title": "Terms of Condition",
+  "tos_accept_button": "I Accept",
+  "tos_title": "By using the Sri Lanka COVID-19 app, I understand that",
+  "tos_line_one": "The app will securely record my location data within my mobile device, and the recorded location data will not be transferred out of the device without my proper prior consent.",
+  "tos_line_two": "The app will securely store my registered personal information in the cloud owned and managed by the Ministry of Health Sri Lanka."
 }

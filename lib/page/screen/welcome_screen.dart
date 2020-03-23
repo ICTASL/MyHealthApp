@@ -312,7 +312,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       _btnChild = _nextBtnChild;
                     });
                   },
-                  child: Text("I Decline",
+                  child: Text(
+                      AppLocalizations.of(context)
+                          .translate("tos_decline_button"),
                       style: TextStyle(color: Colors.black45)),
                 ),
                 Column(
@@ -333,7 +335,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "I Accept",
+                          AppLocalizations.of(context)
+                              .translate("tos_accept_button"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -360,7 +363,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Terms of Service",
+                            AppLocalizations.of(context)
+                                .translate("tos_dialog_title"),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.black,
@@ -371,8 +375,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             height: 20.0,
                           ),
                           Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            AppLocalizations.of(context).translate("tos_title"),
                             textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate("tos_line_one"),
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate("tos_line_two"),
+                            textAlign: TextAlign.justify,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15.0,
