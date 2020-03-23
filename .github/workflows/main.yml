@@ -15,13 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Build Android packages
+    - name: Set build mode
       run: |
         BUILD_MODE='release'
         if [[GITHUB_EVENT_NAME = 'pull_request']]; then
             BUILD_MODE='debug'
         fi
-        BUILD_MODE='debug'
+
+        echo "Build mode: ${BUILD_MODE}"
+
         echo "::set-env name=BUILD_MODE::${BUILD_MODE}"
 
     - uses: actions/checkout@v2
@@ -41,14 +43,14 @@ jobs:
     - run: flutter test
 
     - name: Generate Android key store file
-      if: ${{ env.VERSION_STR }} == 'release'
+      if: ${{ env.BUILD_MODE }} == 'release'
       run: echo "${SIGNING_KEY}" | openssl base64 -d -out key.jks
       working-directory: ${{ github.workspace }}/android
       env:
         SIGNING_KEY: ${{ secrets.AndroidSigningKeyBase64 }}
 
     - name: Generate Android key.properties file
-      if: ${{ env.VERSION_STR }} == 'release'
+      if: ${{ env.BUILD_MODE }} == 'release'
       run: |
         echo "storePassword=${STORE_PASSWORD}" >> key.properties
         echo "keyPassword=${KEY_PASSWORD}" >> key.properties
@@ -63,13 +65,13 @@ jobs:
       run: flutter build apk "--${BUILD_MODE}" --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
     - uses: actions/upload-artifact@v1
-      if: ${{ env.VERSION_STR }} == 'release'
+      if: ${{ env.BUILD_MODE }} == 'release'
       with:
         name: android_release
         path: "build/app/outputs/apk/release"
         
     - uses: actions/upload-artifact@v1
-      if: ${{ env.VERSION_STR }} == 'debug'
+      if: ${{ env.BUILD_MODE }} == 'debug'
       with:
         name: android_debug
         path: "build/app/outputs/apk/debug"
