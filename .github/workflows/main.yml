@@ -50,7 +50,7 @@ jobs:
         KEY_PASSWORD: ${{ secrets.AndroidKeyPassword }}
 
     - run: |
-        flutter build help apk
+        flutter build -h
         if [[GITHUB_EVENT_NAME = 'pull_request']]; then
         endif
 
