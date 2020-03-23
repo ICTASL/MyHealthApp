@@ -14,6 +14,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
+    - name: Set build mode
+      run: |
+        BUILD_MODE='debug'
+        if [[ "${GITHUB_REF}" =~ ^refs\/tags\/v* ]]; then
+            BUILD_MODE='release'
+        elif [[ "${GITHUB_REF}" =~ ^refs\/heads\/master$ ]]; then
+            BUILD_MODE='release'
+        fi
+
+        echo "Build mode: ${BUILD_MODE}"
+
+        echo "::set-env name=BUILD_MODE::${BUILD_MODE}"
+
     - uses: actions/checkout@v2
 
     - uses: actions/setup-java@v1
@@ -31,12 +45,14 @@ jobs:
     - run: flutter test
 
     - name: Generate Android key store file
+      if: ${{ env.BUILD_MODE == 'release' }}
       run: echo "${SIGNING_KEY}" | openssl base64 -d -out key.jks
       working-directory: ${{ github.workspace }}/android
       env:
         SIGNING_KEY: ${{ secrets.AndroidSigningKeyBase64 }}
 
     - name: Generate Android key.properties file
+      if: ${{ env.BUILD_MODE == 'release' }}
       run: |
         echo "storePassword=${STORE_PASSWORD}" >> key.properties
         echo "keyPassword=${KEY_PASSWORD}" >> key.properties
@@ -47,12 +63,22 @@ jobs:
         STORE_PASSWORD: ${{ secrets.AndroidStorePassword }}
         KEY_PASSWORD: ${{ secrets.AndroidKeyPassword }}
 
-    - run: flutter build apk --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+    - name: Build Android packages
+      run: flutter build apk "--${BUILD_MODE}" --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
-    - uses: actions/upload-artifact@v1
+    - name: Upload Android release artifacts
+      if: ${{ env.BUILD_MODE == 'release' }}
+      uses: actions/upload-artifact@v1
       with:
         name: android_release
         path: "build/app/outputs/apk/release"
+
+    - name: Upload Android debug artifacts
+      if: ${{ env.BUILD_MODE == 'debug' }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: android_debug
+        path: "build/app/outputs/apk/debug"
 
   release:
     runs-on: ubuntu-latest
