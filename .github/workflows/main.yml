@@ -51,6 +51,7 @@ jobs:
 
     - run: |
         flutter build -h
+        flutter build apk -h
         if [[GITHUB_EVENT_NAME = 'pull_request']]; then
         endif
 
