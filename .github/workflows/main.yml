@@ -22,9 +22,9 @@ jobs:
     - name: Set build mode
       run: |
         BUILD_MODE='debug'
-        if [[ "${GITHUB_REF}" = '^refs\/tags\/v*' ]]; then
+        if [[ "${GITHUB_REF}" =~ ^refs\/tags\/v* ]]; then
             BUILD_MODE='release'
-        elif [[ "${GITHUB_REF}" = '^refs/heads/master' ]]; then
+        elif [[ "${GITHUB_REF}" =~ ^refs\/heads\/master$ ]]; then
             BUILD_MODE='release'
         fi
 
