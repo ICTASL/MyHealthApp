@@ -32,7 +32,6 @@ class _RootScreenState extends State<RootScreen> {
   final StoriesModel _storiesModel = StoriesModel();
   final List<String> values = List();
   String _appName = "Sri Lanka COVID-19";
-  String _version = "1.0.0";
 
   int _currentIndex = 0;
   final _homeTabs = {
@@ -53,12 +52,8 @@ class _RootScreenState extends State<RootScreen> {
 
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       var name = packageInfo.appName;
-      var version = packageInfo.version;
       if (name != null) {
         _appName = name;
-      }
-      if (version != null) {
-        _version = version;
       }
     });
   }
@@ -156,9 +151,12 @@ class _RootScreenState extends State<RootScreen> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
-                    child: Text('Language'), value: 'change_lan'),
-                PopupMenuItem<String>(child: Text('FAQ'), value: 'ios_faq'),
-                PopupMenuItem<String>(child: Text('Corona FAQ'), value: 'faq'),
+                    child: Text(AppLocalizations.of(context)
+                        .translate("popmenu_language")), value: 'change_lan'),
+                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
+                    .translate("popmenu_ios_faq")), value: 'ios_faq'),
+                PopupMenuItem<String>(child: Text(AppLocalizations.of(context)
+                    .translate("popmenu_faq")), value: 'faq'),
                 PopupMenuItem<String>(
                     child: Text(AppLocalizations.of(context)
                         .translate("popmenu_privpolicy")),

@@ -14,7 +14,7 @@ class FAQScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          "FAQ",
+          AppLocalizations.of(context).translate("popmenu_faq"),
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
