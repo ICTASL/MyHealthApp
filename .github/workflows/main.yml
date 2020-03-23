@@ -33,10 +33,10 @@ jobs:
         R: ${{ env.BUILD_MODE }}
         
     - run: echo "aaaaaa"
-      if: ${{ env.BUILD_MODE }} == 'release'
+      if: ${{ env.BUILD_MODE == 'release' }}
         
     - run: echo "bbbbbb"
-      if: ${{ env.BUILD_MODE }} == 'debug'
+      if: ${{ env.BUILD_MODE == 'debug' }}
         
     - uses: actions/checkout@v2
 
