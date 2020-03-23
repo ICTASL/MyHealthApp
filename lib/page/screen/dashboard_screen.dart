@@ -103,7 +103,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<StoriesModel>(context).articles.length);
     return DefaultTabController(
       length: 2,
       child: Column(

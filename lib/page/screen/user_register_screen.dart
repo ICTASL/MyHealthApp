@@ -69,9 +69,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   String _address;
   String _citizenStatus = "Yes";
   String _nic = "";
-  String _country = "Afghanistan";
+  String _country;
   String _passport = "";
-  String _gender = "Female";
+  String _gender;
 
   final AsyncMemoizer<List<String>> _memorizier = AsyncMemoizer<List<String>>();
 
@@ -79,7 +79,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   void initState() {
     super.initState();
     _currentBtnChild = _registerTextChild;
-    print("Getting countries");
   }
 
   Future<List<String>> _fetchCountries() {
@@ -351,7 +350,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 setState(() {
                                   _citizenStatus = value;
                                   _passport = "";
-                                  _country = "Sri Lanka";
                                 });
                               },
                             ),
@@ -450,17 +448,27 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                             child: Container(
                                               margin: const EdgeInsets.only(
                                                   left: 15.0),
-                                              height: 60.0,
                                               child:
                                                   DropdownButtonHideUnderline(
-                                                      child: DropdownButton<
-                                                          String>(
+                                                      child:
+                                                          DropdownButtonFormField<
+                                                              String>(
+                                                validator: (val) {
+                                                  if (val == null) {
+                                                    return "Select your country.";
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    contentPadding:
+                                                        const EdgeInsets.all(
+                                                            10.0)),
                                                 hint: Padding(
                                                   child: Text(
                                                       "Select your country"),
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 10.0),
+                                                          left: 0.0),
                                                 ),
                                                 items: snapshot.data
                                                     .map((value) =>
@@ -575,12 +583,20 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Icon(Icons.person),
                         Expanded(
                           child: Container(
-                            height: 60.0,
+                            width: MediaQuery.of(context).size.width,
                             margin: const EdgeInsets.only(left: 15.0),
                             child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
+                                child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(10.0)),
+                              validator: (val) {
+                                if (val == null) {
+                                  return "Choose a gender.";
+                                }
+                              },
                               hint: Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
+                                padding: const EdgeInsets.only(left: 0.0),
                                 child: Text(AppLocalizations.of(context)
                                     .translate("select_a_gender")),
                               ),
@@ -606,6 +622,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               },
                               value: _gender,
                             )),
+                            padding: const EdgeInsets.all(3.0),
                             decoration: ShapeDecoration(
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(
@@ -675,8 +692,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         country: _country,
         gender: _gender);
 
-    print(registration);
-
     try {
       await GetIt.instance<DataRepository>().registerUser(registration);
 
@@ -710,5 +725,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         });
       });
     }
+    print(registration);
   }
 }
