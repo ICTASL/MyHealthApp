@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -51,13 +53,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget _screen;
+  static const Duration SPLASH_DURATION = Duration(seconds: 3);
+  Widget _nextScreen;
+  bool _isTimeoutCompleted;
 
   @override
   void initState() {
     super.initState();
+    _isTimeoutCompleted = false;
 
-    _screen = _createSplashScreen();
+    Timer(SPLASH_DURATION, () {
+      if (_nextScreen != null) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => _nextScreen));
+      } else {
+        _isTimeoutCompleted = true;
+      }
+    });
 
     loadLang();
   }
@@ -74,13 +86,17 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         AppLocalizations.of(context).load(Locale("si", "LK"));
       }
-      setState(() {
-        _screen = RootScreen();
-      });
+      _nextScreen = RootScreen();
+      if (_isTimeoutCompleted) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => _nextScreen));
+      }
     } else {
-      setState(() {
-        _screen = WelcomeScreen();
-      });
+      _nextScreen = WelcomeScreen();
+      if (_isTimeoutCompleted) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => _nextScreen));
+      }
     }
   }
 
@@ -88,12 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/bg.png"), fit: BoxFit.fill)),
+              image: AssetImage("assets/images/welcome_screen_bg.png"), fit: BoxFit.fill)),
     ); // or some other widget
   }
 
   @override
   Widget build(BuildContext context) {
-    return _screen;
+    return _createSplashScreen();
   }
 }
