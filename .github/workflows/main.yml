@@ -51,22 +51,23 @@ jobs:
 
     - name: Build Android packages
       run: |
-        BUILD_MODE='--release'
+        BUILD_MODE='release'
         if [[GITHUB_EVENT_NAME = 'pull_request']]; then
-            BUILD_MODE='--debug'
+            BUILD_MODE='debug'
         fi
-        BUILD_MODE='--debug'
+        BUILD_MODE='debug'
+        echo "::set-env name=BUILD_MODE::${BUILD_MODE}"
 
-        flutter build apk $BUILD_MODE --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+        flutter build apk "--${BUILD_MODE}" --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
     - uses: actions/upload-artifact@v1
-      if: github.event_name != 'pull_request'
+      if: ${{ env.VERSION_STR }} == 'release'
       with:
         name: android_release
         path: "build/app/outputs/apk/release"
         
     - uses: actions/upload-artifact@v1
-      if: github.event_name == 'pull_request'
+      if: ${{ env.VERSION_STR }} == 'debug'
       with:
         name: android_debug
         path: "build/app/outputs/apk/debug"
