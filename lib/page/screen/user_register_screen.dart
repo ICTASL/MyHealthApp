@@ -64,14 +64,14 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
   String _name;
   String _age;
-  String _email;
+  String _email = "";
   String _mobileNumber;
   String _address;
   String _citizenStatus = "Yes";
   String _nic = "";
-  String _country = "Sri Lanka";
+  String _country = "Afghanistan";
   String _passport = "";
-  String _gender;
+  String _gender = "Female";
 
   final AsyncMemoizer<List<String>> _memorizier = AsyncMemoizer<List<String>>();
 
@@ -273,35 +273,35 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 15.0,
                     ),
-                    TextFormField(
-                        validator: (val) {
-                          if (val.isEmpty || !val.contains("@")) {
-                            return AppLocalizations.of(context).translate(
-                                "user_register_screen_invalid_email");
-                          }
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            _email = val;
-                          });
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)
-                                .translate("user_register_screen_email"),
-                            icon: Icon(
-                              Icons.email,
-                              color: TrackerColors.primaryColor,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide(
-                                color: TrackerColors.primaryColor,
-                              ),
-                            ))),
-                    SizedBox(
-                      height: 15.0,
-                    ),
+                    // TextFormField(
+                    //     validator: (val) {
+                    //       if (val.isEmpty || !val.contains("@")) {
+                    //         return AppLocalizations.of(context).translate(
+                    //             "user_register_screen_invalid_email");
+                    //       }
+                    //     },
+                    //     onSaved: (val) {
+                    //       setState(() {
+                    //         _email = val;
+                    //       });
+                    //     },
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     decoration: InputDecoration(
+                    //         labelText: AppLocalizations.of(context)
+                    //             .translate("user_register_screen_email"),
+                    //         icon: Icon(
+                    //           Icons.email,
+                    //           color: TrackerColors.primaryColor,
+                    //         ),
+                    //         border: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(15.0),
+                    //           borderSide: BorderSide(
+                    //             color: TrackerColors.primaryColor,
+                    //           ),
+                    //         ))),
+                    // SizedBox(
+                    //   height: 15.0,
+                    // ),
                     TextFormField(
                         validator: (val) {
                           if (val.isEmpty) {
@@ -350,6 +350,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _citizenStatus = value;
+                                  _passport = "";
+                                  _country = "Sri Lanka";
                                 });
                               },
                             ),
@@ -368,6 +370,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   _citizenStatus = value;
+                                  _nic = "";
                                 });
                               },
                             ),
@@ -507,7 +510,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               TextFormField(
                                   validator: (val) {
                                     if (val.isEmpty) {
-                                      "Passport number is invalid";
+                                      return "Passport number is invalid";
                                     }
                                   },
                                   onSaved: (val) {
@@ -572,8 +575,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Icon(Icons.person),
                         Expanded(
                           child: Container(
-                            margin: const EdgeInsets.only(left: 15.0),
                             height: 60.0,
+                            margin: const EdgeInsets.only(left: 15.0),
                             child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
                               hint: Padding(
@@ -620,6 +623,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 15.0,
                     ),
+
                     AnimatedTrackerButton(
                       child: _currentBtnChild,
                       active: _registerBtnStatus,
@@ -650,7 +654,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
       _registerBtnHeight = 50.0;
       _registerBtnStatus = false;
     });
-
+    if (_citizenStatus == "Yes") {
+      _country = "Sri Lanka";
+    }
     List<ReportedCase> _cases =
         Provider.of<RegisteredCasesModel>(context, listen: false).reportedCases;
 //    Position position = await Geolocator()
