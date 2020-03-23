@@ -53,7 +53,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _articleFetch = fetchArticles();
 
     _timer = Timer.periodic(Duration(minutes: 15), (timer) {
-      updateDashboard();
+      if (this.mounted) {
+        updateDashboard();
+      }
     });
 
     _channel.invokeMethod('requestLocationPermission').then((res) {
@@ -67,6 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     print("Fetching the articles");
     int id = await ApiClient().getLastMessageId();
+    print("last fetched $id");
     int lowerID = 1;
     if (id >= 10) {
       lowerID = id - 9;
@@ -265,7 +268,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   FlatButton(
-                    child: Text("Read More"),
+                    child: Text(AppLocalizations.of(context)
+                        .translate("news_list_read_more_text")),
                     onPressed: () {
                       _showNewsArticle(article);
                     },

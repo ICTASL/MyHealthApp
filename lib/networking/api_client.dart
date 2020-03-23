@@ -32,10 +32,10 @@ class ApiClient {
 
   Future<int> getLastMessageId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int lastMessageId = prefs.getInt("last_message_id");
-    if (lastMessageId == null) {
-      lastMessageId = 0;
-    }
+//    int lastMessageId = prefs.getInt("last_message_id");
+//    if (lastMessageId == null) {
+//      lastMessageId = 0;
+//    }
 
     final url = '$_baseUrl/application/alert/latest';
     print('Get last message ID: $url');
@@ -47,10 +47,10 @@ class ApiClient {
       return -1;
     }
     int lastMessageServerId = jsonDecode(response.body) as int;
-    if (lastMessageId < lastMessageServerId) {
-      prefs.setInt("last_message_id", lastMessageServerId);
-      lastMessageId = lastMessageServerId;
-    }
+//    if (lastMessageId < lastMessageServerId) {
+//      prefs.setInt("last_message_id", lastMessageServerId);
+    var lastMessageId = lastMessageServerId;
+//    }
 
     return lastMessageId;
   }
@@ -73,6 +73,7 @@ class ApiClient {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lang = prefs.getString('preferred_language');
     final sharedPrefId = "alert_$lang--$id";
+    print("Fetech id $sharedPrefId");
 
     String alertData = prefs.getString(sharedPrefId);
 
