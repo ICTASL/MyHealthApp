@@ -31,12 +31,14 @@ jobs:
     - run: flutter test
 
     - name: Generate Android key store file
+      if: github.event_name != 'pull_request'
       run: echo "${SIGNING_KEY}" | openssl base64 -d -out key.jks
       working-directory: ${{ github.workspace }}/android
       env:
         SIGNING_KEY: ${{ secrets.AndroidSigningKeyBase64 }}
 
     - name: Generate Android key.properties file
+      if: github.event_name != 'pull_request'
       run: |
         echo "storePassword=${STORE_PASSWORD}" >> key.properties
         echo "keyPassword=${KEY_PASSWORD}" >> key.properties
@@ -47,7 +49,12 @@ jobs:
         STORE_PASSWORD: ${{ secrets.AndroidStorePassword }}
         KEY_PASSWORD: ${{ secrets.AndroidKeyPassword }}
 
-    - run: flutter build apk --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+    - run: |
+        flutter build  apk --help
+        if [[GITHUB_EVENT_NAME = 'pull_request']]; then
+        endif
+
+        flutter build apk --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
     - uses: actions/upload-artifact@v1
       with:
