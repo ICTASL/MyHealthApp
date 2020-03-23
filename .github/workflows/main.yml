@@ -50,9 +50,6 @@ jobs:
         KEY_PASSWORD: ${{ secrets.AndroidKeyPassword }}
 
     - run: |
-        flutter build -h
-        flutter build -h apk
-        
         BUILD_MODE='--release'
         if [[GITHUB_EVENT_NAME = 'pull_request']]; then
             BUILD_MODE='--debug'
