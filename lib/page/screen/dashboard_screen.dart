@@ -179,12 +179,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       padding: const EdgeInsets.all(10.0),
       child: Card(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            borderRadius: BorderRadius.all(Radius.circular(8.0))),
         child: Container(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            color: TrackerColors.primaryColor[100],
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            color: Colors.white,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,14 +192,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      _icon,
-                      SizedBox(
-                        width: 15.0,
-                      ),
                       Expanded(
                         child: Text(
                           article.title,
@@ -214,46 +209,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    article.subtitle,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(fontWeight: FontWeight.normal),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "By ${article.originator}",
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 12),
+                      ),
+                      Spacer(),
+                      Text(
+                        "${dateFormat.format(article.created)}",
+                        //published data needs to facilitated into the messages from the API
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontSize: 12),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "by ${article.originator}",
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.body1,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "${dateFormat.format(article.created)}",
-                      //published data needs to facilitated into the messages from the API
-                      style: Theme.of(context).textTheme.body1,
-                    ),
-                  )
                 ],
               ),
               SizedBox(
-                height: 10.0,
+                height: 5.0,
               ),
               Divider(
-                color: Colors.grey[400],
+                color: Colors.grey[400].withOpacity(0.1),
               ),
               Text(
                 article.message,
-                style: TextStyle(color: Colors.black),
-              ),
-              Container(
-                child: Divider(
-                  color: Colors.grey[400],
-                ),
+                style: TextStyle(color: Colors.black, fontSize: 16.0),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -264,12 +252,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     },
                     icon: Icon(
                       Icons.share,
-                      color: Colors.grey,
+                      color: Colors.blue,
                     ),
                   ),
                   FlatButton(
-                    child: Text(AppLocalizations.of(context)
-                        .translate("news_list_read_more_text")),
+                    child: Text(
+                      AppLocalizations.of(context)
+                          .translate("news_list_read_more_text")
+                          .toUpperCase(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
                     onPressed: () {
                       _showNewsArticle(article);
                     },
@@ -283,7 +275,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _createCountCard(String title, String figure) {
+  Widget _createCountCard(String title, String figure, Color colorCode) {
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -291,7 +283,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         width: MediaQuery.of(context).size.width / 2.1,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-            color: TrackerColors.primaryColor,
+            color: colorCode.withOpacity(0.2),
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -302,19 +294,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 35.0,
-                  color: Colors.white),
+                  color: colorCode),
             ),
-            SizedBox(
-              height: 5.0,
-            ),
+            Spacer(),
             Expanded(
               child: Text(
                 title,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.bold,
                     fontSize: 20.0,
-                    color: Colors.white),
+                    color: colorCode),
               ),
             ),
           ],
@@ -358,55 +348,55 @@ class _DashboardScreenState extends State<DashboardScreen> {
         barrierDismissible: true,
         builder: (_) {
           return AlertDialog(
-            backgroundColor: Color(TrackerColors.secondaryColor),
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _icon,
-                    SizedBox(
-                      width: 15.0,
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            article.title,
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: Text(
-                        article.title,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.title.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "By ${article.originator}",
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(fontSize: 12),
+                        ),
+                        Spacer(),
+                        Text(
+                          "${dateFormat.format(article.created)}",
+                          //published data needs to facilitated into the messages from the API
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(fontSize: 12),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  article.subtitle,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context)
-                      .textTheme
-                      .title
-                      .copyWith(fontWeight: FontWeight.normal),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "by ${article.originator}",
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.body1,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    "${dateFormat.format(article.created)}",
-                    //published data needs to facilitated into the messages from the API
-                    style: Theme.of(context).textTheme.body1,
-                  ),
                 )
               ],
             ),
@@ -421,7 +411,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 },
                 icon: Icon(
                   Icons.share,
-                  color: Colors.black,
+                  color: Colors.blue,
                 ),
               ),
             ],
@@ -487,26 +477,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_confirmed_card_text"),
-                      "$confirmed"),
+                      "$confirmed",
+                      Color(0XFFc53030)),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_suspected_card_text"),
-                      "$suspected"),
+                      "$suspected",
+                      Color(0XFFed8936)),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_recovered_card_text"),
-                      "$recovered"),
+                      "$recovered",
+                      Color(0XFF3ea46d)),
                   _createCountCard(
                       AppLocalizations.of(context)
                           .translate("dashboard_deaths_card_text"),
-                      "$deaths"),
+                      "$deaths",
+                      Color(0XFF303b4b)),
                 ]),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
               "${AppLocalizations.of(context).translate('dashboard_last_updated_text')} ${dateFormat.format(lastUpdated)}",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.w400),
             ),
           ),
         ],
