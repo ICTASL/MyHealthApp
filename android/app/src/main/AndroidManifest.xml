@@ -13,7 +13,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Sri Lanka COVID-19"
+        android:label="MyHealth Sri Lanka"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity
