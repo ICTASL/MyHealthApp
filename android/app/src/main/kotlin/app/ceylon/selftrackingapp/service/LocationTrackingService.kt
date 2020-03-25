@@ -69,7 +69,7 @@ class LocationTrackingService : Service() {
     // Trigger new location updates at interval
     protected fun startLocationUpdates() { // Create the location request to start receiving updates
         mLocationRequest = LocationRequest()
-        mLocationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         mLocationRequest!!.smallestDisplacement = 10.0f
         mLocationRequest!!.interval = UPDATE_INTERVAL
         mLocationRequest!!.fastestInterval = FASTEST_INTERVAL
@@ -110,7 +110,7 @@ class LocationTrackingService : Service() {
 
                 val distanceTo = location.distanceTo(lastLocation);
 
-                if (distanceTo > 100) {
+                if (distanceTo > 50) {
                     locationDao.insert(locationModel)
                 }
             } else {

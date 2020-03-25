@@ -75,6 +75,16 @@ flutter:
         - assets/images/user_icon.png
         - assets/data/constant_data.json
         - assets/data/countries.json
+        - assets/images/rehabilitation.svg
+        - assets/images/suspect.svg
+        - assets/images/locateme_24px.svg
+        - assets/images/home_24px.svg
+        - assets/images/death.svg
+        - assets/images/contactus_24px.svg
+        - assets/images/casefinder_24px.svg
+        - assets/images/announcement_24px.svg
+        - assets/images/ambulance.svg
+        - assets/images/add_ic_call_24px.svg
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
     # For details regarding adding assets from package dependencies, see

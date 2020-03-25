@@ -35,8 +35,8 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         entries.clear();
         newEntries.forEach((e) {
           if (!entries.contains(e)) {
-            entries.add(
-                e); //location id should be used here to prevent duplicate locations from being added
+            entries.add(e);
+            //location id should be used here to prevent duplicate locations from being added
           }
         });
         print("POLLED locations: ${newEntries.length}");
