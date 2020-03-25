@@ -1,9 +1,6 @@
 package app.ceylon.selftrackingapp.service
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -42,7 +39,17 @@ class LocationTrackingService : Service() {
             val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
 
-            val notification = Notification.Builder(applicationContext, CHANNEL_ID).build()
+
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(
+                    this,
+                    0,
+                    Intent(this,MainActivity::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+            val notification = Notification.Builder(applicationContext, CHANNEL_ID)
+                    .setContentIntent(pendingIntent)
+                    .build()
             startForeground(1, notification)
         } else {
 
@@ -93,7 +100,25 @@ class LocationTrackingService : Service() {
                 lng = location.longitude);
 
         AsyncTask.execute {
-            locationDao.insert(locationModel)
+            val lastLocationModel = locationDao.getLastLocation()
+
+            if (lastLocationModel != null) {
+
+                val lastLocation = Location("Last Location");
+                lastLocation.latitude = lastLocation.latitude
+                lastLocation.longitude = lastLocation.longitude
+
+                val distanceTo = location.distanceTo(lastLocation);
+
+                if (distanceTo > 100) {
+                    locationDao.insert(locationModel)
+                }
+            } else {
+                locationDao.insert(locationModel)
+            }
+
+
+
             handler.post {
                 //                Toast.makeText(this, "Location Updated ${locationModel.lng},${locationModel.lat},${locationModel.date?.time}", Toast.LENGTH_LONG).show()
             }

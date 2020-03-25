@@ -11,6 +11,9 @@ interface LocationDao {
     @Query("SELECT * FROM locationmodel")
     fun getAll(): List<LocationModel>
 
+    @Query("SELECT * FROM locationmodel ORDER BY date DESC LIMIT 1")
+    fun getLastLocation():LocationModel
+
     @Query("SELECT * FROM locationmodel WHERE date BETWEEN :startDate and :endDate")
     fun getAllByDateRange(startDate: Date, endDate: Date): List<LocationModel>
 
