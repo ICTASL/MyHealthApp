@@ -63,13 +63,13 @@ class LocationTrackingService : Service() {
     private var mLocationRequest: LocationRequest? = null
 
     private val UPDATE_INTERVAL = 20 * 60 * 1 * 1000 /* 10 secs */.toLong()
-    private val FASTEST_INTERVAL: Long = 1 * 60 * 1 * 1000 /* 2 sec */
+    private val FASTEST_INTERVAL: Long = 2 * 60 * 1 * 1000 /* 2 sec */
 
 
     // Trigger new location updates at interval
     protected fun startLocationUpdates() { // Create the location request to start receiving updates
         mLocationRequest = LocationRequest()
-        mLocationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        mLocationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         mLocationRequest!!.smallestDisplacement = 10.0f
         mLocationRequest!!.interval = UPDATE_INTERVAL
         mLocationRequest!!.fastestInterval = FASTEST_INTERVAL
