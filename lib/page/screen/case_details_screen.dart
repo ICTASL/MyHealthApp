@@ -32,7 +32,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
     print("LOCATIONS Fetched: ${newEntries.length}");
     if (this.mounted) {
       setState(() {
-        entries.clear();
+//        entries.clear();
         newEntries.forEach((e) {
           if (!entries.contains(e)) {
             entries.add(e);
