@@ -32,6 +32,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
     print("LOCATIONS Fetched: ${newEntries.length}");
     if (this.mounted) {
       setState(() {
+        entries.clear();
         newEntries.forEach((e) {
           if (!entries.contains(e)) {
             entries.add(
@@ -110,14 +111,19 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
 
   Widget getMapView(List<Location> entries) {
     return GoogleMap(
-      mapType: MapType.terrain,
-      markers: entries.map((l) {
-        return Marker(
-            infoWindow: InfoWindow(
-                title: "You are at ${dateFormat.format(l.date)}",
-                snippet: "No issue found"),
-            markerId: MarkerId("${l.date.millisecondsSinceEpoch}"),
-            position: LatLng(l.latitude, l.longitude));
+      mapType: MapType.normal,
+      circles: entries.map((l) {
+        return Circle(
+            circleId: CircleId("${l.date.millisecondsSinceEpoch}"),
+            fillColor: Colors.blue.withOpacity(0.2),
+            strokeColor: Colors.blue,
+            strokeWidth: 1,
+            center: LatLng(l.latitude, l.longitude),
+            radius: 150,
+            consumeTapEvents: true,
+            onTap: () {
+              _showDialog(l);
+            });
       }).toSet(),
       initialCameraPosition: CameraPosition(
         target: currentLocation != null
@@ -126,9 +132,34 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         zoom: 12,
       ),
       myLocationButtonEnabled: true,
+      trafficEnabled: true,
 //      myLocationEnabled: true,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
+      },
+    );
+  }
+
+  void _showDialog(Location location) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Your location"),
+          content:
+              new Text("You were here at  ${dateFormat.format(location.date)}"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
       },
     );
   }

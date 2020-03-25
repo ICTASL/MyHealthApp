@@ -63,6 +63,7 @@ class LocationTrackingService : Service() {
     protected fun startLocationUpdates() { // Create the location request to start receiving updates
         mLocationRequest = LocationRequest()
         mLocationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        mLocationRequest!!.smallestDisplacement = 10.0f
         mLocationRequest!!.interval = UPDATE_INTERVAL
         mLocationRequest!!.fastestInterval = FASTEST_INTERVAL
         // Create LocationSettingsRequest object using location request
