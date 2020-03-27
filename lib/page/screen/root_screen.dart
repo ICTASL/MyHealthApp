@@ -127,6 +127,13 @@ class _RootScreenState extends State<RootScreen> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
+          FlatButton(
+            child: Text(AppLocalizations.of(context).translate("popmenu_faq")),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => FAQScreen()));
+            },
+          ),
           PopupMenuButton<String>(
             onSelected: (val) {
               switch (val) {
@@ -138,10 +145,10 @@ class _RootScreenState extends State<RootScreen> {
 //                  Navigator.of(context)
 //                      .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
 //                  break;
-                case "faq":
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => FAQScreen()));
-                  break;
+//                case "faq":
+//                  Navigator.of(context)
+//                      .push(MaterialPageRoute(builder: (_) => FAQScreen()));
+//                  break;
                 case "see_priv":
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
@@ -158,10 +165,10 @@ class _RootScreenState extends State<RootScreen> {
 //                    child: Text(AppLocalizations.of(context)
 //                        .translate("popmenu_ios_faq")),
 //                    value: 'ios_faq'),
-                PopupMenuItem<String>(
-                    child: Text(
-                        AppLocalizations.of(context).translate("popmenu_faq")),
-                    value: 'faq'),
+//                PopupMenuItem<String>(
+//                    child: Text(
+//                        AppLocalizations.of(context).translate("popmenu_faq")),
+//                    value: 'faq'),
                 PopupMenuItem<String>(
                     child: Text(AppLocalizations.of(context)
                         .translate("popmenu_privpolicy")),
