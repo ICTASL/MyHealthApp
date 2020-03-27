@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -9,8 +12,10 @@ import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/services.dart';
 import 'utils/tracker_colors.dart';
+import 'package:dropdown_banner/dropdown_banner.dart';
 
 void main() {
   GetIt.instance
@@ -19,9 +24,16 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final navigatorKey = GlobalKey<NavigatorState>();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'COVID-19 Tracker',
@@ -42,7 +54,10 @@ class MyApp extends StatelessWidget {
         // Built-in localization for text direction LTR/RTL
         GlobalWidgetsLocalizations.delegate,
       ],
-      home: HomeScreen(),
+      home: DropdownBanner(
+        child: HomeScreen(),
+        navigatorKey: navigatorKey,
+      ),
     );
   }
 }
@@ -104,12 +119,32 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/welcome_screen_bg.png"), fit: BoxFit.fill)),
+              image: AssetImage("assets/images/welcome_screen_bg.png"),
+              fit: BoxFit.fill)),
     ); // or some other widget
+  }
+
+  void reachabilityFailedFail() {
+    DropdownBanner.showBanner(
+        text: 'Please check your WiFi or mobile data connection',
+        color: Colors.redAccent,
+        textStyle: TextStyle(color: Colors.white),
+        duration: Duration(seconds: 3));
+  }
+
+  void checkReachability() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      // I am connected to a wifi network.
+    } else {
+      reachabilityFailedFail();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    checkReachability();
     return _createSplashScreen();
   }
 }

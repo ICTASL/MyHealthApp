@@ -1,4 +1,9 @@
 PODS:
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
+  - connectivity_macos (0.0.1):
+    - Flutter
   - Firebase/Core (6.10.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.1.3)
@@ -123,7 +128,8 @@ PODS:
     - Flutter
   - path_provider_macos (0.0.1):
     - Flutter
-  - Protobuf (3.11.4)
+  - Protobuf (3.10.0)
+  - Reachability (3.2)
   - share (0.5.2):
     - Flutter
   - shared_preferences (0.0.1):
@@ -143,6 +149,8 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - connectivity_macos (from `.symlinks/plugins/connectivity_macos/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
@@ -164,12 +172,17 @@ DEPENDENCIES:
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Firebase
+    - FirebaseABTesting
     - FirebaseAnalytics
+    - FirebaseAnalyticsInterop
+    - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
+    - FirebaseInstanceID
     - FirebaseMessaging
+    - FirebaseRemoteConfig
     - FMDB
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -177,15 +190,14 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - nanopb
-  trunk:
-    - FirebaseABTesting
-    - FirebaseAnalyticsInterop
-    - FirebaseCore
-    - FirebaseInstanceID
-    - FirebaseRemoteConfig
     - Protobuf
+    - Reachability
 
 EXTERNAL SOURCES:
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
+  connectivity_macos:
+    :path: ".symlinks/plugins/connectivity_macos/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   firebase_remote_config:
@@ -226,6 +238,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
+  connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
+  connectivity_macos: e2e9731b6b22dda39eb1b128f6969d574460e191
   Firebase: 5e6b7b12bf9adb90986688edc06b156c37e109cd
   firebase_messaging: cffb57ce40958c6204f03fb0c81713e4cd1e240c
   firebase_remote_config: f3581c5addecc691a968f2a7f2bcdf0878509bfd
@@ -254,7 +268,8 @@ SPEC CHECKSUMS:
   package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
-  Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
+  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
@@ -266,4 +281,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.0
