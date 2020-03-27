@@ -22,6 +22,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
 
   Position currentLocation;
   List<Location> entries = List();
+  List<Marker> hospitalLocations = List();
   Timer _locationTimer;
 
   Timer _currentLoctimer;
@@ -48,6 +49,23 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   void initState() {
     super.initState();
     updateLocation();
+
+    parseJsonFromAssets("assets/hospitals.json").then((data) {
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(devicePixelRatio: 0.5, size: Size(5, 5)),
+              "assets/images/hospital_sign_map.png")
+          .then((icon) {
+        for (var h in data["hospitals"]) {
+          setState(() {
+            hospitalLocations.add(Marker(
+                icon: icon,
+                markerId: MarkerId("${h["id"]}_id"),
+                infoWindow: InfoWindow(title: "${h["name"]}"),
+                position: LatLng(h["lon"], h["lat"])));
+          });
+        }
+      });
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _channel.invokeMethod('requestLocationPermission').then((res) {
@@ -86,6 +104,13 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
     });
   }
 
+  Future<Map<String, dynamic>> parseJsonFromAssets(String assetsPath) async {
+    print('--- Parse json from: $assetsPath');
+    return rootBundle
+        .loadString(assetsPath)
+        .then((jsonStr) => jsonDecode(jsonStr));
+  }
+
   void moveMapToCurrentLoc() async {
     final GoogleMapController controller = await _controller.future;
     final CameraPosition _camPos = CameraPosition(
@@ -112,6 +137,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
   Widget getMapView(List<Location> entries) {
     return GoogleMap(
       mapType: MapType.normal,
+      markers: hospitalLocations.toSet(),
       circles: entries.map((l) {
         return Circle(
             circleId: CircleId("${l.date.millisecondsSinceEpoch}"),

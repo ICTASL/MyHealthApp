@@ -1,0 +1,214 @@
+{
+  "hospitals": [
+    {
+      "name": "NHSL",
+      "lon": 6.917705000000001,
+      "lat": 79.866385,
+      "id": 1,
+      "hsId": "LCB0000018"
+    },
+    {
+      "name": "NH Kandy",
+      "lon": 7.287566,
+      "lat": 80.631834,
+      "id": 2,
+      "hsId": "LKY0001008"
+    },
+    {
+      "name": "LRH",
+      "lon": 6.918231,
+      "lat": 79.876479,
+      "id": 3,
+      "hsId": "LCB0000216"
+    },
+    {
+      "name": "CSHW",
+      "lon": 6.910289,
+      "lat": 79.884778,
+      "id": 4,
+      "hsId": "LCB0000166"
+    },
+    {
+      "name": "IDH",
+      "lon": 6.922314999999999,
+      "lat": 79.916981,
+      "id": 5,
+      "hsId": "LCB0000117"
+    },
+    {
+      "name": "CNTH Ragama",
+      "lon": 7.028176147000001,
+      "lat": 79.92352948,
+      "id": 6,
+      "hsId": "LGP0000703"
+    },
+    {
+      "name": "TH Anuradhapura",
+      "lon": 8.324937955,
+      "lat": 80.41297135,
+      "id": 7,
+      "hsId": "LAN0000034"
+    },
+    {
+      "name": "T H Batticaloa",
+      "lon": 7.708293551000001,
+      "lat": 81.69119854,
+      "id": 8,
+      "hsId": "LBC0000075"
+    },
+    {
+      "name": "TH Rathnapura",
+      "lon": 6.6866923,
+      "lat": 80.3925328,
+      "id": 9,
+      "hsId": ""
+    },
+    {
+      "name": "TH Karapitiya",
+      "lon": 6.066744,
+      "lat": 80.226084,
+      "id": 10,
+      "hsId": "LGL0000620"
+    },
+    {
+      "name": "TH Kurunegala",
+      "lon": 7.4794793539999995,
+      "lat": 80.35857174,
+      "id": 11,
+      "hsId": ""
+    },
+    {
+      "name": "TH Jaffna",
+      "lon": 9.665931,
+      "lat": 80.014377,
+      "id": 12,
+      "hsId": "LJF0000786"
+    },
+    {
+      "name": "PGH Badulla",
+      "lon": 6.990918,
+      "lat": 81.05161899999999,
+      "id": 13,
+      "hsId": ""
+    },
+    {
+      "name": "BH Mulleriyawa",
+      "lon": 6.92605,
+      "lat": 79.943753,
+      "id": 14,
+      "hsId": "LCB0000125"
+    },
+    {
+      "name": "DGH Hambantota",
+      "lon": 6.126806998999999,
+      "lat": 81.12261318,
+      "id": 15,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Negombo",
+      "lon": 7.21235,
+      "lat": 79.84828167,
+      "id": 16,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Gampaha",
+      "lon": 7.091504700000001,
+      "lat": 79.9999527,
+      "id": 17,
+      "hsId": ""
+    },
+    {
+      "name": "BH Chilaw",
+      "lon": 7.57220396,
+      "lat": 79.79742705,
+      "id": 18,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Polonnaruwa",
+      "lon": 7.9425338000000005,
+      "lat": 81.0092566,
+      "id": 19,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Vavuniya",
+      "lon": 8.760660000000001,
+      "lat": 80.49991,
+      "id": 20,
+      "hsId": ""
+    },
+    {
+      "name": "CSTH Kalubowila",
+      "lon": 6.866891000000001,
+      "lat": 79.876861,
+      "id": 21,
+      "hsId": "LCB0000174"
+    },
+    {
+      "name": "BH Marawila",
+      "lon": 7.393453,
+      "lat": 79.8321376,
+      "id": 22,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Monaragala",
+      "lon": 6.8918800000000005,
+      "lat": 81.34253000000001,
+      "id": 23,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Kalutara",
+      "lon": 6.563859,
+      "lat": 79.984344,
+      "id": 24,
+      "hsId": ""
+    },
+    {
+      "name": "DGH Matara",
+      "lon": 5.964130394,
+      "lat": 80.49414381,
+      "id": 25,
+      "hsId": ""
+    },
+    {
+      "name": "KDU",
+      "lon": 6.8260902,
+      "lat": 79.9043642,
+      "id": 26,
+      "hsId": ""
+    },
+    {
+      "name": "BH Minuwangoda",
+      "lon": 7.17237,
+      "lat": 79.95714833,
+      "id": 27,
+      "hsId": "PGP0005686"
+    },
+    {
+      "name": "BH Homagama",
+      "lon": 6.847334768,
+      "lat": 79.99156892,
+      "id": 28,
+      "hsId": "PCB0004002"
+    },
+    {
+      "name": "BH Welikanda",
+      "lon": 7.947781667,
+      "lat": 81.245785,
+      "id": 29,
+      "hsId": ""
+    },
+    {
+      "name": "Nevile Fernando",
+      "lon": 6.9244512,
+      "lat": 79.96039990000001,
+      "id": 30,
+      "hsId": ""
+    }
+  ]
+}
