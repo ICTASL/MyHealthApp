@@ -8,6 +8,7 @@ import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/case_item.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 
 class CaseListScreen extends StatefulWidget {
   @override
@@ -88,7 +89,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                   pinned: true,
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(10.0),
-                    child: Text(''), // Add this code
+                    child: CustomText(''), // Add this code
                   ),
                   flexibleSpace: Container(
                       child: Center(
@@ -105,7 +106,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                                 .clear();
                           });
                         },
-                        child: Text(AppLocalizations.of(context)
+                        child: CustomText(AppLocalizations.of(context)
                             .translate('case_list_screen_remove_text')),
                       ),
                       RaisedButton(
@@ -131,7 +132,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(
+                              child: CustomText(
                                 AppLocalizations.of(context)
                                         .translate("cse_list_screen_see-text") +
                                     "(${Provider.of<RegisteredCasesModel>(context).reportedCases.length})",
@@ -160,8 +161,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                 case ConnectionState.none:
                   return SliverToBoxAdapter(
                     child: Center(
-                        child:
-                            Text("Error getting the cases, try again later.")),
+                        child: CustomText(
+                            "Error getting the cases, try again later.")),
                   );
                   break;
                 case ConnectionState.waiting:
@@ -174,8 +175,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                 case ConnectionState.active:
                   return SliverToBoxAdapter(
                     child: Center(
-                        child:
-                            Text("Error getting the cases, try again later.")),
+                        child: CustomText(
+                            "Error getting the cases, try again later.")),
                   );
                   break;
                 case ConnectionState.done:
@@ -195,7 +196,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                       return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(30.0),
-                          child: Center(child: Text("No cases found there.")),
+                          child: Center(
+                              child: CustomText("No cases found there.")),
                         ),
                       );
                     if (_cases.length > 0) {
@@ -209,7 +211,8 @@ class _CaseListScreenState extends State<CaseListScreen> {
                       return SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(30.0),
-                          child: Center(child: Text("No cases found there.")),
+                          child: Center(
+                              child: CustomText("No cases found there.")),
                         ),
                       );
                     }
@@ -217,14 +220,14 @@ class _CaseListScreenState extends State<CaseListScreen> {
                     return SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.all(30.0),
-                        child: Center(child: Text("No cases found.")),
+                        child: Center(child: CustomText("No cases found.")),
                       ),
                     );
                   }
                   break;
                 default:
                   return SliverToBoxAdapter(
-                    child: Center(child: Text("")),
+                    child: Center(child: CustomText("")),
                   );
               }
             },

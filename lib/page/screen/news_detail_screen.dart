@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/theme.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
 
 import '../../app_localizations.dart';
@@ -27,7 +28,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: Text(widget.article.title),
+          title: CustomText(widget.article.title),
         ),
         body: Container(
             decoration: BoxDecoration(
@@ -55,7 +56,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
+                          CustomText(
                             widget.article.originator,
                             textAlign: TextAlign.start,
                             style:
@@ -63,7 +64,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(2.0),
-                            child: Text(
+                            child: CustomText(
                               "8th March 12:45",
                               //published data needs to facilitated into the messages from the API
                               textAlign: TextAlign.start,
@@ -73,7 +74,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Text(
+                            child: CustomText(
                               widget.article.message,
                               style: h5TextStyle.copyWith(
                                   color: primaryColorText.withOpacity(0.7)),

@@ -14,6 +14,7 @@ import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 import '../../app_localizations.dart';
@@ -151,26 +152,26 @@ class _RootScreenState extends State<RootScreen> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
-                    child: Text(AppLocalizations.of(context)
+                    child: CustomText(AppLocalizations.of(context)
                         .translate("popmenu_language")),
                     value: 'change_lan'),
 //                PopupMenuItem<String>(
-//                    child: Text(AppLocalizations.of(context)
+//                    child: CustomText(AppLocalizations.of(context)
 //                        .translate("popmenu_ios_faq")),
 //                    value: 'ios_faq'),
 //                PopupMenuItem<String>(
-//                    child: Text(
+//                    child: CustomText(
 //                        AppLocalizations.of(context).translate("popmenu_faq")),
 //                    value: 'faq'),
                 PopupMenuItem<String>(
-                    child: Text(AppLocalizations.of(context)
+                    child: CustomText(AppLocalizations.of(context)
                         .translate("popmenu_privpolicy")),
                     value: 'see_priv'),
               ];
             },
           ),
         ],
-        title: Text(
+        title: CustomText(
           _appName,
           style: TextStyle(
             color: Colors.black,
@@ -182,7 +183,7 @@ class _RootScreenState extends State<RootScreen> {
       body: Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
-            title: Text(
+            title: CustomText(
               _homeTabItems[_currentIndex].title,
               style: TextStyle(
                   color: Colors.black,

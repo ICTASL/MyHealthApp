@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/models/contact_us_contact.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme.dart';
@@ -25,7 +26,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return Center(
-                  child: Text(
+                  child: CustomText(
                       "An error has occured fetching contacts, try again later"),
                 );
                 break;
@@ -34,7 +35,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 break;
               case ConnectionState.active:
                 return Center(
-                  child: Text(
+                  child: CustomText(
                       "An error has occured fetching contacts, try again later"),
                 );
                 break;
@@ -71,7 +72,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
+            CustomText(
               phoneNumber,
               style: h1TextStyle.copyWith(
                 color: Colors.white,
@@ -79,7 +80,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               ),
               textAlign: TextAlign.start,
             ),
-            Text(
+            CustomText(
               title,
               style: h3TextStyle.copyWith(
                   color: Colors.white.withOpacity(0.5),
@@ -103,12 +104,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
-                          title: const Text("Oops, something went wrong"),
-                          content: Text(
+                          title: CustomText("Oops, something went wrong"),
+                          content: CustomText(
                               "Failed to make phone call, try again later."),
                           actions: [
                             FlatButton(
-                              child: const Text("Ok"),
+                              child: CustomText("Ok"),
                               onPressed: () => Navigator.pop(context),
                             ),
                           ],
@@ -128,7 +129,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     SizedBox(
                       height: 2.0,
                     ),
-                    Text(
+                    CustomText(
                       address,
                       style: TextStyle(
                           color: Colors.black54,

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:selftrackingapp/models/location.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 
 DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -173,13 +174,13 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Your location"),
-          content:
-              new Text("You were here at  ${dateFormat.format(location.date)}"),
+          title: new CustomText("Your location"),
+          content: new CustomText(
+              "You were here at  ${dateFormat.format(location.date)}"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Close"),
+              child: new CustomText("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -195,7 +196,7 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
         padding: const EdgeInsets.all(8),
         itemCount: entries.length,
         itemBuilder: (BuildContext context, int index) {
-          return Text(
+          return CustomText(
               'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].date}');
         });
   }

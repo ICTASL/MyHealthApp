@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
 import 'package:selftrackingapp/widgets/case_item.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 
 DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -96,7 +97,7 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text("${widget.reportedCase.caseNumber}",
+        title: CustomText("${widget.reportedCase.caseNumber}",
             style: TextStyle(color: Colors.black)),
       ),
       body: GoogleMap(
@@ -131,7 +132,7 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
         padding: const EdgeInsets.all(8),
         itemCount: entries.length,
         itemBuilder: (BuildContext context, int index) {
-          return Text(
+          return CustomText(
               'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].date}');
         });
   }

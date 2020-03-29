@@ -10,6 +10,7 @@ import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
 
 import 'package:intl/intl.dart';
@@ -201,7 +202,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Text(
+                        child: CustomText(
                           article.title,
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.title.copyWith(
@@ -217,7 +218,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
+                      CustomText(
                         "By ${article.originator}",
                         textAlign: TextAlign.start,
                         style: Theme.of(context)
@@ -226,7 +227,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             .copyWith(fontSize: 12),
                       ),
                       Spacer(),
-                      Text(
+                      CustomText(
                         "${dateFormat.format(article.created)}",
                         //published data needs to facilitated into the messages from the API
                         style: Theme.of(context)
@@ -244,7 +245,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Divider(
                 color: Colors.grey[400].withOpacity(0.1),
               ),
-              Text(
+              CustomText(
                 article.message,
                 style: TextStyle(color: Colors.black, fontSize: 16.0),
               ),
@@ -261,7 +262,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   FlatButton(
-                    child: Text(
+                    child: CustomText(
                       AppLocalizations.of(context)
                           .translate("news_list_read_more_text")
                           .toUpperCase(),
@@ -294,7 +295,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
+            CustomText(
               figure,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -303,7 +304,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             Spacer(),
             Expanded(
-              child: Text(
+              child: CustomText(
                 title,
                 textAlign: TextAlign.start,
                 style: TextStyle(
@@ -366,7 +367,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: Text(
+                          child: CustomText(
                             article.title,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.title.copyWith(
@@ -382,7 +383,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
+                        CustomText(
                           "By ${article.originator}",
                           textAlign: TextAlign.start,
                           style: Theme.of(context)
@@ -391,7 +392,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               .copyWith(fontSize: 12),
                         ),
                         Spacer(),
-                        Text(
+                        CustomText(
                           "${dateFormat.format(article.created)}",
                           //published data needs to facilitated into the messages from the API
                           style: Theme.of(context)
@@ -405,7 +406,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 )
               ],
             ),
-            content: Text(
+            content: CustomText(
               article.message,
               style: TextStyle(color: Colors.black),
             ),
@@ -431,7 +432,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return Center(
-              child: Text("An error has occured, try again"),
+              child: CustomText("An error has occured, try again"),
             );
             break;
           case ConnectionState.waiting:
@@ -441,7 +442,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             break;
           case ConnectionState.active:
             return Center(
-              child: Text("An error has occured, try again"),
+              child: CustomText("An error has occured, try again"),
             );
             break;
           case ConnectionState.done:
@@ -503,7 +504,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(
+            child: CustomText(
               "${AppLocalizations.of(context).translate('dashboard_last_updated_text')} ${dateFormat.format(lastUpdated)}",
               style: TextStyle(fontWeight: FontWeight.w400),
             ),

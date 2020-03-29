@@ -9,6 +9,8 @@ import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/page/screen/selected_case_detail_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 
+import 'custom_text.dart';
+
 class CaseItem extends StatelessWidget {
   final ReportedCase _case;
 
@@ -46,13 +48,13 @@ class CaseItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    CustomText(
                       _case.caseNumber,
                       style: TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w800),
                     ),
                     SizedBox(height: 6.0),
-                    Text(
+                    CustomText(
                       formatDate(_case.createdAt,
                           [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
                       style: TextStyle(fontSize: 12.0),
@@ -68,7 +70,7 @@ class CaseItem extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(5))),
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text(
+                            child: CustomText(
                               _case.isLocal
                                   ? AppLocalizations.of(context)
                                       .translate("case_item_local")
@@ -87,7 +89,7 @@ class CaseItem extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(5))),
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text(
+                            child: CustomText(
                               _case.isFromFacility
                                   ? AppLocalizations.of(context)
                                       .translate("case_item_community")
@@ -100,11 +102,11 @@ class CaseItem extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    Text(
+                    CustomText(
                       _case.message,
                     ),
                     SizedBox(height: 16.0),
-                    Text(
+                    CustomText(
                       AppLocalizations.of(context)
                           .translate("case_item_reported_locations"),
                       style: TextStyle(
@@ -119,8 +121,8 @@ class CaseItem extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(location.address),
-                                  Text(
+                                  CustomText(location.address),
+                                  CustomText(
                                     formatDate(location.from, [
                                           yy,
                                           '-',
@@ -166,7 +168,7 @@ class CaseItem extends StatelessWidget {
                                 .contains(_case)
                             ? RaisedButton(
                                 color: TrackerColors.primaryColor,
-                                child: Text(
+                                child: CustomText(
                                   AppLocalizations.of(context)
                                       .translate("case_item_register"),
                                   style: TextStyle(color: Colors.white),
@@ -192,7 +194,7 @@ class CaseItem extends StatelessWidget {
                                   ));
                                 },
                               )
-                            : Text(
+                            : CustomText(
                                 AppLocalizations.of(context)
                                     .translate("case_item_already_register"),
                                 style: TextStyle(
