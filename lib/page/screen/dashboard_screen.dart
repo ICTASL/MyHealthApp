@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
+import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
 
@@ -113,7 +114,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         children: <Widget>[
           TabBar(
@@ -127,6 +128,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 text: AppLocalizations.of(context)
                     .translate("dashboard_latest_figures_title"),
               ),
+              Tab(
+                text: AppLocalizations.of(context).translate("popmenu_faq"),
+              ),
             ],
           ),
           Expanded(
@@ -134,6 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: <Widget>[
                 _buildNewsScreen(),
                 _buildStatScreen(),
+                _buildFaqScreen(),
               ],
             ),
           ),
@@ -506,5 +511,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildFaqScreen() {
+    return FAQScreenContent();
   }
 }

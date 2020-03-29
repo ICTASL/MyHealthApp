@@ -127,13 +127,6 @@ class _RootScreenState extends State<RootScreen> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
-          FlatButton(
-            child: Text(AppLocalizations.of(context).translate("popmenu_faq")),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => FAQScreen()));
-            },
-          ),
           PopupMenuButton<String>(
             onSelected: (val) {
               switch (val) {
