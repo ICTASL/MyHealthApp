@@ -42,6 +42,8 @@ dependencies:
     dropdown_banner: ^1.4.0
     recursive_regex: ^0.1.3+2
     webview_flutter: ^0:3:19+9
+    auto_size_text: ^2.1.0
+
 
     flutter_localizations:
         sdk: flutter

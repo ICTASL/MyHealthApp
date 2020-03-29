@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 
@@ -22,7 +23,7 @@ class CustomText extends StatelessWidget {
       style = style.copyWith(fontSize: fontSize);
     }
 
-    return Text(
+    return AutoSizeText(
       data,
       textAlign: textAlign,
       style: style,

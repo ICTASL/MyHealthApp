@@ -102,6 +102,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
           title: CustomText(
               AppLocalizations.of(context)
                   .translate('user_register_bar_title_text'),
+              isChangeFontSize: false,
               style: TextStyle(color: Colors.black))),
       body: CustomScrollView(
         slivers: <Widget>[

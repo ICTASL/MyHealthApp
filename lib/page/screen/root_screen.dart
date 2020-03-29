@@ -173,6 +173,7 @@ class _RootScreenState extends State<RootScreen> {
         ],
         title: CustomText(
           _appName,
+          isChangeFontSize: false,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -185,6 +186,7 @@ class _RootScreenState extends State<RootScreen> {
             backgroundColor: Colors.white,
             title: CustomText(
               _homeTabItems[_currentIndex].title,
+              isChangeFontSize: false,
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
