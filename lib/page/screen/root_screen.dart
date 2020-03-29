@@ -31,7 +31,7 @@ class _RootScreenState extends State<RootScreen> {
   final FirebaseMessaging _messaging = FirebaseMessaging();
   final StoriesModel _storiesModel = StoriesModel();
   final List<String> values = List();
-  String _appName = "Sri Lanka COVID-19";
+  String _appName = "MyHealth Sri Lanka";
 
   int _currentIndex = 0;
   final _homeTabs = {
