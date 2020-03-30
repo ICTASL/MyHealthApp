@@ -24,7 +24,7 @@ class UserRegisterScreen extends StatefulWidget {
 class _UserRegisterScreenState extends State<UserRegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final Widget _registerTextChild = CustomText(
+  final Widget _registerTextChild = Text(
     "Register",
     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
   );
@@ -34,7 +34,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   final Widget _registerSuccess = Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      CustomText(
+      Text(
         "Registered",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
@@ -51,7 +51,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      CustomText(
+      Text(
         "Error registering, try again later.",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
@@ -99,10 +99,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
       appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          title: CustomText(
+          title: Text(
               AppLocalizations.of(context)
                   .translate('user_register_bar_title_text'),
-              isChangeFontSize: false,
               style: TextStyle(color: Colors.black))),
       body: CustomScrollView(
         slivers: <Widget>[
@@ -113,7 +112,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                    child: CustomText(
+                    child: Text(
                         AppLocalizations.of(context)
                             .translate("user_register_screen_title"),
                         style: TextStyle(
@@ -121,7 +120,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    child: CustomText(
+                    child: Text(
                         AppLocalizations.of(context)
                             .translate("user_register_screen_subtitle"),
                         style: TextStyle(
@@ -134,7 +133,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: CustomText(
+              child: Text(
                 AppLocalizations.of(context)
                     .translate("user_register_screen_selected_text"),
                 style: TextStyle(
@@ -157,7 +156,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: CustomText(AppLocalizations.of(context)
+                            child: Text(AppLocalizations.of(context)
                                 .translate("user_register_screen_add_text")),
                           ),
                         ),
@@ -190,7 +189,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             SizedBox(
                               width: 10.0,
                             ),
-                            CustomText(
+                            Text(
                               model.reportedCases[index].caseNumber,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16.0),
@@ -204,7 +203,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               } else {
                 return SliverToBoxAdapter(
                     child: Padding(
-                        child: CustomText(AppLocalizations.of(context)
+                        child: Text(AppLocalizations.of(context)
                             .translate("user_registration_screen_no_text")),
                         padding: const EdgeInsets.only(left: 20.0, top: 10.0)));
               }
@@ -330,7 +329,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    CustomText(AppLocalizations.of(context)
+                    Text(AppLocalizations.of(context)
                         .translate("sri_lankan_citizan")),
                     SizedBox(
                       height: 5.0,
@@ -341,7 +340,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            CustomText(
+                            Text(
                                 AppLocalizations.of(context)
                                     .translate("radio_yes"),
                                 style: TextStyle(color: Colors.black)),
@@ -360,7 +359,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            CustomText(
+                            Text(
                                 AppLocalizations.of(context)
                                     .translate("radio_no"),
                                 style: TextStyle(color: Colors.black)),
@@ -424,7 +423,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                   switch (snapshot.connectionState) {
                                     case ConnectionState.none:
                                       return Center(
-                                        child: CustomText(
+                                        child: Text(
                                             "Whoops, something has gone wrong, try again."),
                                       );
                                       break;
@@ -435,7 +434,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                       break;
                                     case ConnectionState.active:
                                       return Center(
-                                        child: CustomText(
+                                        child: Text(
                                             "Whoops, something has gone wrong, try again."),
                                       );
                                       break;
@@ -466,7 +465,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                                         const EdgeInsets.all(
                                                             10.0)),
                                                 hint: Padding(
-                                                  child: CustomText(
+                                                  child: Text(
                                                       "Select your country"),
                                                   padding:
                                                       const EdgeInsets.only(
@@ -480,8 +479,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                                                   const EdgeInsets
                                                                           .all(
                                                                       10.0),
-                                                              child: CustomText(
-                                                                  value),
+                                                              child:
+                                                                  Text(value),
                                                             ),
                                                             value: value))
                                                     .toList(),
@@ -599,7 +598,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               },
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 0.0),
-                                child: CustomText(AppLocalizations.of(context)
+                                child: Text(AppLocalizations.of(context)
                                     .translate("select_a_gender")),
                               ),
                               items: [
@@ -613,7 +612,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                   .map((value) => DropdownMenuItem(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
-                                        child: CustomText(value),
+                                        child: Text(value),
                                       ),
                                       value: value))
                                   .toList(),

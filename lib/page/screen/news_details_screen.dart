@@ -72,14 +72,14 @@ class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          CustomText(
+                          Text(
                             "11",
                             style: TextStyle(
                                 fontSize: 40.0,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
-                          CustomText(
+                          Text(
                             "Total Cases",
                             style: TextStyle(
                                 fontSize: 15.0,
@@ -101,7 +101,7 @@ class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-              child: CustomText(
+              child: Text(
                 "News",
                 style: TextStyle(
                     color: Colors.black87,
@@ -133,7 +133,7 @@ class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
                             //         child: CircularProgressIndicator());
                             //   },
                             //   errorWidget: (context, val, error) {
-                            //     return CustomText("Failed to get image");
+                            //     return Text("Failed to get image");
                             //   },
                             //   imageUrl: story.photoUrl,
                             //   imageBuilder: (context, imageProvider) {
@@ -160,12 +160,12 @@ class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                CustomText(
+                                Text(
                                   stories[index].originator,
                                   textAlign: TextAlign.start,
                                   style: h1TextStyle,
                                 ),
-                                CustomText(
+                                Text(
                                   "8th March 12:45", //published data needs to facilitated into the messages from the API
                                   textAlign: TextAlign.start,
                                   style: h3TextStyle,
@@ -177,7 +177,7 @@ class _NewsDetailOldScreenState extends State<NewsDetailOldScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        CustomText(
+                        Text(
                           stories[index].message,
                           style: h5TextStyle,
                         ),

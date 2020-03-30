@@ -22,14 +22,14 @@ class FAQScreenContent extends StatelessWidget {
               child: ListTile(
                 title: Container(
                   margin: EdgeInsets.only(top: 12, bottom: 0),
-                  child: CustomText(
+                  child: Text(
                     key,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
                 subtitle: Container(
                   margin: EdgeInsets.symmetric(vertical: 15),
-                  child: CustomText(
+                  child: Text(
                     value,
                     style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
                   ),
@@ -51,7 +51,7 @@ class FAQScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: CustomText(
+        title: Text(
           AppLocalizations.of(context).translate("popmenu_faq"),
           style: TextStyle(
             color: Colors.black,

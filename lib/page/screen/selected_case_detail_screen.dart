@@ -97,7 +97,7 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: CustomText("${widget.reportedCase.caseNumber}",
+        title: Text("${widget.reportedCase.caseNumber}",
             style: TextStyle(color: Colors.black)),
       ),
       body: GoogleMap(
@@ -132,7 +132,7 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
         padding: const EdgeInsets.all(8),
         itemCount: entries.length,
         itemBuilder: (BuildContext context, int index) {
-          return CustomText(
+          return Text(
               'Entry ${entries[index].longitude},${entries[index].latitude},${entries[index].date}');
         });
   }

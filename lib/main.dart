@@ -18,9 +18,6 @@ import 'utils/tracker_colors.dart';
 import 'package:dropdown_banner/dropdown_banner.dart';
 
 void main() {
-  GetIt.instance
-      .registerSingleton<DataRepository>(AppDataRepository(AppDatabase()));
-
   runApp(MyApp());
 }
 
@@ -30,6 +27,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    GetIt.instance
+        .registerSingleton<DataRepository>(AppDataRepository(AppDatabase()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigatorKey = GlobalKey<NavigatorState>();

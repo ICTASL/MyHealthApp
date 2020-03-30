@@ -28,7 +28,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: CustomText(widget.article.title),
+          title: Text(widget.article.title),
         ),
         body: Container(
             decoration: BoxDecoration(
@@ -56,7 +56,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          CustomText(
+                          Text(
                             widget.article.originator,
                             textAlign: TextAlign.start,
                             style:
@@ -64,7 +64,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(2.0),
-                            child: CustomText(
+                            child: Text(
                               "8th March 12:45",
                               //published data needs to facilitated into the messages from the API
                               textAlign: TextAlign.start,
@@ -74,7 +74,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: CustomText(
+                            child: Text(
                               widget.article.message,
                               style: h5TextStyle.copyWith(
                                   color: primaryColorText.withOpacity(0.7)),

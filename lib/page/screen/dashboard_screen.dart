@@ -118,21 +118,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
       length: 3,
       child: Column(
         children: <Widget>[
-          TabBar(
-            labelColor: Colors.black,
-            tabs: [
-              Tab(
-                text: AppLocalizations.of(context)
-                    .translate("dashboard_news_text"),
-              ),
-              Tab(
-                text: AppLocalizations.of(context)
-                    .translate("dashboard_latest_figures_title"),
-              ),
-              Tab(
-                text: AppLocalizations.of(context).translate("popmenu_faq"),
-              ),
-            ],
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: TabBar(
+              labelColor: Colors.black,
+              tabs: [
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(AppLocalizations.of(context)
+                      .translate("dashboard_news_text")),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(AppLocalizations.of(context)
+                      .translate("dashboard_latest_figures_title")),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                      AppLocalizations.of(context).translate("popmenu_faq")),
+                )
+              ],
+            ),
           ),
           Expanded(
             child: TabBarView(
@@ -202,7 +209,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: CustomText(
+                        child: Text(
                           article.title,
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.title.copyWith(
@@ -218,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      CustomText(
+                      Text(
                         "By ${article.originator}",
                         textAlign: TextAlign.start,
                         style: Theme.of(context)
@@ -227,7 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             .copyWith(fontSize: 12),
                       ),
                       Spacer(),
-                      CustomText(
+                      Text(
                         "${dateFormat.format(article.created)}",
                         //published data needs to facilitated into the messages from the API
                         style: Theme.of(context)
@@ -245,7 +252,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Divider(
                 color: Colors.grey[400].withOpacity(0.1),
               ),
-              CustomText(
+              Text(
                 article.message,
                 style: TextStyle(color: Colors.black, fontSize: 16.0),
               ),
@@ -262,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   FlatButton(
-                    child: CustomText(
+                    child: Text(
                       AppLocalizations.of(context)
                           .translate("news_list_read_more_text")
                           .toUpperCase(),
@@ -293,18 +300,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CustomText(
+            Text(
               figure,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 35.0,
+                  fontSize: 40.0,
                   color: colorCode),
             ),
-            Spacer(),
             Expanded(
-              child: CustomText(
+              child: Text(
                 title,
                 textAlign: TextAlign.start,
                 style: TextStyle(
@@ -367,7 +373,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: CustomText(
+                          child: Text(
                             article.title,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.title.copyWith(
@@ -383,7 +389,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        CustomText(
+                        Text(
                           "By ${article.originator}",
                           textAlign: TextAlign.start,
                           style: Theme.of(context)
@@ -392,7 +398,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               .copyWith(fontSize: 12),
                         ),
                         Spacer(),
-                        CustomText(
+                        Text(
                           "${dateFormat.format(article.created)}",
                           //published data needs to facilitated into the messages from the API
                           style: Theme.of(context)
@@ -406,7 +412,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 )
               ],
             ),
-            content: CustomText(
+            content: Text(
               article.message,
               style: TextStyle(color: Colors.black),
             ),
@@ -432,7 +438,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return Center(
-              child: CustomText("An error has occured, try again"),
+              child: Text("An error has occured, try again"),
             );
             break;
           case ConnectionState.waiting:
@@ -442,7 +448,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             break;
           case ConnectionState.active:
             return Center(
-              child: CustomText("An error has occured, try again"),
+              child: Text("An error has occured, try again"),
             );
             break;
           case ConnectionState.done:
@@ -478,7 +484,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 padding: const EdgeInsets.all(10.0),
                 crossAxisCount: 2,
                 mainAxisSpacing: 10.0,
-                childAspectRatio: 7 / 6,
                 children: [
                   _createCountCard(
                       AppLocalizations.of(context)
@@ -504,7 +509,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: CustomText(
+            child: Text(
               "${AppLocalizations.of(context).translate('dashboard_last_updated_text')} ${dateFormat.format(lastUpdated)}",
               style: TextStyle(fontWeight: FontWeight.w400),
             ),

@@ -135,14 +135,6 @@ class _RootScreenState extends State<RootScreen> {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (_) => WelcomeScreen()));
                   break;
-//                case "ios_faq":
-//                  Navigator.of(context)
-//                      .push(MaterialPageRoute(builder: (_) => IOSFAQScreen()));
-//                  break;
-//                case "faq":
-//                  Navigator.of(context)
-//                      .push(MaterialPageRoute(builder: (_) => FAQScreen()));
-//                  break;
                 case "see_priv":
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => PrivacyPolicyScreen()));
@@ -152,28 +144,19 @@ class _RootScreenState extends State<RootScreen> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem<String>(
-                    child: CustomText(AppLocalizations.of(context)
+                    child: Text(AppLocalizations.of(context)
                         .translate("popmenu_language")),
                     value: 'change_lan'),
-//                PopupMenuItem<String>(
-//                    child: CustomText(AppLocalizations.of(context)
-//                        .translate("popmenu_ios_faq")),
-//                    value: 'ios_faq'),
-//                PopupMenuItem<String>(
-//                    child: CustomText(
-//                        AppLocalizations.of(context).translate("popmenu_faq")),
-//                    value: 'faq'),
                 PopupMenuItem<String>(
-                    child: CustomText(AppLocalizations.of(context)
+                    child: Text(AppLocalizations.of(context)
                         .translate("popmenu_privpolicy")),
                     value: 'see_priv'),
               ];
             },
           ),
         ],
-        title: CustomText(
+        title: Text(
           _appName,
-          isChangeFontSize: false,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -181,37 +164,25 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ),
       ),
-      body: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: CustomText(
-              _homeTabItems[_currentIndex].title,
-              isChangeFontSize: false,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0),
-            )),
-        body: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<RegisteredCasesModel>(
-                create: (context) => RegisteredCasesModel()),
-            ChangeNotifierProvider<StoriesModel>(
-                create: (context) => _storiesModel),
-          ],
-          child: _homeTabs.elementAt(_currentIndex),
-        ),
-        bottomNavigationBar: TitledBottomNavigationBar(
-            currentIndex:
-                _currentIndex, // Use this to update the Bar giving a position
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            activeColor: TrackerColors.primaryColor,
-            items: _homeTabItems),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<RegisteredCasesModel>(
+              create: (context) => RegisteredCasesModel()),
+          ChangeNotifierProvider<StoriesModel>(
+              create: (context) => _storiesModel),
+        ],
+        child: _homeTabs.elementAt(_currentIndex),
       ),
+      bottomNavigationBar: TitledBottomNavigationBar(
+          currentIndex:
+              _currentIndex, // Use this to update the Bar giving a position
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          activeColor: TrackerColors.primaryColor,
+          items: _homeTabItems),
     );
   }
 }

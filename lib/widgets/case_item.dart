@@ -48,13 +48,13 @@ class CaseItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CustomText(
+                    Text(
                       _case.caseNumber,
                       style: TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w800),
                     ),
                     SizedBox(height: 6.0),
-                    CustomText(
+                    Text(
                       formatDate(_case.createdAt,
                           [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
                       style: TextStyle(fontSize: 12.0),
@@ -70,7 +70,7 @@ class CaseItem extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(5))),
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: CustomText(
+                            child: Text(
                               _case.isLocal
                                   ? AppLocalizations.of(context)
                                       .translate("case_item_local")
@@ -89,7 +89,7 @@ class CaseItem extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(5))),
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: CustomText(
+                            child: Text(
                               _case.isFromFacility
                                   ? AppLocalizations.of(context)
                                       .translate("case_item_community")
@@ -102,11 +102,11 @@ class CaseItem extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    CustomText(
+                    Text(
                       _case.message,
                     ),
                     SizedBox(height: 16.0),
-                    CustomText(
+                    Text(
                       AppLocalizations.of(context)
                           .translate("case_item_reported_locations"),
                       style: TextStyle(
@@ -121,8 +121,8 @@ class CaseItem extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  CustomText(location.address),
-                                  CustomText(
+                                  Text(location.address),
+                                  Text(
                                     formatDate(location.from, [
                                           yy,
                                           '-',
@@ -168,7 +168,7 @@ class CaseItem extends StatelessWidget {
                                 .contains(_case)
                             ? RaisedButton(
                                 color: TrackerColors.primaryColor,
-                                child: CustomText(
+                                child: Text(
                                   AppLocalizations.of(context)
                                       .translate("case_item_register"),
                                   style: TextStyle(color: Colors.white),
@@ -194,7 +194,7 @@ class CaseItem extends StatelessWidget {
                                   ));
                                 },
                               )
-                            : CustomText(
+                            : Text(
                                 AppLocalizations.of(context)
                                     .translate("case_item_already_register"),
                                 style: TextStyle(

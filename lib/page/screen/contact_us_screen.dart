@@ -26,7 +26,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return Center(
-                  child: CustomText(
+                  child: Text(
                       "An error has occured fetching contacts, try again later"),
                 );
                 break;
@@ -35,7 +35,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 break;
               case ConnectionState.active:
                 return Center(
-                  child: CustomText(
+                  child: Text(
                       "An error has occured fetching contacts, try again later"),
                 );
                 break;
@@ -72,7 +72,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            CustomText(
+            Text(
               phoneNumber,
               style: h1TextStyle.copyWith(
                 color: Colors.white,
@@ -80,7 +80,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               ),
               textAlign: TextAlign.start,
             ),
-            CustomText(
+            Text(
               title,
               style: h3TextStyle.copyWith(
                   color: Colors.white.withOpacity(0.5),
@@ -104,12 +104,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
-                          title: CustomText("Oops, something went wrong"),
-                          content: CustomText(
+                          title: Text("Oops, something went wrong"),
+                          content: Text(
                               "Failed to make phone call, try again later."),
                           actions: [
                             FlatButton(
-                              child: CustomText("Ok"),
+                              child: Text("Ok"),
                               onPressed: () => Navigator.pop(context),
                             ),
                           ],
@@ -129,7 +129,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     SizedBox(
                       height: 2.0,
                     ),
-                    CustomText(
+                    Text(
                       address,
                       style: TextStyle(
                           color: Colors.black54,

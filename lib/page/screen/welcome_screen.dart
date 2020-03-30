@@ -26,7 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   final Widget _registerCircleProgress = CircularProgressIndicator(
     backgroundColor: Colors.white,
   );
-  Widget _nextBtnChild = CustomText(
+  Widget _nextBtnChild = Text(
     "Next",
     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
   );
@@ -65,8 +65,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        CustomText(_appName,
-                            isChangeFontSize: false,
+                        Text(_appName,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline
@@ -74,9 +73,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        CustomText(
+                        Text(
                           _version,
-                          isChangeFontSize: false,
                           style: Theme.of(context).textTheme.title,
                         ),
                       ],
@@ -95,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           color: TrackerColors.primaryColor[900],
                         ),
                         SizedBox(height: 10.0),
-                        CustomText(
+                        Text(
                           AppLocalizations.of(context)
                               .translate("language_screen_choose"),
                           style: TextStyle(
@@ -104,7 +102,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
-                        CustomText(
+                        Text(
                           AppLocalizations.of(context)
                               .translate("language_screen_choose_sub"),
                           style: TextStyle(
@@ -124,7 +122,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 setState(() {
                                   AppLocalizations.of(context)
                                       .load(Locale("si", "LK"));
-                                  _nextBtnChild = CustomText("ඊළඟ",
+                                  _nextBtnChild = Text("ඊළඟ",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold));
@@ -142,7 +140,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    CustomText("සිංහල",
+                                    Text("සිංහල",
                                         style: TextStyle(
                                             color: AppLocalizations.of(context)
                                                         .locale ==
@@ -171,7 +169,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   AppLocalizations.of(context)
                                       .load(Locale("ta", "TA"));
 
-                                  _nextBtnChild = CustomText("அடுத்தது",
+                                  _nextBtnChild = Text("அடுத்தது",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold));
@@ -189,7 +187,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    CustomText("தமிழ்",
+                                    Text("தமிழ்",
                                         style: TextStyle(
                                             color: AppLocalizations.of(context)
                                                         .locale ==
@@ -218,7 +216,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   height = 500.0;
                                   AppLocalizations.of(context)
                                       .load(Locale("en", "US"));
-                                  _nextBtnChild = CustomText("Next",
+                                  _nextBtnChild = Text("Next",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold));
@@ -236,7 +234,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    CustomText("English",
+                                    Text("English",
                                         style: TextStyle(
                                             color: AppLocalizations.of(context)
                                                         .locale ==
@@ -315,7 +313,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       _btnChild = _nextBtnChild;
                     });
                   },
-                  child: CustomText(
+                  child: Text(
                       AppLocalizations.of(context)
                           .translate("tos_decline_button"),
                       style: TextStyle(color: Colors.black45)),
@@ -337,7 +335,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       color: TrackerColors.primaryColor,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CustomText(
+                        child: Text(
                           AppLocalizations.of(context)
                               .translate("tos_accept_button"),
                           style: TextStyle(color: Colors.white),
@@ -365,7 +363,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CustomText(
+                          Text(
                             AppLocalizations.of(context)
                                 .translate("tos_dialog_title"),
                             textAlign: TextAlign.center,
@@ -377,7 +375,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           SizedBox(
                             height: 20.0,
                           ),
-                          CustomText(
+                          Text(
                             AppLocalizations.of(context).translate("tos_title"),
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -388,7 +386,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           SizedBox(
                             height: 15.0,
                           ),
-                          CustomText(
+                          Text(
                             AppLocalizations.of(context)
                                 .translate("tos_line_one"),
                             textAlign: TextAlign.justify,
@@ -400,7 +398,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           SizedBox(
                             height: 10.0,
                           ),
-                          CustomText(
+                          Text(
                             AppLocalizations.of(context)
                                 .translate("tos_line_two"),
                             textAlign: TextAlign.justify,

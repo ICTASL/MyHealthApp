@@ -11,7 +11,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          title: CustomText(
+          title: Text(
             AppLocalizations.of(context).translate("popmenu_privpolicy"),
             style: TextStyle(color: Colors.black),
           ),
@@ -31,7 +31,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
 //                case ConnectionState.none:
 //                  return Center(
 //                    child:
-//                        CustomText("Failed getting privacy policy, try again later"),
+//                        Text("Failed getting privacy policy, try again later"),
 //                  );
 //                  break;
 //                case ConnectionState.waiting:
@@ -42,13 +42,13 @@ class PrivacyPolicyScreen extends StatelessWidget {
 //                case ConnectionState.active:
 //                  return Center(
 //                    child:
-//                        CustomText("Failed getting privacy policy, try again later"),
+//                        Text("Failed getting privacy policy, try again later"),
 //                  );
 //                  break;
 //                case ConnectionState.done:
 //                  return Container(
 //                    padding: const EdgeInsets.all(20.0),
-//                    child: CustomText(snapshot.data),
+//                    child: Text(snapshot.data),
 //                  );
 //                  break;
 //              }
