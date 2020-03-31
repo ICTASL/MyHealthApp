@@ -447,6 +447,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                           Icon(Icons.flag),
                                           Expanded(
                                             child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               margin: const EdgeInsets.only(
                                                   left: 15.0),
                                               child:
@@ -562,7 +565,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                         keyboardType: TextInputType.numberWithOptions(
                             signed: true, decimal: true),
                         decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)
+                            hintText: AppLocalizations.of(context)
                                 .translate("user_register_screen_phone"),
                             icon: Icon(
                               Icons.phone,
@@ -590,13 +593,14 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.all(10.0)),
+                                  contentPadding: const EdgeInsets.all(6.0)),
                               validator: (val) {
                                 if (val == null) {
                                   return "Choose a gender.";
                                 }
                               },
-                              hint: Padding(
+                              hint: Container(
+                                width: MediaQuery.of(context).size.width / 2,
                                 padding: const EdgeInsets.only(left: 0.0),
                                 child: Text(AppLocalizations.of(context)
                                     .translate("select_a_gender")),

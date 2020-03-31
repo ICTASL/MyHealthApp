@@ -30,7 +30,8 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen>
+    with SingleTickerProviderStateMixin {
   static const MethodChannel _channel = MethodChannel('location');
   RemoteConfig config;
   PageController _pageController;
@@ -44,13 +45,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int resetIndexServer = 0;
   Future<void> _articleFetch;
   Timer _timer;
-
+  TabController _tabController;
   @override
   void initState() {
     super.initState();
 
     _pageController = PageController();
-
+    _tabController = TabController(length: 3, vsync: this);
     updateDashboard();
     _articleFetch = fetchArticles();
 
@@ -114,42 +115,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Column(
-        children: <Widget>[
+    return Container(
+      child: NestedScrollView(
+        headerSliverBuilder: (context, value) {
+          return [
+            SliverAppBar(
+              snap: true,
+              floating: true,
+              backgroundColor: Colors.white,
+              flexibleSpace: _buildAppBar(),
+              expandedHeight:
+                  AppLocalizations.of(context).locale == Locale("ta", "TA")
+                      ? 100
+                      : 60,
+            )
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            _buildNewsScreen(),
+            _buildStatScreen(),
+            _buildFaqScreen(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: TabBar(
+        controller: _tabController,
+        labelColor: Colors.black,
+        indicatorColor: TrackerColors.primaryColor,
+        tabs: [
           Container(
-            width: MediaQuery.of(context).size.width,
-            child: TabBar(
-              labelColor: Colors.black,
-              tabs: [
-                Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(AppLocalizations.of(context)
-                      .translate("dashboard_news_text")),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(AppLocalizations.of(context)
-                      .translate("dashboard_latest_figures_title")),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                      AppLocalizations.of(context).translate("popmenu_faq")),
-                )
-              ],
+            constraints: BoxConstraints.expand(),
+            child: Center(
+              child: Text(AppLocalizations.of(context)
+                  .translate("dashboard_news_text")),
             ),
           ),
-          Expanded(
-            child: TabBarView(
-              children: <Widget>[
-                _buildNewsScreen(),
-                _buildStatScreen(),
-                _buildFaqScreen(),
-              ],
+          Container(
+            constraints: BoxConstraints.expand(),
+            padding: const EdgeInsets.all(15.0),
+            child: Center(
+              child: Text(AppLocalizations.of(context)
+                  .translate("dashboard_latest_figures_title")),
             ),
           ),
+          Container(
+            constraints: BoxConstraints.expand(),
+            child: Center(
+              child:
+                  Text(AppLocalizations.of(context).translate("popmenu_faq")),
+            ),
+          )
         ],
       ),
     );
@@ -210,7 +233,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          article.title,
+                          article.title != null ? article.title : "",
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.title.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -294,7 +317,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: Container(
         width: MediaQuery.of(context).size.width / 2.1,
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         decoration: BoxDecoration(
             color: colorCode.withOpacity(0.2),
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -309,15 +332,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontSize: 40.0,
                   color: colorCode),
             ),
-            Expanded(
-              child: Text(
-                title,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: colorCode),
-              ),
+            Text(
+              title,
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  color: colorCode),
             ),
           ],
         ),
@@ -482,8 +503,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Expanded(
             child: GridView.count(
                 padding: const EdgeInsets.all(10.0),
-                crossAxisCount: 2,
+                crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
                 mainAxisSpacing: 10.0,
+                childAspectRatio:
+                    AppLocalizations.of(context).locale == Locale("ta", "TA")
+                        ? 3 / 4
+                        : 3 / 3,
                 children: [
                   _createCountCard(
                       AppLocalizations.of(context)

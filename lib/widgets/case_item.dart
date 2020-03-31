@@ -60,7 +60,9 @@ class CaseItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12.0),
                     ),
                     SizedBox(height: 16.0),
-                    Row(
+                    Wrap(
+                      spacing: 8.0, // gap between adjacent chips
+                      runSpacing: 4.0,
                       children: <Widget>[
                         Container(
                           decoration: BoxDecoration(
@@ -80,7 +82,6 @@ class CaseItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Spacer(),
                         Container(
                           decoration: BoxDecoration(
                               color:
