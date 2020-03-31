@@ -72,7 +72,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const Duration SPLASH_DURATION = Duration(seconds: 3);
+  static const Duration SPLASH_DURATION = Duration(seconds: 20);
   Widget _nextScreen;
   bool _isTimeoutCompleted;
 

@@ -160,7 +160,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           ),
           Container(
             constraints: BoxConstraints.expand(),
-            padding: const EdgeInsets.all(15.0),
             child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_latest_figures_title")),
