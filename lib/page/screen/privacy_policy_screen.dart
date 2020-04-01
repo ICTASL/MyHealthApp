@@ -17,7 +17,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
         ),
         body: WebView(
-          initialUrl: "http://covid19.egreen.io/privacy_policy.html",
+          initialUrl:
+              "https://test.covid-19.health.gov.lk/documents/privacy-policy",
           javascriptMode: JavascriptMode.unrestricted,
         ));
   }
