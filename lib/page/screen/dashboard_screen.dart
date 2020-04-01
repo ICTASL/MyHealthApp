@@ -4,6 +4,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/message_type.dart';
@@ -106,11 +107,10 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   void _shareArticle(NewsArticle article) {
-    Share.share("${article.title}\n\n"
-        "${article.subtitle}\n\n"
+    Share.share("${article.title}\n"
+        "${article.subtitle}\n"
         "by ${article.originator}\n"
-        "${dateFormat.format(article.created)}\n\n"
-        "${article.message}");
+        "${dateFormat.format(article.created)}\n");
   }
 
   @override
@@ -268,15 +268,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                   ),
                 ],
               ),
-              SizedBox(
-                height: 5.0,
-              ),
               Divider(
                 color: Colors.grey[400].withOpacity(0.1),
               ),
-              Text(
-                article.message,
-                style: TextStyle(color: Colors.black, fontSize: 16.0),
+              Html(
+                data: article.message,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -432,10 +428,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 )
               ],
             ),
-            content: Text(
-              article.message,
-              style: TextStyle(color: Colors.black),
-            ),
+            content: Html(data: article.message),
             actions: <Widget>[
               IconButton(
                 onPressed: () {
