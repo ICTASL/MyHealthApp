@@ -10,6 +10,7 @@ import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/faq_screen.dart';
+import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
@@ -272,7 +273,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 color: Colors.grey[400].withOpacity(0.1),
               ),
               Html(
-                data: article.message,
+                data: article.message.substring(0, 300),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -294,7 +295,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                       style: TextStyle(color: Colors.blue),
                     ),
                     onPressed: () {
-                      _showNewsArticle(article);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => NewsDetailScreen(
+                          article: article,
+                        ),
+                      ));
+//                      _showNewsArticle(article);
                     },
                   )
                 ],
@@ -339,109 +345,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
       ),
     );
-  }
-
-  void _showNewsArticle(NewsArticle article) {
-    Icon _icon = Icon(
-      Icons.info,
-      color: Colors.blue,
-    );
-
-    switch (article.messageType) {
-      case MessageType.Critical:
-        _icon = Icon(
-          Icons.report,
-          color: Colors.red,
-          size: 30.0,
-        );
-        break;
-      case MessageType.Warning:
-        _icon = Icon(
-          Icons.warning,
-          color: Colors.amber,
-          size: 30.0,
-        );
-        break;
-      case MessageType.Info:
-        _icon = Icon(
-          Icons.info,
-          color: Colors.blue,
-          size: 30.0,
-        );
-        break;
-    }
-
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (_) {
-          return AlertDialog(
-            backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            article.title,
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.title.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "By ${article.originator}",
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .copyWith(fontSize: 12),
-                        ),
-                        Spacer(),
-                        Text(
-                          "${dateFormat.format(article.created)}",
-                          //published data needs to facilitated into the messages from the API
-                          style: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .copyWith(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-            content: Html(data: article.message),
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  _shareArticle(article);
-                },
-                icon: Icon(
-                  Icons.share,
-                  color: Colors.blue,
-                ),
-              ),
-            ],
-          );
-        });
   }
 
   Widget _buildNewsScreen() {

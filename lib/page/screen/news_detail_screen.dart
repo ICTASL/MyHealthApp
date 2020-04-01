@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/theme.dart';
@@ -7,6 +9,10 @@ import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
 
 import '../../app_localizations.dart';
+
+import 'package:intl/intl.dart';
+
+DateFormat dateFormat = DateFormat("dd-MM-yy HH:mm");
 
 class NewsDetailScreen extends StatefulWidget {
   final NewsArticle article;
@@ -23,87 +29,132 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     super.initState();
   }
 
+  void _shareArticle(NewsArticle article) {
+    Share.share("${article.title}\n"
+        "${article.subtitle}\n"
+        "by ${article.originator}\n"
+        "${dateFormat.format(article.created)}\n");
+  }
+
   @override
   Widget build(BuildContext context) {
+    Icon _icon = Icon(
+      Icons.info,
+      color: Colors.blue,
+    );
+
+    switch (widget.article.messageType) {
+      case MessageType.Critical:
+        _icon = Icon(
+          Icons.report,
+          color: Colors.red,
+          size: 30.0,
+        );
+        break;
+      case MessageType.Warning:
+        _icon = Icon(
+          Icons.warning,
+          color: Colors.amber,
+          size: 30.0,
+        );
+        break;
+      case MessageType.Info:
+        _icon = Icon(
+          Icons.info,
+          color: Colors.blue,
+          size: 30.0,
+        );
+        break;
+    }
+
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: primaryColor,
-          title: Text(widget.article.title),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          title: Text(
+            widget.article.title,
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                _shareArticle(widget.article);
+              },
+              icon: Icon(
+                Icons.share,
+                color: Colors.blue,
+              ),
+            )
+          ],
         ),
         body: Container(
-            decoration: BoxDecoration(
-                color: Color(0xff7c94b6),
-                image: DecorationImage(
-                    colorFilter: new ColorFilter.mode(
-                        Colors.white.withOpacity(0.8), BlendMode.dstATop),
-                    image: AssetImage("assets/images/bg.png"),
-                    fit: BoxFit.cover)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            new BorderRadius.all(Radius.circular(8.0)),
-                        color: colorAccentBackground,
-                        boxShadow: [backgroundBoxShadow]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
                         children: <Widget>[
-                          Text(
-                            widget.article.originator,
-                            textAlign: TextAlign.start,
-                            style:
-                                h2TextStyle.copyWith(color: primaryColorText),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
+                          Expanded(
                             child: Text(
-                              "8th March 12:45",
-                              //published data needs to facilitated into the messages from the API
+                              widget.article.title,
                               textAlign: TextAlign.start,
-                              style: h6TextStyle.copyWith(
-                                  color: primaryColorText.withOpacity(0.5)),
+                              style: Theme.of(context).textTheme.title.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              widget.article.message,
-                              style: h5TextStyle.copyWith(
-                                  color: primaryColorText.withOpacity(0.7)),
-                            ),
-                          ),
-                          Container(
-                            child: Divider(
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                              onTap: () {
-                                Share.share(
-                                    "Shared button not implemented yet");
-                              },
-                              child: Icon(
-                                Icons.share,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          )
                         ],
                       ),
-                    ),
-                  ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "By ${widget.article.originator}",
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 12),
+                          ),
+                          Spacer(),
+                          Text(
+                            "${dateFormat.format(widget.article.created)}",
+                            //published data needs to facilitated into the messages from the API
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SingleChildScrollView(
+                child: Html(
+                  data: widget.article.message,
+                  shrinkToFit: true,
                 ),
-              ],
-            )));
+              )
+            ],
+          ),
+        )));
   }
 }
