@@ -48,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   Future<void> _articleFetch;
   Timer _timer;
   TabController _tabController;
+
   @override
   void initState() {
     super.initState();
@@ -273,7 +274,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                 color: Colors.grey[400].withOpacity(0.1),
               ),
               Html(
-                data: article.message.substring(0, 300),
+                data: article.message.length > 350
+                    ? article.message.substring(0, 300)
+                    : article.message,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
