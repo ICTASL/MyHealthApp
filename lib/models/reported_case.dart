@@ -33,7 +33,7 @@ class ReportedCase extends Equatable {
     // Quarantine/home
     if (json.containsKey('detectedFrom')) {
       var from = json['detectedFrom'] as String;
-      _case.isFromFacility = from == 'quarantine';
+      _case.isFromFacility = from == 'quarantine facility';
     }
     // print("CASE HAS BEEN REPORTED: ${_case.id}");
     return _case;
