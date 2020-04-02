@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/rich_text_parser.dart';
 import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
@@ -151,6 +152,9 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 child: Html(
                   data: widget.article.message,
                   shrinkToFit: true,
+                  customTextAlign: (val) {
+                    return TextAlign.justify;
+                  },
                 ),
               )
             ],
