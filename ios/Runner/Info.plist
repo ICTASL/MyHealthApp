@@ -30,6 +30,7 @@
 	<string>We need your location information to check whether you were present in any contaminated area</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
