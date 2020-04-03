@@ -44,8 +44,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     print(contacts[index]);
-                    return _contactCard(contacts[index].title,
-                        contacts[index].phoneNumber, contacts[index].address);
+                    return _contactCard(
+                        contacts[index].title,
+                        contacts[index].phoneNumber,
+                        contacts[index].address,
+                        contacts[index].subContacts);
                   },
                   itemCount: contacts.length,
                 );
@@ -59,7 +62,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         ));
   }
 
-  Widget _contactCard(String title, String phoneNumber, String address) {
+  Widget _contactCard(String title, String phoneNumber, String address,
+      List<ContactUsContact> subContacts) {
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -95,10 +99,53 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   shape: CircleBorder(),
                   padding: EdgeInsets.all(10.0),
                   onPressed: () async {
-                    if (await canLaunch("tel:$phoneNumber")) {
+                    if (subContacts == null &&
+                        await canLaunch("tel:$phoneNumber")) {
                       await launch("tel:$phoneNumber");
+                    } else if (subContacts != null) {
+                      await showDialog(
+                        barrierDismissible: true,
+                        context: context,
+                        child: AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          title: Text("Medical Consultaion Services"),
+                          content: Container(
+                            width: 300,
+                            child: ListView.builder(
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FlatButton(
+                                    color: Colors.blue,
+                                    onPressed: () async {
+                                      await launch(
+                                          "https://play.google.com/store/apps/details?id=${subContacts[index].phoneNumber}");
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "${subContacts[index].title}",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              itemCount: subContacts.length,
+                            ),
+                          ),
+                          actions: [
+                            FlatButton(
+                                child: Text("Ok"),
+                                onPressed: () => Navigator.of(context).pop()),
+                          ],
+                        ),
+                      );
                     } else {
-                      showDialog(
+                      await showDialog(
+                        barrierDismissible: true,
                         context: context,
                         child: AlertDialog(
                           shape: RoundedRectangleBorder(
@@ -109,9 +156,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               "Failed to make phone call, try again later."),
                           actions: [
                             FlatButton(
-                              child: Text("Ok"),
-                              onPressed: () => Navigator.pop(context),
-                            ),
+                                child: Text("Ok"),
+                                onPressed: () => Navigator.of(context).pop()),
                           ],
                         ),
                       );

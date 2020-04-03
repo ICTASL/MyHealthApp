@@ -2,20 +2,40 @@
   "contact_us_contacts": [
     {
       "id": 1,
-      "title": "COVID-19 Information",
-      "phone_number": "117",
+      "title": "Medical Emergency",
+      "phone_number": "1990",
       "address": ""
     },
     {
       "id": 2,
-      "title": "Colombo General Hospital",
-      "phone_number": "011-269-1111",
-      "address": ""
+      "title": "Medical Consultation",
+      "phone_number": "",
+      "address": "",
+      "sub": [
+        {
+          "id": 1,
+          "title": "ODoc",
+          "phone_number": "com.developer.odoc",
+          "address": ""
+        },
+        {
+          "id": 2,
+          "title": "MyDoctor",
+          "phone_number": "com.app.mydoctor",
+          "address": ""
+        }
+      ]
     },
     {
       "id": 3,
-      "title": "Police",
-      "phone_number": "119",
+      "title": "Health Information",
+      "phone_number": "1999",
+      "address": ""
+    },
+    {
+      "id": 4,
+      "title": "Covid-19 Information",
+      "phone_number": "117",
       "address": ""
     }
   ],
