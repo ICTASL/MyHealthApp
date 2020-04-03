@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/contact_us_contact.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
-import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme.dart';
@@ -88,14 +88,14 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 color: Colors.white,
                 fontWeight: FontWeight.w400,
               ),
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
             ),
             Text(
               title,
               style: h3TextStyle.copyWith(
                   color: Colors.white.withOpacity(0.5),
                   fontWeight: FontWeight.w600),
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
             ),
             SizedBox(height: 5.0),
             Container(
@@ -116,9 +116,26 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
-                          title: Text(
-                            "Medical Consultaion Services",
-                            textAlign: TextAlign.center,
+                          title: Container(
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    AppLocalizations.of(context).translate(
+                                        "medical_consultation_service_title"),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context).translate(
+                                        "medical_consultation_service_foc"),
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.lightBlue),
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                           content: Container(
                             width: 300,
@@ -172,7 +189,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       );
                     }
                   },
-                  child: Icon(Icons.phone, color: Colors.white)),
+                  child: subContacts == null
+                      ? Icon(Icons.phone, color: Colors.white)
+                      : Icon(Icons.help, color: Colors.white)),
             ),
             Row(
               mainAxisSize: MainAxisSize.max,

@@ -83,5 +83,7 @@
   "case_item_quarantine": "නිරෝධායනය",
   "case_item_reported_locations": "වාර්තා වූ ස්ථාන",
   "case_item_register": " ලියාපදිංචි වන්න",
-  "case_item_already_register": "දැනටමත් ලියාපදිංචිවී ඇත"
+  "case_item_already_register": "දැනටමත් ලියාපදිංචිවී ඇත",
+  "medical_consultation_service_title":  "Medical Consultation Services",
+  "medical_consultation_service_foc":  "Free Of Charge"
 }
