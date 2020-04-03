@@ -15,7 +15,7 @@
   "dashboard_location_tab_text": "எனது இருப்பிடம்",
   "dashboard_safe_track_tab_text": "நோயாளியின் பயணம்",
   "dashboard_case_list_tab_text": "சம்பவங்கள்",
-  "dashboard_contact_tab_text": "Tele Health",
+  "dashboard_contact_tab_text": "டெலிஹெல்த்",
   "dashboard_register_tab_text": "பதிவு செய்க",
   "user_register_bar_title_text": "பதிவு செய்க",
   "user_register_screen_title": "பதிவு செய்க",
@@ -97,5 +97,9 @@
   "case_item_register": "பதிக",
   "case_item_already_register": "பதிவுக்கு ஏற்கனவே சேர்க்கப்பட்டது",
   "medical_consultation_service_title":  "மருத்துவ ஆலோசனை சேவைகள்",
-  "medical_consultation_service_foc":  "கட்டணம் இல்லாமல்"
+  "medical_consultation_service_foc":  "கட்டணம் இல்லாமல்",
+
+  "medical_emergency": "மருத்துவ அவசரநிலைமை",
+  "health_information": "சுகாதார தகவல்",
+  "covid_19_information": "கோவிட் -19 தகவல்"
 }

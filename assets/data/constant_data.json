@@ -2,39 +2,39 @@
   "contact_us_contacts": [
     {
       "id": 1,
-      "title": "Medical Emergency",
+      "title": "medical_emergency",
       "phone_number": "1990",
       "address": ""
     },
     {
       "id": 2,
-      "title": "Free Of Charge",
-      "phone_number": "Medical Consultation",
+      "title": "medical_consultation_service_foc",
+      "phone_number": "medical_consultation_service_title",
       "address": "",
       "sub": [
         {
           "id": 1,
-          "title": "ODoc",
-          "phone_number": "com.developer.odoc",
+          "title": "oDoc",
+          "phone_number": "https://play.google.com/store/apps/details?id=com.developer.odoc,https://apps.apple.com/lk/app/odoc/id1263423673",
           "address": ""
         },
         {
           "id": 2,
           "title": "MyDoctor",
-          "phone_number": "com.app.mydoctor",
+          "phone_number": "https://play.google.com/store/apps/details?id=com.app.mydoctor,https://apps.apple.com/us/app/mydoctor-customer-app/id1242769715",
           "address": ""
         }
       ]
     },
     {
       "id": 3,
-      "title": "Health Information",
+      "title": "health_information",
       "phone_number": "1999",
       "address": ""
     },
     {
       "id": 4,
-      "title": "Covid-19 Information",
+      "title": "covid_19_information",
       "phone_number": "117",
       "address": ""
     }

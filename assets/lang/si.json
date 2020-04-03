@@ -13,9 +13,9 @@
   "dashboard_news_text": "පුවත්",
   "dashboard_home_tab_text": "නිවැසුම",
   "dashboard_location_tab_text": "පිහිටුම",
-  "dashboard_safe_track_tab_text": "සුරැකුම් පථය",
+  "dashboard_safe_track_tab_text": "ස්ථාන",
   "dashboard_case_list_tab_text": "සිදුවීම්",
-  "dashboard_contact_tab_text": "Tele Health",
+  "dashboard_contact_tab_text": "ටෙලි වෛද්\u200Dය සේවා",
   "dashboard_register_tab_text": "ලියාපදිංචි",
   "user_register_bar_title_text": "ලියාපදිංචි වන්න",
   "user_register_screen_title": "සබැඳි සිද්ධියක් සදහා ලියාපදිංචි වන්න",
@@ -85,5 +85,9 @@
   "case_item_register": " ලියාපදිංචි වන්න",
   "case_item_already_register": "දැනටමත් ලියාපදිංචිවී ඇත",
   "medical_consultation_service_title":  "වෛද්\u200Dය උපදේශන සේවාවන්",
-  "medical_consultation_service_foc":  "මුදල් අයකිරීමකින් තොරයි."
+  "medical_consultation_service_foc":  "මුදල් අයකිරීමකින් තොරයි.",
+
+  "medical_emergency": "හදිසි සෞඛ්\u200D අවශ්\u200Dයතා",
+  "health_information": "සෞඛ්\u200Dය තොරතුරු",
+  "covid_19_information": "Covid-19 තොරතුරු"
 }

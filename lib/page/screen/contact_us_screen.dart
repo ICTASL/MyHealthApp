@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -5,6 +7,7 @@ import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/contact_us_contact.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
+import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme.dart';
@@ -18,6 +21,7 @@ class ContactUsScreen extends StatefulWidget {
 class _ContactUsScreenState extends State<ContactUsScreen> {
   @override
   Widget build(BuildContext context) {
+    BuildContext contextOriginal = context;
     return Container(
         padding: const EdgeInsets.all(10.0),
         child: FutureBuilder(
@@ -46,6 +50,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     itemBuilder: (context, index) {
                       print(contacts[index]);
                       return _contactCard(
+                          contextOriginal,
                           contacts[index].title,
                           contacts[index].phoneNumber,
                           contacts[index].address,
@@ -68,8 +73,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         ));
   }
 
-  Widget _contactCard(String title, String phoneNumber, String address,
-      List<ContactUsContact> subContacts) {
+  Widget _contactCard(BuildContext contextParent, String title,
+      String phoneNumber, String address, List<ContactUsContact> subContacts) {
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -82,16 +87,18 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              phoneNumber,
+            CustomText(
+              subContacts == null
+                  ? phoneNumber
+                  : AppLocalizations.of(context).translate(phoneNumber),
               style: h1TextStyle.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,
             ),
-            Text(
-              title,
+            CustomText(
+              AppLocalizations.of(context).translate(title),
               style: h3TextStyle.copyWith(
                   color: Colors.white.withOpacity(0.5),
                   fontWeight: FontWeight.w600),
@@ -111,7 +118,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     } else if (subContacts != null) {
                       await showDialog(
                         barrierDismissible: true,
-                        context: context,
+                        context: contextParent,
                         child: AlertDialog(
                           shape: RoundedRectangleBorder(
                               borderRadius:
@@ -138,41 +145,54 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             ),
                           ),
                           content: Container(
-                            width: 300,
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: FlatButton(
-                                    color: Colors.blue,
-                                    onPressed: () async {
-                                      await launch(
-                                          "https://play.google.com/store/apps/details?id=${subContacts[index].phoneNumber}");
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  width: 300,
+                                  height: 200,
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: FlatButton(
+                                          color: Colors.blue,
+                                          onPressed: () async {
+                                            await launch(subContacts[index]
+                                                    .phoneNumber
+                                                    .split(",")[
+                                                Platform.isIOS ? 1 : 0]);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: CustomText(
+                                              subContacts[index].title,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      );
                                     },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "${subContacts[index].title}",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
+                                    itemCount: subContacts.length,
                                   ),
-                                );
-                              },
-                              itemCount: subContacts.length,
+                                )
+                              ],
                             ),
                           ),
                           actions: [
                             FlatButton(
                                 child: Text("Ok"),
-                                onPressed: () => Navigator.of(context).pop()),
+                                onPressed: () =>
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop()),
                           ],
                         ),
                       );
                     } else {
                       await showDialog(
                         barrierDismissible: true,
-                        context: context,
+                        context: contextParent,
                         child: AlertDialog(
                           shape: RoundedRectangleBorder(
                               borderRadius:
@@ -203,7 +223,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     SizedBox(
                       height: 2.0,
                     ),
-                    Text(
+                    CustomText(
                       address,
                       style: TextStyle(
                           color: Colors.black54,
