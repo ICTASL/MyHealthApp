@@ -204,38 +204,6 @@ class _RootScreenState extends State<RootScreen> {
             items: _getBottomNavList(_useCaseList)));
   }
 
-  Widget _getHomeTabs(bool includeCase, int index) {
-    if (includeCase) {
-      switch (index) {
-        case 0:
-          return DashboardScreen();
-          break;
-        case 1:
-          return CaseListScreen();
-          break;
-        case 2:
-          return CaseDetailScreen();
-          break;
-        case 3:
-          return FAQScreen();
-          break;
-      }
-    } else {
-      switch (index) {
-        case 0:
-          return DashboardScreen();
-          break;
-        case 1:
-          return CaseDetailScreen();
-          break;
-        case 2:
-          return FAQScreen();
-          break;
-      }
-    }
-    return DashboardScreen();
-  }
-
   List<TitledNavigationBarItem> _getBottomNavList(bool _useCaseList) {
     if (!_useCaseList) {
       return [
