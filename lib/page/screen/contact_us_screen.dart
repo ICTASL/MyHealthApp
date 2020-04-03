@@ -40,18 +40,24 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 );
                 break;
               case ConnectionState.done:
-                List<ContactUsContact> contacts = snapshot.data;
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    print(contacts[index]);
-                    return _contactCard(
-                        contacts[index].title,
-                        contacts[index].phoneNumber,
-                        contacts[index].address,
-                        contacts[index].subContacts);
-                  },
-                  itemCount: contacts.length,
-                );
+                if (snapshot.hasData) {
+                  List<ContactUsContact> contacts = snapshot.data;
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      print(contacts[index]);
+                      return _contactCard(
+                          contacts[index].title,
+                          contacts[index].phoneNumber,
+                          contacts[index].address,
+                          contacts[index].subContacts);
+                    },
+                    itemCount: contacts.length,
+                  );
+                } else {
+                  return Center(
+                    child: Text("An error has occured, try again later. "),
+                  );
+                }
                 break;
               default:
                 return Center(
