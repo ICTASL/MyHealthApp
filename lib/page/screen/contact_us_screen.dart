@@ -110,7 +110,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
-                          title: Text("Medical Consultaion Services"),
+                          title: Text(
+                            "Medical Consultaion Services",
+                            textAlign: TextAlign.center,
+                          ),
                           content: Container(
                             width: 300,
                             child: ListView.builder(
