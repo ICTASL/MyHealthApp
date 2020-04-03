@@ -80,161 +80,176 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: Container(
         decoration: BoxDecoration(
-            color: TrackerColors.primaryColor,
+            color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            CustomText(
-              subContacts == null
-                  ? phoneNumber
-                  : AppLocalizations.of(context).translate(phoneNumber),
-              style: h1TextStyle.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            CustomText(
-              AppLocalizations.of(context).translate(title),
-              style: h3TextStyle.copyWith(
-                  color: Colors.white.withOpacity(0.5),
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 5.0),
             Container(
-              margin: const EdgeInsets.only(top: 10.0),
-              child: RaisedButton(
-                  color: Colors.green,
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(10.0),
-                  onPressed: () async {
-                    if (subContacts == null &&
-                        await canLaunch("tel:$phoneNumber")) {
-                      await launch("tel:$phoneNumber");
-                    } else if (subContacts != null) {
-                      await showDialog(
-                        barrierDismissible: true,
-                        context: contextParent,
-                        child: AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          title: Container(
-                            child: Center(
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    AppLocalizations.of(context).translate(
-                                        "medical_consultation_service_title"),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    AppLocalizations.of(context).translate(
-                                        "medical_consultation_service_foc"),
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.lightBlue),
-                                    textAlign: TextAlign.center,
-                                  )
-                                ],
-                              ),
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width / 2),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    subContacts == null
+                        ? phoneNumber
+                        : AppLocalizations.of(context).translate(phoneNumber),
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate(title),
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        color: Colors.black.withOpacity(0.5),
+                        fontWeight: FontWeight.w400),
+                    textAlign: TextAlign.start,
+                  ),
+                  SizedBox(height: 5.0),
+                  address.isNotEmpty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 2.0,
                             ),
-                          ),
-                          content: Container(
+                            Text(
+                              address,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13.0,
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.start,
+                            ),
+                          ],
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
+            Container(
+              child: GestureDetector(
+                onTap: () async {
+                  if (subContacts == null &&
+                      await canLaunch("tel:$phoneNumber")) {
+                    await launch("tel:$phoneNumber");
+                  } else if (subContacts != null) {
+                    await showDialog(
+                      barrierDismissible: true,
+                      context: contextParent,
+                      child: AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        title: Container(
+                          child: Center(
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Container(
-                                  width: 300,
-                                  height: 200,
-                                  child: ListView.builder(
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FlatButton(
-                                          color: Colors.blue,
-                                          onPressed: () async {
-                                            await launch(subContacts[index]
-                                                    .phoneNumber
-                                                    .split(",")[
-                                                Platform.isIOS ? 1 : 0]);
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: CustomText(
-                                              subContacts[index].title,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    itemCount: subContacts.length,
-                                  ),
-                                )
+                                Text(
+                                  AppLocalizations.of(context).translate(
+                                      "medical_consultation_service_title"),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25.0),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context).translate(
+                                      "medical_consultation_service_foc"),
+                                  style: TextStyle(
+                                      fontSize: 14.0, color: Colors.grey),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Divider(),
                               ],
                             ),
                           ),
-                          actions: [
-                            FlatButton(
-                                child: Text("Ok"),
-                                onPressed: () =>
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop()),
-                          ],
                         ),
-                      );
-                    } else {
-                      await showDialog(
-                        barrierDismissible: true,
-                        context: contextParent,
-                        child: AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          title: Text("Oops, something went wrong"),
-                          content: Text(
-                              "Failed to make phone call, try again later."),
-                          actions: [
-                            FlatButton(
-                                child: Text("Ok"),
-                                onPressed: () => Navigator.of(context).pop()),
-                          ],
+                        contentPadding: const EdgeInsets.all(0.0),
+                        content: Container(
+                          width: 500,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 20.0),
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  color: TrackerColors.primaryColor,
+                                  onPressed: () async {
+                                    await launch(subContacts[index]
+                                        .phoneNumber
+                                        .split(",")[Platform.isIOS ? 1 : 0]);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      subContacts[index].title,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: subContacts.length,
+                          ),
                         ),
-                      );
-                    }
-                  },
-                  child: subContacts == null
-                      ? Icon(Icons.phone, color: Colors.white)
-                      : Icon(Icons.help, color: Colors.white)),
+                        actions: [
+                          FlatButton(
+                              child: Text("Close"),
+                              onPressed: () =>
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop()),
+                        ],
+                      ),
+                    );
+                  } else {
+                    await showDialog(
+                      barrierDismissible: true,
+                      context: contextParent,
+                      child: AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        title: Text("Oops, something went wrong"),
+                        content:
+                            Text("Failed to make phone call, try again later."),
+                        actions: [
+                          FlatButton(
+                              child: Text("Ok"),
+                              onPressed: () => Navigator.of(context).pop()),
+                        ],
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: TrackerColors.primaryColor,
+                    ),
+                    padding: EdgeInsets.all(15.0),
+                    child: subContacts == null
+                        ? Icon(Icons.phone, color: Colors.white)
+                        : Icon(Icons.help, color: Colors.white)),
+              ),
             ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 2.0,
-                    ),
-                    CustomText(
-                      address,
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
-              ],
-            )
           ],
         ),
       ),
