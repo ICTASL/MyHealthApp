@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
+import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
@@ -170,8 +171,8 @@ class _DashboardScreenState extends State<DashboardScreen>
           Container(
             constraints: BoxConstraints.expand(),
             child: Center(
-              child:
-                  Text(AppLocalizations.of(context).translate("popmenu_faq")),
+              child: Text(AppLocalizations.of(context)
+                  .translate("dashboard_contact_tab_text")),
             ),
           )
         ],
@@ -443,6 +444,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildFaqScreen() {
-    return FAQScreenContent();
+    return ContactUsScreen();
   }
 }

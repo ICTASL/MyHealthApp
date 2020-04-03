@@ -39,7 +39,7 @@ class _RootScreenState extends State<RootScreen> {
     DashboardScreen(),
     CaseListScreen(),
     CaseDetailScreen(),
-    ContactUsScreen(),
+    FAQScreenContent(),
   };
 
   List<TitledNavigationBarItem> _homeTabItems;
@@ -118,9 +118,8 @@ class _RootScreenState extends State<RootScreen> {
               .translate('dashboard_safe_track_tab_text'),
           icon: Icons.map),
       TitledNavigationBarItem(
-          title: AppLocalizations.of(context)
-              .translate('dashboard_contact_tab_text'),
-          icon: Icons.phone),
+          title: AppLocalizations.of(context).translate('popmenu_faq'),
+          icon: Icons.question_answer),
     ];
 
     return Scaffold(
