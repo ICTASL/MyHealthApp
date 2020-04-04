@@ -247,7 +247,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     padding: EdgeInsets.all(15.0),
                     child: subContacts == null
                         ? Icon(Icons.phone, color: Colors.white)
-                        : Icon(Icons.help, color: Colors.white)),
+                        : Image.asset(
+                            "assets/images/medical_consultion.png",
+                            height: 24,
+                            width: 24,
+                          )),
               ),
             ),
           ],
