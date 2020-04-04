@@ -9,6 +9,7 @@ import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 import '../../theme.dart';
 import '../../utils/tracker_colors.dart';
@@ -19,6 +20,38 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
+  RemoteConfig remoteConfig;
+  bool medicalConsultationAccess = false;
+
+  final defaultConfigs = <String, dynamic>{
+    'medical_consultation_access': false
+  };
+
+  @override
+  void initState() {
+    RemoteConfig.instance.then((config) {
+      setState(() {
+        remoteConfig = config;
+        remoteConfig.setDefaults(defaultConfigs).then((val) {
+          remoteConfig
+              .fetch(expiration: const Duration(seconds: 0))
+              .then((val) {
+            remoteConfig.activateFetched().then((val) {
+              setState(() {
+                print(remoteConfig
+                    .getValue("medical_consultation_access")
+                    .asBool());
+                medicalConsultationAccess =
+                    remoteConfig.getBool("medical_consultation_access");
+                print("Got update $medicalConsultationAccess");
+              });
+            });
+          });
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     BuildContext contextOriginal = context;
@@ -46,17 +79,26 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               case ConnectionState.done:
                 if (snapshot.hasData) {
                   List<ContactUsContact> contacts = snapshot.data;
+                  List<ContactUsContact> _contacts = List();
+
+                  for (var concat in contacts) {
+                    if (concat.subContacts == null ||
+                        medicalConsultationAccess) {
+                      _contacts.add(concat);
+                    }
+                  }
+
                   return ListView.builder(
                     itemBuilder: (context, index) {
-                      print(contacts[index]);
+                      print(_contacts[index]);
                       return _contactCard(
                           contextOriginal,
-                          contacts[index].title,
-                          contacts[index].phoneNumber,
-                          contacts[index].address,
-                          contacts[index].subContacts);
+                          _contacts[index].title,
+                          _contacts[index].phoneNumber,
+                          _contacts[index].address,
+                          _contacts[index].subContacts);
                     },
-                    itemCount: contacts.length,
+                    itemCount: _contacts.length,
                   );
                 } else {
                   return Center(
