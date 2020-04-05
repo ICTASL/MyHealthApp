@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,26 +48,34 @@ class CaseDetailScreenState extends State<CaseDetailScreen> {
     }
   }
 
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
+  }
+
   @override
   void initState() {
     super.initState();
     updateLocation();
 
-    parseJsonFromAssets("assets/hospitals.json").then((data) {
-      BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(devicePixelRatio: 0.5, size: Size(5, 5)),
-              "assets/images/hospital_sign_map.png")
-          .then((icon) {
-        for (var h in data["hospitals"]) {
-          setState(() {
-            hospitalLocations.add(Marker(
-                icon: icon,
-                markerId: MarkerId("${h["id"]}_id"),
-                infoWindow: InfoWindow(title: "${h["name"]}"),
-                position: LatLng(h["lon"], h["lat"])));
-          });
-        }
-      });
+    parseJsonFromAssets("assets/hospitals.json").then((data) async {
+      final Uint8List markerIcon =
+          await getBytesFromAsset('assets/images/hospital_sign_map.png', 100);
+
+      for (var h in data["hospitals"]) {
+        setState(() {
+          hospitalLocations.add(Marker(
+              icon: BitmapDescriptor.fromBytes(markerIcon),
+              markerId: MarkerId("${h["id"]}_id"),
+              infoWindow: InfoWindow(title: "${h["name"]}"),
+              position: LatLng(h["lon"], h["lat"])));
+        });
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
