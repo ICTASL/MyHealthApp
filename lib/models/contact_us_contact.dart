@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 class ContactUsContact {
-  int _id;
-  String _title;
-  String _phoneNumber;
-  String _address;
-  List<ContactUsContact> _subs;
+  int id;
+  String title;
+  String subTitle;
+  String address;
+  String link;
+  bool titleTranslate;
+  bool subtitleTranslate;
+  List<ContactUsContact> subContacts;
 
   ContactUsContact._();
 
@@ -14,42 +17,20 @@ class ContactUsContact {
     ContactUsContact contact = ContactUsContact._();
     contact.id = jsonData['id'];
     contact.title = jsonData['title'];
-    contact.phoneNumber = jsonData['phone_number'];
+    contact.subTitle = jsonData['sub_title'];
+    contact.link = jsonData['link'];
     contact.address = jsonData['address'];
+    contact.titleTranslate = jsonData['title_translate'];
+    contact.subtitleTranslate = jsonData['subtitle_translate'];
 
     if (jsonData["sub"] != null) {
       List<ContactUsContact> subContacts = List();
       for (var subContact in jsonData["sub"]) {
         subContacts.add(ContactUsContact.fromJSON(subContact));
       }
-      contact._subs = subContacts;
+      contact.subContacts = subContacts;
     }
 
     return contact;
-  }
-
-  int get id => _id;
-
-  set id(int id) {
-    _id = id;
-  }
-
-  String get address => _address;
-
-  set address(String address) {
-    _address = address;
-  }
-
-  String get phoneNumber => _phoneNumber;
-
-  set phoneNumber(String phoneNumber) {
-    _phoneNumber = phoneNumber;
-  }
-
-  String get title => _title;
-  List<ContactUsContact> get subContacts => _subs;
-
-  set title(String title) {
-    _title = title;
   }
 }

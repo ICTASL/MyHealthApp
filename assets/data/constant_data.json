@@ -2,41 +2,65 @@
   "contact_us_contacts": [
     {
       "id": 1,
-      "title": "medical_emergency",
-      "phone_number": "1990",
-      "address": ""
+      "title": "1990",
+      "sub_title": "medical_emergency",
+      "link": "tel:1990",
+      "address": "",
+      "title_translate": false,
+      "subtitle_translate": true
     },
     {
       "id": 2,
-      "title": "medical_consultation_service_foc",
-      "phone_number": "medical_consultation_service_title",
+      "title": "pharmacy_list",
+      "sub_title": "",
+      "link": "https://pharmacy.health.gov.lk/",
       "address": "",
+      "title_translate": true,
+      "subtitle_translate": false
+    },
+    {
+      "id": 3,
+      "sub_title": "medical_consultation_service_foc",
+      "title": "medical_consultation_service_title",
+      "address": "",
+      "title_translate": true,
+      "subtitle_translate": true,
       "sub": [
         {
           "id": 1,
           "title": "oDoc",
-          "phone_number": "https://play.google.com/store/apps/details?id=com.developer.odoc,https://apps.apple.com/lk/app/odoc/id1263423673",
-          "address": ""
+          "link": "https://play.google.com/store/apps/details?id=com.developer.odoc,https://apps.apple.com/lk/app/odoc/id1263423673",
+          "address": "",
+          "title_translate": false,
+          "subtitle_translate": true
         },
         {
           "id": 2,
           "title": "MyDoctor",
-          "phone_number": "https://play.google.com/store/apps/details?id=com.app.mydoctor,https://apps.apple.com/us/app/mydoctor-customer-app/id1242769715",
-          "address": ""
+          "link": "https://play.google.com/store/apps/details?id=com.app.mydoctor,https://apps.apple.com/us/app/mydoctor-customer-app/id1242769715",
+          "address": "",
+          "title_translate": false,
+          "subtitle_translate": true
         }
       ]
     },
     {
-      "id": 3,
-      "title": "health_information",
-      "phone_number": "1999",
-      "address": ""
+      "id": 4,
+      "title": "1990",
+      "sub_title": "health_information",
+      "link": "tel:1999",
+      "address": "",
+      "title_translate": false,
+      "subtitle_translate": true
     },
     {
-      "id": 4,
-      "title": "covid_19_information",
-      "phone_number": "117",
-      "address": ""
+      "id": 5,
+      "title": "117",
+      "sub_title": "covid_19_information",
+      "link": "tel:117",
+      "address": "",
+      "title_translate": false,
+      "subtitle_translate": true
     }
   ],
   "privacy_policy": "We do not send locations to DHIS system unless you choose to share.All news and alerts comes from verified source"

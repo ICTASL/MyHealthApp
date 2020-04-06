@@ -92,11 +92,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     itemBuilder: (context, index) {
                       print(_contacts[index]);
                       return _contactCard(
-                          contextOriginal,
-                          _contacts[index].title,
-                          _contacts[index].phoneNumber,
-                          _contacts[index].address,
-                          _contacts[index].subContacts);
+                        contextOriginal,
+                        _contacts[index].title,
+                        _contacts[index].subTitle,
+                        _contacts[index].link,
+                        _contacts[index].address,
+                        _contacts[index].subContacts,
+                        _contacts[index].subtitleTranslate,
+                        _contacts[index].titleTranslate,
+                      );
                     },
                     itemCount: _contacts.length,
                   );
@@ -115,8 +119,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         ));
   }
 
-  Widget _contactCard(BuildContext contextParent, String title,
-      String phoneNumber, String address, List<ContactUsContact> subContacts) {
+  Widget _contactCard(
+      BuildContext contextParent,
+      String title,
+      String subTitle,
+      String link,
+      String address,
+      List<ContactUsContact> subContacts,
+      bool subtitleTranslate,
+      bool titleTranslate) {
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -138,9 +149,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
-                    subContacts == null
-                        ? phoneNumber
-                        : AppLocalizations.of(context).translate(phoneNumber),
+                    !titleTranslate
+                        ? title
+                        : AppLocalizations.of(context).translate(title),
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.black,
@@ -149,7 +160,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    AppLocalizations.of(context).translate(title),
+                    !subtitleTranslate
+                        ? subTitle
+                        : AppLocalizations.of(context).translate(subTitle),
                     style: TextStyle(
                         fontSize: 17.0,
                         color: Colors.black.withOpacity(0.5),
@@ -181,9 +194,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Container(
               child: GestureDetector(
                 onTap: () async {
-                  if (subContacts == null &&
-                      await canLaunch("tel:$phoneNumber")) {
-                    await launch("tel:$phoneNumber");
+                  if (subContacts == null && await canLaunch(link)) {
+                    await launch(link);
                   } else if (subContacts != null) {
                     await showDialog(
                       barrierDismissible: true,
@@ -236,7 +248,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   color: TrackerColors.primaryColor,
                                   onPressed: () async {
                                     await launch(subContacts[index]
-                                        .phoneNumber
+                                        .link
                                         .split(",")[Platform.isIOS ? 1 : 0]);
                                   },
                                   child: Padding(
@@ -288,7 +300,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     ),
                     padding: EdgeInsets.all(15.0),
                     child: subContacts == null
-                        ? Icon(Icons.phone, color: Colors.white)
+                        ? (link.startsWith("tel:")
+                            ? Icon(Icons.phone, color: Colors.white)
+                            : Icon(Icons.web, color: Colors.white))
                         : Image.asset(
                             "assets/images/medical_consultion.png",
                             height: 24,
