@@ -346,7 +346,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
+                    fontSize: 16.0,
                     color: colorCode),
               ),
             ),
@@ -357,7 +357,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 figure,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                    fontSize: 20.0,
                     color: colorCode),
               ),
             ),
@@ -374,7 +374,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           width: double.maxFinite,
           height: MediaQuery.of(context).size.height /
               (AppLocalizations.of(context).locale.languageCode == "ta"
-                  ? 4
+                  ? 3
                   : 5),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
