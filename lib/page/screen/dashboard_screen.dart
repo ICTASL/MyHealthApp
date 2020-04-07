@@ -56,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     super.initState();
 
     _pageController = PageController();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     updateDashboard();
     _articleFetch = fetchArticles();
 
@@ -139,7 +139,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           controller: _tabController,
           children: <Widget>[
             _buildNewsScreen(),
-            _buildStatScreen(),
             _buildFaqScreen(),
             _buildPharamcyScreen(),
           ],
@@ -163,13 +162,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                   .translate("dashboard_news_text")),
             ),
           ),
-          Container(
-            constraints: BoxConstraints.expand(),
-            child: Center(
-              child: Text(AppLocalizations.of(context)
-                  .translate("dashboard_latest_figures_title")),
-            ),
-          ),
+//          Container(
+//            constraints: BoxConstraints.expand(),
+//            child: Center(
+//              child: Text(AppLocalizations.of(context)
+//                  .translate("dashboard_latest_figures_title")),
+//            ),
+//          ),
           Container(
             constraints: BoxConstraints.expand(),
             child: Center(
@@ -325,34 +324,42 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _createCountCard(String title, String figure, Color colorCode) {
+  Widget _createCountCard(String title, String figure, Color colorCode,
+      {width = 100}) {
     return Card(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          borderRadius: BorderRadius.all(Radius.circular(4.0))),
       child: Container(
-        width: MediaQuery.of(context).size.width / 2.1,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        width: width,
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
         decoration: BoxDecoration(
             color: colorCode.withOpacity(0.2),
-            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            borderRadius: BorderRadius.all(Radius.circular(4.0))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              figure,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40.0,
-                  color: colorCode),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                title,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
+                    color: colorCode),
+              ),
             ),
-            Text(
-              title,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  color: colorCode),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                figure,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    color: colorCode),
+              ),
             ),
           ],
         ),
@@ -361,44 +368,117 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildNewsScreen() {
-    return FutureBuilder(
-      future: _articleFetch,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Center(
-              child: Text("An error has occured, try again"),
-            );
-            break;
-          case ConnectionState.waiting:
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-            break;
-          case ConnectionState.active:
-            return Center(
-              child: Text("An error has occured, try again"),
-            );
-            break;
-          case ConnectionState.done:
-            return Consumer<StoriesModel>(
-              builder: (context, model, child) {
-                print("CHANGED: ${model.articles.length}");
-                List<NewsArticle> stories = model.articles;
-                return ListView.builder(
-                    itemCount: stories.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _createNewsArticle(stories[index]);
-                    });
-              },
-            );
-            break;
-          default:
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-        }
-      },
+    return Column(
+      children: <Widget>[
+        Container(
+          width: double.maxFinite,
+          height: MediaQuery.of(context).size.height /
+              (AppLocalizations.of(context).locale.languageCode == "ta"
+                  ? 4
+                  : 5),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: <Widget>[
+                _createCountCard(
+                  AppLocalizations.of(context)
+                      .translate("dashboard_confirmed_card_text"),
+                  "$confirmed",
+                  Color(0XFFc53030),
+                  width: MediaQuery.of(context).size.width / 4,
+                ),
+                _createCountCard(
+                    AppLocalizations.of(context)
+                        .translate("dashboard_suspected_card_text"),
+                    "$suspected",
+                    Color(0XFFed8936),
+                    width: MediaQuery.of(context).size.width / 4),
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: _createCountCard(
+                              AppLocalizations.of(context)
+                                  .translate("dashboard_recovered_card_text"),
+                              "$recovered",
+                              Color(0XFF3ea46d),
+                              width: MediaQuery.of(context).size.width),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: _createCountCard(
+                              AppLocalizations.of(context)
+                                  .translate("dashboard_deaths_card_text"),
+                              "$deaths",
+                              Color(0XFF303b4b),
+                              width: MediaQuery.of(context).size.width),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20).copyWith(top: 2, bottom: 2),
+          child: Container(
+            width: double.maxFinite,
+            child: Text(
+              "${AppLocalizations.of(context).translate('dashboard_last_updated_text')} ${dateFormat.format(lastUpdated)}",
+              textAlign: TextAlign.end,
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10),
+            ),
+          ),
+        ),
+        Expanded(
+          child: FutureBuilder(
+            future: _articleFetch,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Center(
+                    child: Text("An error has occured, try again"),
+                  );
+                  break;
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  break;
+                case ConnectionState.active:
+                  return Center(
+                    child: Text("An error has occured, try again"),
+                  );
+                  break;
+                case ConnectionState.done:
+                  return Consumer<StoriesModel>(
+                    builder: (context, model, child) {
+                      print("CHANGED: ${model.articles.length}");
+                      List<NewsArticle> stories = model.articles;
+                      return ListView.builder(
+                          itemCount: stories.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _createNewsArticle(stories[index]);
+                          });
+                    },
+                  );
+                  break;
+                default:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 
