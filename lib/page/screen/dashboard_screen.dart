@@ -12,6 +12,7 @@ import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
+import 'package:selftrackingapp/page/screen/pharamacy_list_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
@@ -55,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     super.initState();
 
     _pageController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     updateDashboard();
     _articleFetch = fetchArticles();
 
@@ -140,6 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             _buildNewsScreen(),
             _buildStatScreen(),
             _buildFaqScreen(),
+            _buildPharamcyScreen(),
           ],
         ),
       ),
@@ -173,6 +175,13 @@ class _DashboardScreenState extends State<DashboardScreen>
             child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_contact_tab_text")),
+            ),
+          ),
+          Container(
+            constraints: BoxConstraints.expand(),
+            child: Center(
+              child:
+                  Text(AppLocalizations.of(context).translate("pharmacy_tab")),
             ),
           )
         ],
@@ -445,5 +454,9 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _buildFaqScreen() {
     return ContactUsScreen();
+  }
+
+  Widget _buildPharamcyScreen() {
+    return PharmacyScreen();
   }
 }

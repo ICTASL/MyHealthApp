@@ -102,5 +102,6 @@
   "medical_emergency": "மருத்துவ அவசரநிலைமை",
   "health_information": "சுகாதார தகவல்",
   "covid_19_information": "கோவிட் -19 தொடர்புடைய புகார்கள்",
-  "pharmacy_list": "அருகிலுள்ள மருத்தக விநியோக சேவையைக் கண்டறிக"
+  "pharmacy_list": "அருகிலுள்ள மருத்தக விநியோக சேவையைக் கண்டறிக",
+  "pharmacy_tab": "Pharmacy"
 }

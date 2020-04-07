@@ -10,15 +10,6 @@
       "subtitle_translate": true
     },
     {
-      "id": 2,
-      "title": "pharmacy_list",
-      "sub_title": "",
-      "link": "https://pharmacy.health.gov.lk/",
-      "address": "",
-      "title_translate": true,
-      "subtitle_translate": false
-    },
-    {
       "id": 3,
       "sub_title": "medical_consultation_service_foc",
       "title": "medical_consultation_service_title",
@@ -63,5 +54,18 @@
       "subtitle_translate": true
     }
   ],
+  "list": [
+    {
+      "id": 2,
+      "title": "pharmacy_list",
+      "sub_title": "",
+      "link": "https://pharmacy.health.gov.lk/",
+      "address": "",
+      "title_translate": true,
+      "subtitle_translate": false
+    }
+  ],
   "privacy_policy": "We do not send locations to DHIS system unless you choose to share.All news and alerts comes from verified source"
 }
+
+
