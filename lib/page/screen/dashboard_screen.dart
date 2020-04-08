@@ -130,7 +130,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   AppLocalizations.of(context).locale == Locale("ta", "TA")
                       ? 100
                       : 60,
-            )
+            ),
           ];
         },
         body: TabBarView(
@@ -352,7 +352,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 figure,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
+                    fontSize: 23.0,
                     color: colorCode),
               ),
             ),
@@ -364,7 +364,77 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _buildNewsScreen() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Expanded(
+          child: FutureBuilder(
+            future: _articleFetch,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Center(
+                    child: Text("An error has occured, try again"),
+                  );
+                  break;
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  break;
+                case ConnectionState.active:
+                  return Center(
+                    child: Text("An error has occured, try again"),
+                  );
+                  break;
+                case ConnectionState.done:
+                  return Consumer<StoriesModel>(
+                    builder: (context, model, child) {
+                      List<NewsArticle> stories = model.articles;
+                      return ListView.builder(
+                          itemCount: stories.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index == 0) {
+                              return _buildTopStats();
+                            } else
+                              return _createNewsArticle(stories[index - 1]);
+                          });
+                    },
+                  );
+                  break;
+                default:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTopStats() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 15, top: 20.0),
+        //   child: Text("ONGOING:",
+        //       textAlign: TextAlign.start,
+        //       style: TextStyle(
+        //           color: Colors.black,
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 15.0)),
+        // ),
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 15),
+        //   child: Text("COVID-19 Statistics",
+        //       textAlign: TextAlign.start,
+        //       style: TextStyle(
+        //           color: Colors.black,
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 30.0)),
+        // ),
         Container(
           width: double.maxFinite,
           height: MediaQuery.of(context).size.height /
@@ -375,19 +445,37 @@ class _DashboardScreenState extends State<DashboardScreen>
             padding: const EdgeInsets.all(10.0),
             child: Row(
               children: <Widget>[
-                _createCountCard(
-                  AppLocalizations.of(context)
-                      .translate("dashboard_confirmed_card_text"),
-                  "$confirmed",
-                  Color(0XFFc53030),
-                  width: MediaQuery.of(context).size.width / 4,
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: _createCountCard(
+                            AppLocalizations.of(context)
+                                .translate("dashboard_confirmed_card_text"),
+                            "$confirmed",
+                            Color(0XFFc53030),
+                            width: MediaQuery.of(context).size.width / 4,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: _createCountCard(
+                              AppLocalizations.of(context)
+                                  .translate("dashboard_suspected_card_text"),
+                              "$suspected",
+                              Color(0XFFed8936),
+                              width: MediaQuery.of(context).size.width / 4),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                _createCountCard(
-                    AppLocalizations.of(context)
-                        .translate("dashboard_suspected_card_text"),
-                    "$suspected",
-                    Color(0XFFed8936),
-                    width: MediaQuery.of(context).size.width / 4),
                 Expanded(
                   child: Column(
                     children: <Widget>[
@@ -430,46 +518,6 @@ class _DashboardScreenState extends State<DashboardScreen>
               textAlign: TextAlign.end,
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10),
             ),
-          ),
-        ),
-        Expanded(
-          child: FutureBuilder(
-            future: _articleFetch,
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Center(
-                    child: Text("An error has occured, try again"),
-                  );
-                  break;
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                  break;
-                case ConnectionState.active:
-                  return Center(
-                    child: Text("An error has occured, try again"),
-                  );
-                  break;
-                case ConnectionState.done:
-                  return Consumer<StoriesModel>(
-                    builder: (context, model, child) {
-                      List<NewsArticle> stories = model.articles;
-                      return ListView.builder(
-                          itemCount: stories.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _createNewsArticle(stories[index]);
-                          });
-                    },
-                  );
-                  break;
-                default:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-              }
-            },
           ),
         ),
       ],

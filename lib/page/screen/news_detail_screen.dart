@@ -158,6 +158,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         ),
                         Html(
                           data: widget.article.message,
+                          shrinkToFit: false,
                           customTextAlign: (val) {
                             return TextAlign.justify;
                           },
