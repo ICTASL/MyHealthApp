@@ -75,9 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool forceUpdate = true;
 
-    print("Fetching the articles");
     int id = await ApiClient().getLastMessageId();
-    print("last fetched $id");
     int lowerID = 1;
     if (id >= 10) {
       lowerID = id - 9;
@@ -189,9 +187,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _createNewsArticle(NewsArticle article) {
-    print(
-        "${article.id} ${article.title},${article.message} ${article.created}");
-
     Icon _icon = Icon(
       Icons.info,
       color: Colors.blue,
@@ -460,7 +455,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                 case ConnectionState.done:
                   return Consumer<StoriesModel>(
                     builder: (context, model, child) {
-                      print("CHANGED: ${model.articles.length}");
                       List<NewsArticle> stories = model.articles;
                       return ListView.builder(
                           itemCount: stories.length,
