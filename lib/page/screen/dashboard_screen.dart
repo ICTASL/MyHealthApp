@@ -440,7 +440,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           height: MediaQuery.of(context).size.height /
               (AppLocalizations.of(context).locale.languageCode == "ta"
                   ? 3
-                  : 5),
+                  : 4),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Row(
