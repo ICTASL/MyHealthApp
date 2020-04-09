@@ -33,7 +33,7 @@ class _CaseListScreenState extends State<CaseListScreen> {
       }
       for (int i = id; i > 0; i--) {
         ReportedCase reportedCase =
-            await ApiClient().getCase(i, forceUpdate: true);
+            await ApiClient().getCase(i, forceUpdate: false);
         if (reportedCase != null) _cases.add(reportedCase);
       }
       print("Cases found Retreived: ${_cases.length}");

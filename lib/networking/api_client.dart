@@ -113,7 +113,7 @@ class ApiClient {
   Future<ReportedCase> getCase(int id, {forceUpdate = false}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lang = prefs.getString('preferred_language');
-    final sharedPrefId = "alert_$lang--$id";
+    final sharedPrefId = "case_$lang--$id";
 
     String alertData = prefs.getString(sharedPrefId);
 
