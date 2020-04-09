@@ -28,6 +28,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   @override
   void initState() {
     super.initState();
+    print(widget.article.message);
   }
 
   void _shareArticle(NewsArticle article) {
@@ -90,75 +91,85 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
         ),
         body: Container(
             child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              widget.article.title,
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.title.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "By ${widget.article.originator}",
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(fontSize: 12),
-                          ),
-                          Spacer(),
-                          Text(
-                            "${dateFormat.format(widget.article.created)}",
-                            //published data needs to facilitated into the messages from the API
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SingleChildScrollView(
-                child: Html(
-                  data: widget.article.message,
-                  shrinkToFit: true,
-                  customTextAlign: (val) {
-                    return TextAlign.justify;
-                  },
-                ),
-              )
-            ],
-          ),
-        )));
+                padding: const EdgeInsets.all(0.0),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Text(
+                                        widget.article.title,
+                                        textAlign: TextAlign.start,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .title
+                                            .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "By ${widget.article.originator}",
+                                      textAlign: TextAlign.start,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "${dateFormat.format(widget.article.created)}",
+                                      //published data needs to facilitated into the messages from the API
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Html(
+                          data: widget.article.message,
+                          shrinkToFit: false,
+                          customTextAlign: (val) {
+                            return TextAlign.justify;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ))));
   }
+
+  // var testhtml =
+  //     "<div style=\"text-align: justify;\">\n  <h2 style=\"line-height: 40.8%;\">What is Lorem Ipsum?</h2><p></p><p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p><h2 style=\"line-height: 40.8%;\">Why do we use it?</h2><p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',</p><ol><li>one</li><li>two</li><li>three</li></ol><p></p>\n</div>";
+
 }
