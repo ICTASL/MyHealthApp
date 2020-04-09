@@ -156,13 +156,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        Html(
-                          data: widget.article.message,
-                          shrinkToFit: false,
-                          customTextAlign: (val) {
-                            return TextAlign.justify;
-                          },
-                        ),
+                        Html(data: widget.article.message, shrinkToFit: false),
                       ],
                     ),
                   ),

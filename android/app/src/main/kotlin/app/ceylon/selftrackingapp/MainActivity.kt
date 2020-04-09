@@ -100,5 +100,9 @@ class MainActivity : FlutterActivity() {
         return locationResult
     }
 
+    override fun onDestroy() {
+        flutterEngine?.platformViewsController?.onFlutterViewDestroyed()
+        super.onDestroy()
+    }
 
 }
