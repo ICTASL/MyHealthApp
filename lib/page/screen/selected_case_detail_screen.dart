@@ -8,8 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:selftrackingapp/models/location.dart';
 import 'package:selftrackingapp/models/reported_case.dart';
-import 'package:selftrackingapp/widgets/case_item.dart';
-import 'package:selftrackingapp/widgets/custom_text.dart';
 
 DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -28,13 +26,22 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
   static const MethodChannel _channel = MethodChannel('location');
 
   Completer<GoogleMapController> _controller = Completer();
-  Position currentLocation;
+  Position _currentLocation;
 
   List<Marker> locationMarkers = [];
 
   @override
   void initState() {
     super.initState();
+
+//    initializing _currentLocation with first location of the reported case
+    try {
+      _currentLocation = Position(
+          latitude: widget.reportedCase.locations[0].latitude,
+          longitude: widget.reportedCase.locations[0].longitude);
+    } catch (e) {
+      print(e);
+    }
 
 //    http://localhost:8000/application/dhis/patients
 
@@ -113,8 +120,8 @@ class _SelectedCaseDetailScreenState extends State<SelectedCaseDetailScreen> {
               strokeWidth: 0);
         }).toSet(),
         initialCameraPosition: CameraPosition(
-          target: currentLocation != null
-              ? LatLng(currentLocation.latitude, currentLocation.longitude)
+          target: _currentLocation != null
+              ? LatLng(_currentLocation.latitude, _currentLocation.longitude)
               : LatLng(6.9271, 79.8612),
           zoom: 12,
         ),
