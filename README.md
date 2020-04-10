@@ -1,4 +1,4 @@
-# COVID-19 Self Tracking app
+# MyHealth Sri Lanka - Mobile App
 
 ![CI](https://github.com/ayubowan/selft_tracking_app/workflows/CI/badge.svg)
 
