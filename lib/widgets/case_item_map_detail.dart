@@ -8,109 +8,98 @@ import 'package:selftrackingapp/page/screen/selected_case_detail_screen.dart';
 import 'package:selftrackingapp/page/screen/user_register_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 
-class CaseItem extends StatelessWidget {
+class CaseItemMapInfo extends StatelessWidget {
   final ReportedCase _case;
+  final GestureTapCallback onTapCard;
 
-  CaseItem(this._case);
+  CaseItemMapInfo(this._case, this.onTapCard);
 
   @override
   Widget build(BuildContext context) {
-//    var source = _case.isLocal ? 'Local' : 'Imported';
-//    source += ', from: ' +
-//        (_case.isFromFacility ? 'Quarantine Facility' : 'Community');
     return GestureDetector(
       child: Container(
         width: 100.0,
-        margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-        padding: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.0),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black12, blurRadius: 12.0, offset: Offset(0, 4.0))
-          ],
-        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(
-              Icons.trip_origin,
-              size: 18.0,
-            ),
-            SizedBox(width: 20.0),
             Expanded(
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      _case.caseNumber,
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.w800),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "#${_case.caseNumber}",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.w800),
+                        ),
+                        Wrap(
+                          spacing: 8.0, // gap between adjacent chips
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: _case.isLocal
+                                      ? Colors.green
+                                      : Colors.amber,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  _case.isLocal
+                                      ? AppLocalizations.of(context)
+                                          .translate("case_item_local")
+                                      : AppLocalizations.of(context)
+                                          .translate("case_item_foreign"),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: _case.isLocal
+                                      ? Colors.purple
+                                      : Colors.blue,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  _case.isFromFacility
+                                      ? AppLocalizations.of(context)
+                                          .translate("case_item_community")
+                                      : AppLocalizations.of(context)
+                                          .translate("case_item_quarantine"),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    SizedBox(height: 6.0),
+                    SizedBox(height: 4.0),
                     Text(
                       formatDate(_case.createdAt,
                           [yy, '-', M, '-', d, ' ', h, ':', nn, ' ', am]),
                       style: TextStyle(fontSize: 12.0),
                     ),
-                    SizedBox(height: 16.0),
-                    Wrap(
-                      spacing: 8.0, // gap between adjacent chips
-                      runSpacing: 4.0,
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                              color:
-                                  _case.isLocal ? Colors.green : Colors.amber,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              _case.isLocal
-                                  ? AppLocalizations.of(context)
-                                      .translate("case_item_local")
-                                  : AppLocalizations.of(context)
-                                      .translate("case_item_foreign"),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color:
-                                  _case.isLocal ? Colors.purple : Colors.blue,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              _case.isFromFacility
-                                  ? AppLocalizations.of(context)
-                                      .translate("case_item_community")
-                                  : AppLocalizations.of(context)
-                                      .translate("case_item_quarantine"),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.0),
+                    SizedBox(height: 4.0),
                     Text(
                       _case.message,
                     ),
-                    SizedBox(height: 16.0),
+                    SizedBox(height: 4.0),
                     Text(
                       AppLocalizations.of(context)
                           .translate("case_item_reported_locations"),
                       style: TextStyle(
                           fontSize: 14.0, fontWeight: FontWeight.w900),
                     ),
-                    SizedBox(height: 6.0),
+                    SizedBox(height: 4.0),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: _case.locations
@@ -122,32 +111,18 @@ class CaseItem extends StatelessWidget {
                                   Text(location.address),
                                   Text(
                                     formatDate(location.from, [
-                                          yy,
-                                          '-',
-                                          M,
-                                          '-',
-                                          d,
-                                          ' ',
-                                          h,
-                                          ':',
-                                          nn,
-                                          ' ',
-                                          am
-                                        ]) +
-                                        " to " +
-                                        formatDate(location.to, [
-                                          yy,
-                                          '-',
-                                          M,
-                                          '-',
-                                          d,
-                                          ' ',
-                                          h,
-                                          ':',
-                                          nn,
-                                          ' ',
-                                          am
-                                        ]),
+                                      yy,
+                                      '-',
+                                      M,
+                                      '-',
+                                      d,
+                                      ' ',
+                                      h,
+                                      ':',
+                                      nn,
+                                      ' ',
+                                      am
+                                    ]),
                                     style: TextStyle(
                                         fontSize: 12.0,
                                         fontStyle: FontStyle.italic),
@@ -206,16 +181,7 @@ class CaseItem extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => _showCasDetails(context, _case.id),
+      onTap: onTapCard,
     );
-  }
-
-  void _showCasDetails(BuildContext context, int id) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SelectedCaseDetailScreen(
-                  reportedCase: _case,
-                )));
   }
 }

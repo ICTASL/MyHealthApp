@@ -21,6 +21,7 @@ import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import '../../app_localizations.dart';
 import '../ios_faq.dart';
 import 'case_details_screen.dart';
+import 'case_details_map_screen.dart';
 
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
 
@@ -42,7 +43,7 @@ class _RootScreenState extends State<RootScreen> {
   bool _hasCaseThrownError = false;
   final List<Widget> _homeTabsTotal = [
     DashboardScreen(),
-    CaseListScreen(),
+    CaseListMapDetailScreen(),
     CaseDetailScreen(),
     FAQScreen()
   ];
