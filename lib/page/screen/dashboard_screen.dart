@@ -277,11 +277,6 @@ class _DashboardScreenState extends State<DashboardScreen>
               Divider(
                 color: Colors.grey[400].withOpacity(0.1),
               ),
-              Html(
-                data: article.message.length > 350
-                    ? article.message.substring(0, 300)
-                    : article.message,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
