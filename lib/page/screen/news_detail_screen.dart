@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -8,6 +10,8 @@ import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/theme.dart';
 import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../app_localizations.dart';
 
@@ -36,6 +40,54 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
         "${article.subtitle}\n"
         "by ${article.originator}\n"
         "${dateFormat.format(article.created)}\n");
+  }
+
+  Widget _buildTitle() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    widget.article.title,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.title.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "By ${widget.article.originator}",
+                  textAlign: TextAlign.start,
+                  style:
+                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                ),
+                Spacer(),
+                Text(
+                  "${dateFormat.format(widget.article.created)}",
+                  //published data needs to facilitated into the messages from the API
+                  style:
+                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                ),
+              ],
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   @override
@@ -70,6 +122,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     }
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
@@ -92,71 +145,35 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
         body: Container(
             child: Padding(
                 padding: const EdgeInsets.all(0.0),
-                child: SingleChildScrollView(
+                child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Text(
-                                        widget.article.title,
-                                        textAlign: TextAlign.start,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .title
-                                            .copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "By ${widget.article.originator}",
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body1
-                                          .copyWith(fontSize: 12),
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      "${dateFormat.format(widget.article.created)}",
-                                      //published data needs to facilitated into the messages from the API
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body1
-                                          .copyWith(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                        _buildTitle(),
                         SizedBox(
-                          height: 20,
+                          height: 30.0,
                         ),
-                        Html(data: widget.article.message, shrinkToFit: false),
+                        Divider(),
+                        Expanded(
+                          child: WebView(
+                            initialUrl: Uri.dataFromString(
+                                    widget.article.message,
+                                    mimeType: 'text/html',
+                                    encoding: Encoding.getByName('utf-8'))
+                                .toString(),
+                            navigationDelegate:
+                                (NavigationRequest request) async {
+                              if (await canLaunch(request.url)) {
+                                await launch(request.url);
+                              } else {
+                                print("Cannot launch url");
+                              }
+                              return NavigationDecision.prevent;
+                            },
+                            javascriptMode: JavascriptMode.unrestricted,
+                          ),
+                        ),
                       ],
                     ),
                   ),

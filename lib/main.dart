@@ -80,7 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _isTimeoutCompleted = false;
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     Timer(SPLASH_DURATION, () {
       if (_nextScreen != null) {
         Navigator.of(context)
