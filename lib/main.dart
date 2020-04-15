@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:package_info/package_info.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/networking/db.dart';
@@ -14,6 +16,8 @@ import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'constants.dart';
 import 'utils/tracker_colors.dart';
 import 'package:dropdown_banner/dropdown_banner.dart';
 
@@ -79,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     _isTimeoutCompleted = false;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -94,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     loadLang();
+    _appVersionCheck();
   }
 
   Future<void> loadLang() async {
@@ -153,5 +159,101 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     checkReachability();
     return _createSplashScreen();
+  }
+
+//check for the latest build number set in the firebase remote config
+//and show update dialog if necessary
+  void _appVersionCheck() async {
+    String key = Platform.isIOS
+        ? IOS_APP_BUILD_NUMBER_KEY
+        : ANDROID_APP_BUILD_NUMBER_KEY;
+
+    //Get Current buildNumber of the app
+    final PackageInfo info = await PackageInfo.fromPlatform();
+
+    //In Android this refers to [versionCode]. In iOS [CFBundleVersion]
+    int currentBuildNumber = int.parse(info.buildNumber);
+
+    //Get Latest version info from firebase config
+    final RemoteConfig remoteConfig = await RemoteConfig.instance;
+
+    try {
+      await remoteConfig
+          .setDefaults(<String, dynamic>{key: currentBuildNumber});
+
+      // Using default duration to force fetching from remote server.
+      await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+      await remoteConfig.activateFetched();
+
+      int remoteBuildNumber = remoteConfig.getInt(key);
+
+      print("remoteBuildNumber $remoteBuildNumber");
+      if (remoteBuildNumber > currentBuildNumber) {
+        _showUpdateDialog();
+      }
+    } on FetchThrottledException catch (exception) {
+      // Fetch throttled.
+      print(exception);
+    } catch (exception) {
+      print('Unable to fetch remote config. Default value will be used');
+    }
+  }
+
+  void _showUpdateDialog() async {
+    bool isIOS = Platform.isIOS;
+    String title = "New Update Available";
+    String message =
+        "There is a newer version of the app available. Please update now.";
+    String affirmativeLabel = "Update Now";
+    String negativeLabel = "Later";
+
+    isIOS
+        ? showCupertinoDialog(
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text(affirmativeLabel),
+                    onPressed: () => launchAppStore(IOS_APP_URL),
+                  ),
+                  CupertinoDialogAction(
+                    child: Text(negativeLabel),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            })
+        : showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      affirmativeLabel.toUpperCase(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onPressed: () => launchAppStore(ANDROID_APP_URL),
+                  ),
+                  FlatButton(
+                    child: Text(negativeLabel.toUpperCase()),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            },
+          );
+  }
+
+  void launchAppStore(String url) async {
+    if (await canLaunch(url)) {
+      launch(url);
+    }
   }
 }

@@ -75,9 +75,9 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - geolocator (5.3.1):
+  - geolocator (5.3.0):
     - Flutter
-  - google_api_availability (2.0.4):
+  - google_api_availability (2.0.3):
     - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
@@ -260,8 +260,8 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_plugin_android_lifecycle: 47de533a02850f070f5696a623995e93eddcdb9b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator: 460cc8e850b616f8c0e90944c86517d91ccbb686
-  google_api_availability: 15fa42a8cd83c0a6738507ffe6e87096f12abcb8
+  geolocator: 7cdcf71180b80913b3cd84ab715d3b5365b378af
+  google_api_availability: 526574c9a5a0ae541e18c65f98e47afc11f53c8b
   google_maps_flutter: d0dd62f5a7d39bae61057eb9f52dd778d99c7c6c
   GoogleAppMeasurement: 434cc7be25e71dc04b8d0e3079125127b330e84a
   GoogleDataTransport: 166f9b9f82cbf60a204e8fe2daa9db3e3ec1fb15
