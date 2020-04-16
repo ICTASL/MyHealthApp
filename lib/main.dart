@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'dart:async';
-import 'dart:io';
-
+import 'package:connectivity/connectivity.dart';
+import 'package:dropdown_banner/dropdown_banner.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/app_localizations.dart';
@@ -12,10 +13,8 @@ import 'package:selftrackingapp/networking/db.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:connectivity/connectivity.dart';
-import 'package:flutter/services.dart';
+
 import 'utils/tracker_colors.dart';
-import 'package:dropdown_banner/dropdown_banner.dart';
 
 void main() {
   runApp(MyApp());
@@ -79,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     _isTimeoutCompleted = false;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

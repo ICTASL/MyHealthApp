@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:async/async.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -8,20 +12,17 @@ import 'package:selftrackingapp/models/news_article.dart';
 import 'package:selftrackingapp/networking/api_client.dart';
 import 'package:selftrackingapp/notifiers/registered_cases_model.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
-import 'package:selftrackingapp/page/screen/case_list_screen.dart';
-import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
-import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app_localizations.dart';
-import '../ios_faq.dart';
-import 'case_details_screen.dart';
 import 'case_details_map_screen.dart';
+import 'case_details_screen.dart';
 
 enum RootTab { HomeTab, CaseTab, ContactTab, RegisterTab }
 
@@ -67,6 +68,7 @@ class _RootScreenState extends State<RootScreen> {
       }
     });
     _fetchCaseLatest();
+    _appVersionCheck();
   }
 
   void _handleFCM(Map<String, dynamic> message) async {
@@ -238,6 +240,101 @@ class _RootScreenState extends State<RootScreen> {
             title: AppLocalizations.of(context).translate('popmenu_faq'),
             icon: Icons.question_answer),
       ];
+    }
+  }
+
+//check for the latest build number set in the firebase remote config
+//and show update dialog if necessary
+  void _appVersionCheck() async {
+    String key = Platform.isIOS
+        ? IOS_APP_BUILD_NUMBER_KEY
+        : ANDROID_APP_BUILD_NUMBER_KEY;
+
+    //Get Current buildNumber of the app
+    final PackageInfo info = await PackageInfo.fromPlatform();
+
+    //In Android this refers to [versionCode]. In iOS [CFBundleVersion]
+    int currentBuildNumber = int.parse(info.buildNumber);
+
+    //Get Latest version info from firebase config
+    final RemoteConfig remoteConfig = await RemoteConfig.instance;
+
+    try {
+      await remoteConfig
+          .setDefaults(<String, dynamic>{key: currentBuildNumber});
+
+      // Using default duration to force fetching from remote server.
+      await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+      await remoteConfig.activateFetched();
+
+      int remoteBuildNumber = remoteConfig.getInt(key);
+
+      if (remoteBuildNumber > currentBuildNumber) {
+        _showUpdateDialog();
+      }
+    } on FetchThrottledException catch (exception) {
+      // Fetch throttled.
+      print(exception);
+    } catch (exception) {
+      print('Unable to fetch remote config. Default value will be used');
+    }
+  }
+
+  void _showUpdateDialog() async {
+    bool isIOS = Platform.isIOS;
+    String title = "New Update Available";
+    String message =
+        "There is a newer version of the app available. Please update now.";
+    String affirmativeLabel = "Update Now";
+    String negativeLabel = "Later";
+
+    isIOS
+        ? showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text(affirmativeLabel),
+                onPressed: () => launchAppStore(IOS_APP_URL),
+              ),
+              CupertinoDialogAction(
+                child: Text(negativeLabel),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        })
+        : showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                affirmativeLabel.toUpperCase(),
+                style: TextStyle(color: Colors.blue),
+              ),
+              onPressed: () => launchAppStore(ANDROID_APP_URL),
+            ),
+            FlatButton(
+              child: Text(negativeLabel.toUpperCase()),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void launchAppStore(String url) async {
+    if (await canLaunch(url)) {
+      launch(url);
     }
   }
 }
