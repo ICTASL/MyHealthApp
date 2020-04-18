@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:dropdown_banner/dropdown_banner.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/networking/data_repository.dart';
 import 'package:selftrackingapp/networking/db.dart';
+import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/root_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -35,8 +39,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final navigatorKey = GlobalKey<NavigatorState>();
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'COVID-19 Tracker',
@@ -71,54 +73,52 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const Duration SPLASH_DURATION = Duration(seconds: 3);
-  Widget _nextScreen;
-  bool _isTimeoutCompleted;
+  static const int SPLASH_DURATION = 3;
+  AsyncMemoizer<bool> _asyncMemoizer;
+  bool _hasSplashFinished = false;
+  bool _requiresLanguage = false;
 
   @override
   void initState() {
     super.initState();
-
-    _isTimeoutCompleted = false;
+    _asyncMemoizer = AsyncMemoizer();
+    print("Showing Splash");
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    Timer(SPLASH_DURATION, () {
-      if (_nextScreen != null) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => _nextScreen));
-      } else {
-        _isTimeoutCompleted = true;
-      }
+    _asyncMemoizer.runOnce(() {
+      loadLang();
     });
+    checkReachability();
+  }
 
-    loadLang();
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> loadLang() async {
+    await Future.delayed(Duration(seconds: SPLASH_DURATION), () {});
     final SharedPreferences pref = await SharedPreferences.getInstance();
-
     String language = pref.getString("language");
     if (language != null) {
       if (language == "en") {
-        AppLocalizations.of(context).load(Locale("en", "US"));
+        await AppLocalizations.of(context).load(Locale("en", "US"));
       } else if (language == "ta") {
-        AppLocalizations.of(context).load(Locale("ta", "TA"));
+        await AppLocalizations.of(context).load(Locale("ta", "TA"));
       } else {
-        AppLocalizations.of(context).load(Locale("si", "LK"));
+        await AppLocalizations.of(context).load(Locale("si", "LK"));
       }
-      _nextScreen = RootScreen();
-      if (_isTimeoutCompleted) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => _nextScreen));
-      }
+      setState(() {
+        _hasSplashFinished = true;
+        _requiresLanguage = false;
+      });
     } else {
-      _nextScreen = WelcomeScreen();
-      if (_isTimeoutCompleted) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => _nextScreen));
-      }
+      setState(() {
+        _hasSplashFinished = true;
+        _requiresLanguage = true;
+      });
     }
   }
 
@@ -136,22 +136,30 @@ class _HomeScreenState extends State<HomeScreen> {
         text: 'Please check your WiFi or mobile data connection',
         color: Colors.redAccent,
         textStyle: TextStyle(color: Colors.white),
-        duration: Duration(seconds: 3));
+        duration: Duration(seconds: 10));
   }
 
   void checkReachability() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
-    } else if (connectivityResult == ConnectivityResult.wifi) {
-      // I am connected to a wifi network.
-    } else {
-      reachabilityFailedFail();
-    }
+    Connectivity connectivity = Connectivity();
+    Stream<ConnectivityResult> connectivityResult =
+        connectivity.onConnectivityChanged;
+    connectivityResult.listen((ConnectivityResult data) {
+      if (data == ConnectivityResult.mobile) {
+      } else if (data == ConnectivityResult.wifi) {
+        print("Connected");
+      } else {
+        print("Disconnected");
+        reachabilityFailedFail();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    checkReachability();
-    return _createSplashScreen();
+    return Scaffold(
+      body: _hasSplashFinished
+          ? _requiresLanguage ? WelcomeScreen() : RootScreen()
+          : _createSplashScreen(),
+    );
   }
 }

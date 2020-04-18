@@ -290,46 +290,46 @@ class _RootScreenState extends State<RootScreen> {
 
     isIOS
         ? showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text(affirmativeLabel),
-                onPressed: () => launchAppStore(IOS_APP_URL),
-              ),
-              CupertinoDialogAction(
-                child: Text(negativeLabel),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        })
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text(affirmativeLabel),
+                    onPressed: () => launchAppStore(IOS_APP_URL),
+                  ),
+                  CupertinoDialogAction(
+                    child: Text(negativeLabel),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            })
         : showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                affirmativeLabel.toUpperCase(),
-                style: TextStyle(color: Colors.blue),
-              ),
-              onPressed: () => launchAppStore(ANDROID_APP_URL),
-            ),
-            FlatButton(
-              child: Text(negativeLabel.toUpperCase()),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      affirmativeLabel.toUpperCase(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onPressed: () => launchAppStore(ANDROID_APP_URL),
+                  ),
+                  FlatButton(
+                    child: Text(negativeLabel.toUpperCase()),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            },
+          );
   }
 
   void launchAppStore(String url) async {
