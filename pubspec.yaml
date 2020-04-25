@@ -24,7 +24,7 @@ dependencies:
     share: ^0.6.3+6
     firebase_messaging: ^6.0.13
     firebase_remote_config: ^0.3.0+3
-    google_maps_flutter: ^0.5.24+1
+    google_maps_flutter: ^0.5.21+3
     shared_preferences: ^0.5.6+3
     url_launcher: ^5.4.2
     http: ^0.12.0+4
@@ -44,6 +44,8 @@ dependencies:
     webview_flutter: ^0:3:19+9
     auto_size_text: ^2.1.0
     flutter_html: ^0.11.1
+
+    clustering_google_maps: ^0.1.2
 
     flutter_localizations:
         sdk: flutter

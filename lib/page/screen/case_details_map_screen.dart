@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:async/async.dart';
+import 'package:clustering_google_maps/clustering_google_maps.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +24,7 @@ class CaseListMapDetailScreen extends StatefulWidget {
 }
 
 class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
+  ClusteringHelper clusteringHelper;
   static const MethodChannel _channel = MethodChannel('location');
   ReportedCase selectedCase;
 
@@ -31,56 +33,77 @@ class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
   double pinPillPosition = -1000;
 
   List<Marker> locationMarkers = [];
+  List<LatLngAndGeohash> mapMakerList = [];
+  Map<String, ReportedCase> caseListMapWithId = Map<String, ReportedCase>();
 
-  Future<void> _fetchCases(BitmapDescriptor mapIcon) async {
+  Future<void> _fetchCases() async {
     List<ReportedCase> _cases = [];
     int id = await ApiClient().getLastCaseId();
     if (id == -1) {
       return _cases;
     }
+
     for (int i = id; i > 0; i--) {
       ReportedCase reportedCase =
           await ApiClient().getCase(i, forceUpdate: false);
       if (reportedCase != null && reportedCase.locations != null) {
         Location l = reportedCase.locations[0];
+        var latLan = LatLngAndGeohash(LatLng(l.latitude, l.longitude));
         setState(() {
-          locationMarkers.add(
-            Marker(
-                icon: mapIcon,
-                alpha: 0.5,
-                markerId: MarkerId("${l.date.millisecondsSinceEpoch}"),
-                position: LatLng(l.latitude, l.longitude),
-                onTap: () {
-                  setState(() {
-                    selectedCase = reportedCase;
-                    pinPillPosition = MediaQuery.of(context).size.height / 10;
-                  });
-                }),
-          );
+          caseListMapWithId[latLan.geohash] = reportedCase;
+          mapMakerList.add(latLan);
         });
       }
+
+      setState(() {
+        clusteringHelper = ClusteringHelper.forMemory(
+            list: mapMakerList,
+            bitmapAssetPathForSingleMarker: "assets/images/suspected_icon.png",
+            updateMarkers: (Set<Marker> markers) {
+              setState(() {
+                locationMarkers = markers.map((marker) {
+                  int count = int.parse(marker.infoWindow.title);
+                  if (count == 1) {
+                    LatLng l = marker.position;
+                    ReportedCase reportedCase = caseListMapWithId[
+                        "${LatLngAndGeohash(LatLng(l.latitude, l.longitude)).geohash}"];
+                    return Marker(
+                        icon: marker.icon,
+                        alpha: 0.5,
+                        markerId: marker.markerId,
+                        position: LatLng(l.latitude, l.longitude),
+                        onTap: () {
+                          setState(() {
+                            selectedCase = reportedCase;
+                            pinPillPosition =
+                                MediaQuery.of(context).size.height / 10;
+                          });
+                        });
+                  }
+                  return Marker(
+                      icon: marker.icon,
+                      markerId: marker.markerId,
+                      position: marker.position,
+                      onTap: () {
+                        setState(() {
+                          pinPillPosition = -MediaQuery.of(context).size.height;
+                        });
+                      });
+                  ;
+                }).toList();
+              });
+            },
+            aggregationSetup: AggregationSetup(markerSize: 150));
+      });
     }
+
     print("Cases found Retreived: ${_cases.length}");
   }
 
   @override
   void initState() {
     super.initState();
-
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(devicePixelRatio: 0.1, size: Size(0.5, 0.5)),
-            "assets/images/user_icon.png")
-        .then((userIcon) {
-      BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(devicePixelRatio: 0.1, size: Size(0.5, 0.5)),
-              "assets/images/suspected_icon.png")
-          .then((suspectIcon) {
-        _fetchCases(suspectIcon);
-//        getLocationUpdate().then((List<Location> locations) {
-//
-//        });
-      });
-    });
+    _fetchCases();
   }
 
   @override
@@ -100,65 +123,77 @@ class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
 
   Widget getMapView() {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            mapType: MapType.terrain,
-            markers: getMapEntries(),
-            initialCameraPosition: CameraPosition(
-              target: _currentLocation != null
-                  ? LatLng(
-                      _currentLocation.latitude, _currentLocation.longitude)
-                  : LatLng(6.9271, 79.8612),
-              zoom: 12,
+      body: clusteringHelper != null
+          ? Stack(
+              children: <Widget>[
+                GoogleMap(
+                  mapType: MapType.terrain,
+                  markers: getMapEntries(),
+                  initialCameraPosition: CameraPosition(
+                    target: _currentLocation != null
+                        ? LatLng(_currentLocation.latitude,
+                            _currentLocation.longitude)
+                        : LatLng(6.9271, 79.8612),
+                    zoom: 12,
+                  ),
+                  mapToolbarEnabled: true,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                  onMapCreated: (GoogleMapController controller) async {
+                    _controller.complete(controller);
+                    clusteringHelper.mapController = controller;
+                    clusteringHelper.updateMap();
+                  },
+                  onCameraMove: (position) {
+                    clusteringHelper.onCameraMove(position, forceUpdate: true);
+                  },
+                  onCameraIdle: clusteringHelper.onMapIdle,
+                  onTap: (LatLng location) {
+                    setState(() {
+                      pinPillPosition = -MediaQuery.of(context).size.height;
+                    });
+                  },
+                ),
+                AnimatedPositioned(
+                  bottom: pinPillPosition,
+                  right: 0,
+                  left: 0,
+                  duration: Duration(milliseconds: 300),
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.all(4),
+                        width: MediaQuery.of(context).size.width * 7 / 8,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  blurRadius: 20,
+                                  offset: Offset.zero,
+                                  color: Colors.grey.withOpacity(0.5))
+                            ]),
+                        child: selectedCase != null
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CaseItemMapInfo(selectedCase, () {
+                                  print("Click Card");
+                                  setState(() {
+                                    pinPillPosition =
+                                        -MediaQuery.of(context).size.height;
+                                  });
+                                }),
+                              )
+                            : Container(),
+                      )),
+                )
+              ],
+            )
+          : Container(
+              child: Center(
+                child: Text("Loading..."),
+              ),
             ),
-            mapToolbarEnabled: true,
-            myLocationButtonEnabled: true,
-            myLocationEnabled: true,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            onTap: (LatLng location) {
-              setState(() {
-                pinPillPosition = -MediaQuery.of(context).size.height;
-              });
-            },
-          ),
-          AnimatedPositioned(
-            bottom: pinPillPosition,
-            right: 0,
-            left: 0,
-            duration: Duration(milliseconds: 300),
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsets.all(4),
-                  width: MediaQuery.of(context).size.width * 7 / 8,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            blurRadius: 20,
-                            offset: Offset.zero,
-                            color: Colors.grey.withOpacity(0.5))
-                      ]),
-                  child: selectedCase != null
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CaseItemMapInfo(selectedCase, () {
-                            print("Click Card");
-                            setState(() {
-                              pinPillPosition =
-                                  -MediaQuery.of(context).size.height;
-                            });
-                          }),
-                        )
-                      : Container(),
-                )),
-          )
-        ],
-      ),
     );
   }
 
