@@ -82,6 +82,7 @@ class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
                   }
                   return Marker(
                       icon: marker.icon,
+                      alpha: 0.8,
                       markerId: marker.markerId,
                       position: marker.position,
                       onTap: () {
