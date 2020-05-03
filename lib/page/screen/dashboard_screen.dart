@@ -4,21 +4,19 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
 import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/contact_us_screen.dart';
-import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/news_detail_screen.dart';
 import 'package:selftrackingapp/page/screen/pharamacy_list_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
-import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
-
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../models/news_article.dart';
 import '../../networking/api_client.dart';
 import '../../utils/tracker_colors.dart';
@@ -109,10 +107,19 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   void _shareArticle(NewsArticle article) {
+    // Parsing the [message] as it is a string of html content
+    var document = parse(article.message);
+    String parsedString = parse(document.body.text).documentElement.text;
+
+    // Checking if subtitle is null
+    var subtitle = article.subtitle;
+    subtitle = subtitle != null ? subtitle + "\n" : "";
+
     Share.share("${article.title}\n"
-        "${article.subtitle}\n"
+        "$subtitle"
         "by ${article.originator}\n"
-        "${dateFormat.format(article.created)}\n");
+        "${dateFormat.format(article.created)}\n\n"
+        "$parsedString");
   }
 
   @override
