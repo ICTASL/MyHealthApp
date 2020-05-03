@@ -4,7 +4,6 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:selftrackingapp/app_localizations.dart';
@@ -16,6 +15,7 @@ import 'package:selftrackingapp/page/screen/pharamacy_list_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_html_css/simple_html_css.dart';
 
 import '../../models/news_article.dart';
 import '../../networking/api_client.dart';
@@ -107,9 +107,10 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   void _shareArticle(NewsArticle article) {
-    // Parsing the [message] as it is a string of html content
-    var document = parse(article.message);
-    String parsedString = parse(document.body.text).documentElement.text;
+
+    // Converting [article.message] which is html to plain string
+    var spans = HTML.toTextSpan(context, article.message);
+    var formattedContent = spans.toPlainText();
 
     // Checking if subtitle is null
     var subtitle = article.subtitle;
@@ -119,7 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         "$subtitle"
         "by ${article.originator}\n"
         "${dateFormat.format(article.created)}\n\n"
-        "$parsedString");
+        "$formattedContent");
   }
 
   @override

@@ -44,6 +44,7 @@ dependencies:
     webview_flutter: ^0:3:19+9
     auto_size_text: ^2.1.0
     flutter_html: ^0.11.1
+    simple_html_css: ^1.0.2+3
 
     clustering_google_maps: ^0.1.2
 
