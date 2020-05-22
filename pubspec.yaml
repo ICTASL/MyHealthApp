@@ -35,7 +35,7 @@ dependencies:
     date_format: ^1.0.8
     provider: ^4.0.4
     equatable: ^1.1.1
-    geolocator: ^5.1.4+2
+    geolocator: ^5.3.1
     async: ^2.4.0
     package_info: ^0.4.0+16
     connectivity: ^0.4.8+2
