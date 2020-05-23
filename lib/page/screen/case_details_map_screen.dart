@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:clustering_google_maps/clustering_google_maps.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
   List<Marker> locationMarkers = [];
   List<LatLngAndGeohash> mapMakerList = [];
   Map<String, ReportedCase> caseListMapWithId = Map<String, ReportedCase>();
+  bool ready = false;
 
   Future<void> _fetchCases() async {
     List<ReportedCase> _cases = [];
@@ -97,6 +99,9 @@ class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
             aggregationSetup: AggregationSetup(markerSize: 150));
       });
     }
+    setState(() {
+      ready = true;
+    });
 
     print("Cases found Retreived: ${_cases.length}");
   }
@@ -124,7 +129,7 @@ class _CaseListMapDetailScreenState extends State<CaseListMapDetailScreen> {
 
   Widget getMapView() {
     return Scaffold(
-      body: clusteringHelper != null
+      body: clusteringHelper != null && ready
           ? Stack(
               children: <Widget>[
                 GoogleMap(
