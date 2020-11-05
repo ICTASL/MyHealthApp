@@ -24,6 +24,7 @@ class _QrWebviewScreenState extends State<QrWebviewScreen> {
       onWillPop: () => _exitApp(context),
       child: Scaffold(
         body: WebView(
+          javascriptMode: JavascriptMode.unrestricted,
           initialUrl: widget.url,
         ),
       ),
