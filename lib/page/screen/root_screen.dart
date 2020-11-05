@@ -15,6 +15,7 @@ import 'package:selftrackingapp/notifiers/stories_model.dart';
 import 'package:selftrackingapp/page/screen/dashboard_screen.dart';
 import 'package:selftrackingapp/page/screen/faq_screen.dart';
 import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
+import 'package:selftrackingapp/page/screen/qr_scan_screen.dart';
 import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:selftrackingapp/utils/tracker_colors.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
@@ -44,15 +45,16 @@ class _RootScreenState extends State<RootScreen> {
   bool _hasCaseThrownError = false;
   final List<Widget> _homeTabsTotal = [
     DashboardScreen(),
-    CaseListMapDetailScreen(),
+    // CaseListMapDetailScreen(),
+    QrScanScreen(),
     CaseDetailScreen(),
     FAQScreen()
   ];
-  final List<Widget> _homeTabsWithoutCaseList = [
-    DashboardScreen(),
-    CaseDetailScreen(),
-    FAQScreen()
-  ];
+  // final List<Widget> _homeTabsWithoutCaseList = [
+  //   DashboardScreen(),
+  //   CaseDetailScreen(),
+  //   FAQScreen()
+  // ];
 
   bool _useCaseList = false;
   @override
@@ -185,9 +187,10 @@ class _RootScreenState extends State<RootScreen> {
           ],
           child: !_hasCaseThrownError
               ? _isCasesLoaded
-                  ? _useCaseList
-                      ? _homeTabsTotal[_currentIndex]
-                      : _homeTabsWithoutCaseList[_currentIndex]
+                  ? _homeTabsTotal[_currentIndex]
+                  // _useCaseList
+                  //     ? _homeTabsTotal[_currentIndex]
+                  //     : _homeTabsWithoutCaseList[_currentIndex]
                   : Center(
                       child: CircularProgressIndicator(),
                     )
@@ -204,43 +207,56 @@ class _RootScreenState extends State<RootScreen> {
               });
             },
             activeColor: TrackerColors.primaryColor,
-            items: _getBottomNavList(_useCaseList)));
+            // items: _getBottomNavList(_useCaseList)));
+            items: _getBottomNavList()));
   }
 
-  List<TitledNavigationBarItem> _getBottomNavList(bool _useCaseList) {
-    if (!_useCaseList) {
-      return [
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context)
-                .translate('dashboard_home_tab_text'),
-            icon: Icons.home),
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context)
-                .translate('dashboard_safe_track_tab_text'),
-            icon: Icons.map),
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context).translate('popmenu_faq'),
-            icon: Icons.question_answer),
-      ];
-    } else {
-      return [
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context)
-                .translate('dashboard_home_tab_text'),
-            icon: Icons.home),
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context)
-                .translate('dashboard_case_list_tab_text'),
-            icon: Icons.location_searching),
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context)
-                .translate('dashboard_safe_track_tab_text'),
-            icon: Icons.map),
-        TitledNavigationBarItem(
-            title: AppLocalizations.of(context).translate('popmenu_faq'),
-            icon: Icons.question_answer),
-      ];
-    }
+  List<TitledNavigationBarItem> _getBottomNavList() {
+    return [
+      TitledNavigationBarItem(
+          title:
+              AppLocalizations.of(context).translate('dashboard_home_tab_text'),
+          icon: Icons.home),
+      TitledNavigationBarItem(
+          title: AppLocalizations.of(context).translate('scan_qr'),
+          icon: Icons.center_focus_strong),
+      TitledNavigationBarItem(
+          title: AppLocalizations.of(context).translate('popmenu_faq'),
+          icon: Icons.question_answer),
+    ];
+    // if (!_useCaseList) {
+    //   return [
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context)
+    //             .translate('dashboard_home_tab_text'),
+    //         icon: Icons.home),
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context)
+    //             .translate('dashboard_safe_track_tab_text'),
+    //         icon: Icons.map),
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context).translate('popmenu_faq'),
+    //         icon: Icons.question_answer),
+    //   ];
+    // } else {
+    //   return [
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context)
+    //             .translate('dashboard_home_tab_text'),
+    //         icon: Icons.home),
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context)
+    //             .translate('dashboard_case_list_tab_text'),
+    //         icon: Icons.location_searching),
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context)
+    //             .translate('dashboard_safe_track_tab_text'),
+    //         icon: Icons.map),
+    //     TitledNavigationBarItem(
+    //         title: AppLocalizations.of(context).translate('popmenu_faq'),
+    //         icon: Icons.question_answer),
+    //   ];
+    // }
   }
 
 //check for the latest build number set in the firebase remote config
@@ -290,46 +306,46 @@ class _RootScreenState extends State<RootScreen> {
 
     isIOS
         ? showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text(affirmativeLabel),
-                onPressed: () => launchAppStore(IOS_APP_URL),
-              ),
-              CupertinoDialogAction(
-                child: Text(negativeLabel),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        })
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text(affirmativeLabel),
+                    onPressed: () => launchAppStore(IOS_APP_URL),
+                  ),
+                  CupertinoDialogAction(
+                    child: Text(negativeLabel),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            })
         : showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                affirmativeLabel.toUpperCase(),
-                style: TextStyle(color: Colors.blue),
-              ),
-              onPressed: () => launchAppStore(ANDROID_APP_URL),
-            ),
-            FlatButton(
-              child: Text(negativeLabel.toUpperCase()),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      affirmativeLabel.toUpperCase(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onPressed: () => launchAppStore(ANDROID_APP_URL),
+                  ),
+                  FlatButton(
+                    child: Text(negativeLabel.toUpperCase()),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              );
+            },
+          );
   }
 
   void launchAppStore(String url) async {
