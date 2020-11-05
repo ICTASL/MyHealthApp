@@ -47,7 +47,7 @@ class _RootScreenState extends State<RootScreen> {
     DashboardScreen(),
     // CaseListMapDetailScreen(),
     QrScanScreen(),
-    CaseDetailScreen(),
+    // CaseDetailScreen(),
     FAQScreen()
   ];
   // final List<Widget> _homeTabsWithoutCaseList = [

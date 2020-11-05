@@ -96,7 +96,8 @@
   "covid_19_information": "Covid-19 Related Complaints",
   "pharmacy_list": "Locate Nearest Pharmacy Delivery Service",
   "pharmacy_tab": "Pharmacy",
-  "scan_qr": "QR Scanner"
+  "scan_qr": "QR Scanner",
+  "qr_title":"Stay Safe!"
   
 
 }
