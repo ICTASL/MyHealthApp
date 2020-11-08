@@ -3,6 +3,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:selftrackingapp/page/screen/qr_webview_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../app_localizations.dart';
+
 class QrScanScreen extends StatefulWidget {
   @override
   _QrScanScreenState createState() => _QrScanScreenState();
@@ -26,6 +28,7 @@ class _QrScanScreenState extends State<QrScanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -36,21 +39,30 @@ class _QrScanScreenState extends State<QrScanScreen> {
               onQRViewCreated: _onQRViewCreated,
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-                child: IconButton(
-              icon: Icon(Icons.query_builder),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => QrWebviewScreen(
-                              url: 'https://staysafe.gov.lk/',
-                            )));
-              },
-            )),
-          ),
+          Row(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(10),
+                height: 100,
+                width: 100,
+                color: Colors.white,
+                child: Image.asset(
+                  "assets/images/stay_safe.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    AppLocalizations.of(context).translate("qr_instruct"),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
