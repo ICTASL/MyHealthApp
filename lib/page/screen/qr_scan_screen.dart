@@ -74,11 +74,16 @@ class _QrScanScreenState extends State<QrScanScreen> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
+    print("called");
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         qrText = scanData;
-        _handleURLButtonPress(context, qrText);
+
+        if (qrText != "") {
+          controller.pauseCamera();
+          _handleURLButtonPress(context, qrText);
+        }
       });
     });
   }

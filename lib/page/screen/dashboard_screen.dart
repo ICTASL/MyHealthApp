@@ -66,9 +66,9 @@ class _DashboardScreenState extends State<DashboardScreen>
       }
     });
 
-    _channel.invokeMethod('requestLocationPermission').then((res) {
-      _channel.invokeMethod('openLocationService').then((res) {});
-    });
+    // _channel.invokeMethod('requestLocationPermission').then((res) {
+    //   _channel.invokeMethod('openLocationService').then((res) {});
+    // });
   }
 
   Future<void> fetchArticles() async {
