@@ -85,6 +85,7 @@ class _QrScanScreenState extends State<QrScanScreen> {
           _handleURLButtonPress(context, qrText);
         }
       });
+      // controller.resumeCamera();
     });
   }
 }

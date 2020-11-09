@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../app_localizations.dart';
@@ -33,6 +34,14 @@ class _QrWebviewScreenState extends State<QrWebviewScreen> {
         ),
         body: WebView(
           initialUrl: widget.url,
+          navigationDelegate: (NavigationRequest request) async {
+            if (await canLaunch(request.url)) {
+              await launch(request.url);
+            } else {
+              print("Cannot launch url");
+            }
+            return NavigationDecision.prevent;
+          },
           javascriptMode: JavascriptMode.unrestricted,
         ));
 
