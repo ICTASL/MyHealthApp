@@ -44,28 +44,5 @@ class _QrWebviewScreenState extends State<QrWebviewScreen> {
           },
           javascriptMode: JavascriptMode.unrestricted,
         ));
-
-    //  WillPopScope(
-    //   onWillPop: () => _exitApp(context),
-    //   child: Scaffold(
-    //     body: WebView(
-    //       javascriptMode: JavascriptMode.unrestricted,
-    //       initialUrl: widget.url,
-    //     ),
-    //   ),
-    // );
   }
-
-  // Future<bool> _exitApp(BuildContext context) async {
-  //   print("cal");
-  //   if (await controllerGlobal.canGoBack()) {
-  //     print("onwill goback");
-  //     controllerGlobal.goBack();
-  //   } else {
-  //     Scaffold.of(context).showSnackBar(
-  //       const SnackBar(content: Text("No back history item")),
-  //     );
-  //     return Future.value(false);
-  //   }
-  // }
 }
