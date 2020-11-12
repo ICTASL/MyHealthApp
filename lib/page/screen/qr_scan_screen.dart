@@ -14,7 +14,7 @@ class _QrScanScreenState extends State<QrScanScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   var qrText = "";
   QRViewController controller;
-
+  bool scanned = false;
   @override
   void initState() {
     super.initState();
@@ -29,63 +29,83 @@ class _QrScanScreenState extends State<QrScanScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10),
-                height: 100,
-                width: 100,
-                color: Colors.white,
-                child: Image.asset(
-                  "assets/images/stay_safe.png",
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    AppLocalizations.of(context).translate("qr_instruct"),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+    return scanned == false
+        ? Scaffold(
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 5,
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: _onQRViewCreated,
                   ),
                 ),
-              )
-            ],
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      height: 100,
+                      width: 100,
+                      color: Colors.white,
+                      child: Image.asset(
+                        "assets/images/stay_safe.png",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context).translate("qr_instruct"),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           )
-        ],
-      ),
-    );
+        : Container();
   }
 
   void _handleURLButtonPress(BuildContext context, String url) {
+    // Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => QrWebviewScreen(url: url)))
+    //     .then((_) {
+    //   _backagain();
+    // });
+
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => QrWebviewScreen(url: url)));
+            MaterialPageRoute(builder: (context) => QrWebviewScreen(url: url)))
+        .then((_) {
+      _backagain();
+    });
+  }
+
+  void _backagain() {
+    setState(() {
+      scanned = false;
+      controller.resumeCamera();
+    });
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    print("called");
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
 
-        if (qrText != "") {
-          controller.pauseCamera();
-          _handleURLButtonPress(context, qrText);
-        }
-      });
-      // controller.resumeCamera();
+    controller.scannedDataStream.listen((scanData) {
+      if (scanned == false) {
+        setState(() {
+          qrText = scanData;
+          if (qrText != "") {
+            scanned = true;
+
+            controller.pauseCamera();
+            _handleURLButtonPress(context, qrText);
+          }
+        });
+      }
     });
   }
 }
