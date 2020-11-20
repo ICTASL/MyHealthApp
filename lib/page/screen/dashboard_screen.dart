@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +52,15 @@ class _DashboardScreenState extends State<DashboardScreen>
   Timer _timer;
   TabController _tabController;
 
+  String name = "";
+
   @override
   void initState() {
     super.initState();
+    name = "kuliyapitiya";
 
     _pageController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     updateDashboard();
     _articleFetch = fetchArticles();
 
@@ -136,12 +140,49 @@ class _DashboardScreenState extends State<DashboardScreen>
         body: TabBarView(
           controller: _tabController,
           children: <Widget>[
+            _buildMohScreen(),
             _buildNewsScreen(),
             _buildFaqScreen(),
             _buildPharamcyScreen(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildMohScreen() {
+    return StreamBuilder<QuerySnapshot>(
+      // stream: (name != "" && name != null)
+      //     ? Firestore.instance
+      //         .collection('Moh')
+      //         .where("name", arrayContains: name)
+      //         .snapshots()
+      //     : Firestore.instance.collection("Moh").snapshots(),
+
+      stream: Firestore.instance.collection("Moh").snapshots(),
+      builder: (context, snapshot) {
+        return (snapshot.connectionState == ConnectionState.waiting)
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot data = snapshot.data.documents[index];
+                  return Card(
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          data['name'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+      },
     );
   }
 
@@ -153,6 +194,12 @@ class _DashboardScreenState extends State<DashboardScreen>
         labelColor: Colors.black,
         indicatorColor: TrackerColors.primaryColor,
         tabs: [
+          Container(
+            constraints: BoxConstraints.expand(),
+            child: Center(
+              child: Text("MOH"),
+            ),
+          ),
           Container(
             constraints: BoxConstraints.expand(),
             child: Center(
@@ -180,7 +227,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               child:
                   Text(AppLocalizations.of(context).translate("pharmacy_tab")),
             ),
-          )
+          ),
         ],
       ),
     );
