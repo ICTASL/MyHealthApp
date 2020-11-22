@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:selftrackingapp/main.dart';
+import 'package:selftrackingapp/page/screen/privacy_policy_screen.dart';
+import 'package:selftrackingapp/page/screen/root_screen.dart';
+import 'package:selftrackingapp/page/screen/welcome_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../app_localizations.dart';
+import 'qr_scan_screen.dart';
 
 class QrWebviewScreen extends StatefulWidget {
   final String url;
@@ -26,6 +31,12 @@ class _QrWebviewScreenState extends State<QrWebviewScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => HomeScreen()));
+              }),
           iconTheme: IconThemeData(color: Colors.black),
           title: Text(
             AppLocalizations.of(context).translate("qr_title"),
@@ -34,14 +45,14 @@ class _QrWebviewScreenState extends State<QrWebviewScreen> {
         ),
         body: WebView(
           initialUrl: widget.url,
-          navigationDelegate: (NavigationRequest request) async {
-            if (await canLaunch(request.url)) {
-              await launch(request.url);
-            } else {
-              print("Cannot launch url");
-            }
-            return NavigationDecision.prevent;
-          },
+          // navigationDelegate: (NavigationRequest request) async {
+          //   if (await canLaunch(request.url)) {
+          //     await launch(request.url);
+          //   } else {
+          //     print("Cannot launch url");
+          //   }
+          //   return NavigationDecision.prevent;
+          // },
           javascriptMode: JavascriptMode.unrestricted,
         ));
   }
