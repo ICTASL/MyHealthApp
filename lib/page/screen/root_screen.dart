@@ -177,6 +177,7 @@ class _RootScreenState extends State<RootScreen> {
               fontSize: 20.0,
             ),
           ),
+          automaticallyImplyLeading: false,
         ),
         body: MultiProvider(
           providers: [

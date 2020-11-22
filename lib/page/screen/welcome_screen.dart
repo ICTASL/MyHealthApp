@@ -327,7 +327,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               BorderRadius.all(Radius.circular(20.0))),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => RootScreen()));
