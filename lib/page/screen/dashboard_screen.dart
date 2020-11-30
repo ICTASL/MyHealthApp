@@ -57,7 +57,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   void initState() {
     super.initState();
-    name = "kuliyapitiya";
 
     _pageController = PageController();
     _tabController = TabController(length: 4, vsync: this);
@@ -151,38 +150,136 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildMohScreen() {
-    return StreamBuilder<QuerySnapshot>(
-      // stream: (name != "" && name != null)
-      //     ? Firestore.instance
-      //         .collection('Moh')
-      //         .where("name", arrayContains: name)
-      //         .snapshots()
-      //     : Firestore.instance.collection("Moh").snapshots(),
-
-      stream: Firestore.instance.collection("Moh").snapshots(),
-      builder: (context, snapshot) {
-        return (snapshot.connectionState == ConnectionState.waiting)
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot data = snapshot.data.documents[index];
-                  return Card(
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          data['name'],
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-      },
+    return Column(
+      children: <Widget>[
+        Card(
+          child: TextField(
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search), hintText: 'Search...'),
+            onChanged: (val) {
+              setState(() {
+                name = val;
+              });
+            },
+          ),
+        ),
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: (name != "" && name != null)
+                ? Firestore.instance
+                    .collection('Moh')
+                    .where("name", isEqualTo: name)
+                    .orderBy("name")
+                    .snapshots()
+                : Firestore.instance
+                    .collection("Moh")
+                    .orderBy("name")
+                    .snapshots(),
+            builder: (context, snapshot) {
+              return (snapshot.connectionState == ConnectionState.waiting)
+                  ? Center(child: CircularProgressIndicator())
+                  : snapshot.data.documents.length != 0
+                      ? ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot data =
+                                snapshot.data.documents[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(20.0))),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0))),
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Text(
+                                              data['name'] != null
+                                                  ? data['name']
+                                                  : "",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              data['phone'] != null
+                                                  ? data['phone']
+                                                  : "",
+                                              style: TextStyle(
+                                                  fontSize: 17.0,
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontWeight: FontWeight.w400),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            SizedBox(height: 5.0),
+                                            // address.isNotEmpty
+                                            //     ? Column(
+                                            //         crossAxisAlignment: CrossAxisAlignment.start,
+                                            //         children: <Widget>[
+                                            //           SizedBox(
+                                            //             height: 2.0,
+                                            //           ),
+                                            //           Text(
+                                            //             address,
+                                            //             style: TextStyle(
+                                            //                 color: Colors.black,
+                                            //                 fontSize: 13.0,
+                                            //                 fontWeight: FontWeight.w400),
+                                            //             textAlign: TextAlign.start,
+                                            //           ),
+                                            //         ],
+                                            //       )
+                                            Container(),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: TrackerColors.primaryColor,
+                                        ),
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Image.asset(
+                                          "assets/images/medical_consultion.png",
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Text("No Records found");
+            },
+          ),
+        ),
+      ],
     );
   }
 
