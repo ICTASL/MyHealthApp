@@ -20,6 +20,7 @@ import 'package:share/share.dart';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../models/news_article.dart';
 import '../../networking/api_client.dart';
 import '../../utils/tracker_colors.dart';
@@ -168,9 +169,24 @@ class _DashboardScreenState extends State<DashboardScreen>
             stream: (name != "" && name != null)
                 ? Firestore.instance
                     .collection('Moh')
-                    .where("name", isEqualTo: name)
-                    .orderBy("name")
+                    .where('name_insensitive',
+                        isGreaterThanOrEqualTo: name.toLowerCase())
+                    .where('name_insensitive',
+                        isLessThan: name.toLowerCase() + 'z')
+                    .orderBy("name_insensitive")
                     .snapshots()
+
+                // ? Firestore.instance
+                //     .collection('Moh')
+                //     .startAt([name.toUpperCase()])
+                //     .endAt([name.toLowerCase() + "\uf8ff"])
+                //     .orderBy("name")
+                //     .snapshots()
+
+                // ? Firestore.instance
+                //     .collection('Moh')
+                //     .orderBy('name')
+                //     .startAt([name]).endAt([name + "\uf8ff"]).snapshots()
                 : Firestore.instance
                     .collection("Moh")
                     .orderBy("name")
@@ -186,89 +202,93 @@ class _DashboardScreenState extends State<DashboardScreen>
                                 snapshot.data.documents[index];
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(20.0))),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await launch("tel:" + data['phone']);
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(20.0))),
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                2),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: <Widget>[
-                                            Text(
-                                              data['name'] != null
-                                                  ? data['name']
-                                                  : "",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 20,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0))),
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              Text(
+                                                data['name'] != null
+                                                    ? data['name']
+                                                    : "",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                ),
                                               ),
+                                              Text(
+                                                data['phone'] != null
+                                                    ? data['phone']
+                                                    : "",
+                                                style: TextStyle(
+                                                    fontSize: 17.0,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              SizedBox(height: 5.0),
+                                              // address.isNotEmpty
+                                              //     ? Column(
+                                              //         crossAxisAlignment: CrossAxisAlignment.start,
+                                              //         children: <Widget>[
+                                              //           SizedBox(
+                                              //             height: 2.0,
+                                              //           ),
+                                              //           Text(
+                                              //             address,
+                                              //             style: TextStyle(
+                                              //                 color: Colors.black,
+                                              //                 fontSize: 13.0,
+                                              //                 fontWeight: FontWeight.w400),
+                                              //             textAlign: TextAlign.start,
+                                              //           ),
+                                              //         ],
+                                              //       )
+                                              Container(),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: TrackerColors.primaryColor,
                                             ),
-                                            Text(
-                                              data['phone'] != null
-                                                  ? data['phone']
-                                                  : "",
-                                              style: TextStyle(
-                                                  fontSize: 17.0,
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontWeight: FontWeight.w400),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            // address.isNotEmpty
-                                            //     ? Column(
-                                            //         crossAxisAlignment: CrossAxisAlignment.start,
-                                            //         children: <Widget>[
-                                            //           SizedBox(
-                                            //             height: 2.0,
-                                            //           ),
-                                            //           Text(
-                                            //             address,
-                                            //             style: TextStyle(
-                                            //                 color: Colors.black,
-                                            //                 fontSize: 13.0,
-                                            //                 fontWeight: FontWeight.w400),
-                                            //             textAlign: TextAlign.start,
-                                            //           ),
-                                            //         ],
-                                            //       )
-                                            Container(),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: TrackerColors.primaryColor,
-                                        ),
-                                        padding: EdgeInsets.all(15.0),
-                                        child: Image.asset(
-                                          "assets/images/medical_consultion.png",
-                                          height: 24,
-                                          width: 24,
-                                        ),
-                                      ),
-                                    ],
+                                            padding: EdgeInsets.all(15.0),
+                                            child: Icon(
+                                              Icons.phone,
+                                              color: Colors.white,
+                                            )),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -287,18 +307,20 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Container(
       width: MediaQuery.of(context).size.width,
       child: TabBar(
+        // isScrollable: true,
         controller: _tabController,
         labelColor: Colors.black,
         indicatorColor: TrackerColors.primaryColor,
+        labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
         tabs: [
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child: Text("MOH"),
             ),
           ),
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_news_text")),
@@ -312,14 +334,14 @@ class _DashboardScreenState extends State<DashboardScreen>
 //            ),
 //          ),
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_contact_tab_text")),
             ),
           ),
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child:
                   Text(AppLocalizations.of(context).translate("pharmacy_tab")),
