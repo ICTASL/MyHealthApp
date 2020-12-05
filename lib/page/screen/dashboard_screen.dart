@@ -175,18 +175,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                         isLessThan: name.toLowerCase() + 'z')
                     .orderBy("name_insensitive")
                     .snapshots()
-
-                // ? Firestore.instance
-                //     .collection('Moh')
-                //     .startAt([name.toUpperCase()])
-                //     .endAt([name.toLowerCase() + "\uf8ff"])
-                //     .orderBy("name")
-                //     .snapshots()
-
-                // ? Firestore.instance
-                //     .collection('Moh')
-                //     .orderBy('name')
-                //     .startAt([name]).endAt([name + "\uf8ff"]).snapshots()
                 : Firestore.instance
                     .collection("Moh")
                     .orderBy("name")
