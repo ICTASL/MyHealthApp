@@ -30,7 +30,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 // Apply the Crashlytics Gradle plugin
-apply plugin: 'com.google.firebase.crashlytics'
+// apply plugin: 'com.google.firebase.crashlytics'
 
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
@@ -57,6 +57,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -96,8 +97,8 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-crashlytics:17+'
-    implementation 'com.google.firebase:firebase-messaging:20.1.6'
+    // implementation 'com.google.firebase:firebase-crashlytics:17+'
+    // implementation 'com.google.firebase:firebase-messaging:20.1.6'
 
 
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:share/share.dart';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../models/news_article.dart';
 import '../../networking/api_client.dart';
 import '../../utils/tracker_colors.dart';
@@ -51,12 +53,14 @@ class _DashboardScreenState extends State<DashboardScreen>
   Timer _timer;
   TabController _tabController;
 
+  String name = "";
+
   @override
   void initState() {
     super.initState();
 
     _pageController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     updateDashboard();
     _articleFetch = fetchArticles();
 
@@ -136,6 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         body: TabBarView(
           controller: _tabController,
           children: <Widget>[
+            _buildMohScreen(),
             _buildNewsScreen(),
             _buildFaqScreen(),
             _buildPharamcyScreen(),
@@ -145,16 +150,165 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
+  Widget _buildMohScreen() {
+    return Column(
+      children: <Widget>[
+        Card(
+          child: TextField(
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search), hintText: 'Search...'),
+            onChanged: (val) {
+              setState(() {
+                name = val;
+              });
+            },
+          ),
+        ),
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: (name != "" && name != null)
+                ? Firestore.instance
+                    .collection('Moh')
+                    .where('name_insensitive',
+                        isGreaterThanOrEqualTo: name.toLowerCase())
+                    .where('name_insensitive',
+                        isLessThan: name.toLowerCase() + 'z')
+                    .orderBy("name_insensitive")
+                    .snapshots()
+                : Firestore.instance
+                    .collection("Moh")
+                    .orderBy("name")
+                    .snapshots(),
+            builder: (context, snapshot) {
+              return (snapshot.connectionState == ConnectionState.waiting)
+                  ? Center(child: CircularProgressIndicator())
+                  : snapshot.data.documents.length != 0
+                      ? ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot data =
+                                snapshot.data.documents[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await launch("tel:" + data['phone']);
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0))),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0))),
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              Text(
+                                                data['name'] != null
+                                                    ? data['name']
+                                                    : "",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              Text(
+                                                data['phone'] != null
+                                                    ? data['phone']
+                                                    : "",
+                                                style: TextStyle(
+                                                    fontSize: 17.0,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              SizedBox(height: 5.0),
+                                              // address.isNotEmpty
+                                              //     ? Column(
+                                              //         crossAxisAlignment: CrossAxisAlignment.start,
+                                              //         children: <Widget>[
+                                              //           SizedBox(
+                                              //             height: 2.0,
+                                              //           ),
+                                              //           Text(
+                                              //             address,
+                                              //             style: TextStyle(
+                                              //                 color: Colors.black,
+                                              //                 fontSize: 13.0,
+                                              //                 fontWeight: FontWeight.w400),
+                                              //             textAlign: TextAlign.start,
+                                              //           ),
+                                              //         ],
+                                              //       )
+                                              Container(),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: TrackerColors.primaryColor,
+                                            ),
+                                            padding: EdgeInsets.all(15.0),
+                                            child: Icon(
+                                              Icons.phone,
+                                              color: Colors.white,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Text("No Records found");
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildAppBar() {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: TabBar(
+        // isScrollable: true,
         controller: _tabController,
         labelColor: Colors.black,
         indicatorColor: TrackerColors.primaryColor,
+        labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
         tabs: [
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
+            child: Center(
+              child: Text("MOH"),
+            ),
+          ),
+          Container(
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_news_text")),
@@ -168,19 +322,19 @@ class _DashboardScreenState extends State<DashboardScreen>
 //            ),
 //          ),
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_contact_tab_text")),
             ),
           ),
           Container(
-            constraints: BoxConstraints.expand(),
+            // constraints: BoxConstraints.expand(),
             child: Center(
               child:
                   Text(AppLocalizations.of(context).translate("pharmacy_tab")),
             ),
-          )
+          ),
         ],
       ),
     );
