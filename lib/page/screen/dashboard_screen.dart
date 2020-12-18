@@ -140,10 +140,10 @@ class _DashboardScreenState extends State<DashboardScreen>
         body: TabBarView(
           controller: _tabController,
           children: <Widget>[
-            _buildMohScreen(),
             _buildNewsScreen(),
             _buildFaqScreen(),
             _buildPharamcyScreen(),
+            _buildMohScreen(),
           ],
         ),
       ),
@@ -304,12 +304,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           Container(
             // constraints: BoxConstraints.expand(),
             child: Center(
-              child: Text("MOH"),
-            ),
-          ),
-          Container(
-            // constraints: BoxConstraints.expand(),
-            child: Center(
               child: Text(AppLocalizations.of(context)
                   .translate("dashboard_news_text")),
             ),
@@ -333,6 +327,12 @@ class _DashboardScreenState extends State<DashboardScreen>
             child: Center(
               child:
                   Text(AppLocalizations.of(context).translate("pharmacy_tab")),
+            ),
+          ),
+          Container(
+            // constraints: BoxConstraints.expand(),
+            child: Center(
+              child: Text("MOH"),
             ),
           ),
         ],
