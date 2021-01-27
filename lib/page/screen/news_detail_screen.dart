@@ -1,21 +1,12 @@
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/rich_text_parser.dart';
+import 'package:intl/intl.dart';
 import 'package:selftrackingapp/models/message_type.dart';
 import 'package:selftrackingapp/models/news_article.dart';
-import 'package:selftrackingapp/networking/api_client.dart';
-import 'package:selftrackingapp/theme.dart';
-import 'package:selftrackingapp/widgets/custom_text.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../app_localizations.dart';
-
-import 'package:intl/intl.dart';
 
 DateFormat dateFormat = DateFormat("dd-MM-yy HH:mm");
 
@@ -29,10 +20,24 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
+  String _initialUrl;
+
   @override
   void initState() {
     super.initState();
-    print(widget.article.message);
+
+    // Adding meta so that it displays the correct size in iOS
+    // setting sans-serif font to the content
+    var content = """<!DOCTYPE html>
+    <html>
+      <head><meta name='viewport' content='width=device-width, initial-scale=1.0'></head>
+      <body style='margin: 0; padding: 0; font-family:Verdana, Geneva, sans-serif;'>
+          ${widget.article.message}
+      </body>
+    </html>""";
+    _initialUrl = Uri.dataFromString(content,
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString();
   }
 
   void _shareArticle(NewsArticle article) {
@@ -157,11 +162,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         Divider(),
                         Expanded(
                           child: WebView(
-                            initialUrl: Uri.dataFromString(
-                                    widget.article.message,
-                                    mimeType: 'text/html',
-                                    encoding: Encoding.getByName('utf-8'))
-                                .toString(),
+                            initialUrl: _initialUrl,
                             navigationDelegate:
                                 (NavigationRequest request) async {
                               if (await canLaunch(request.url)) {
@@ -169,7 +170,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                               } else {
                                 print("Cannot launch url");
                               }
-                              return NavigationDecision.prevent;
+
+                              // Workaround for content not showing in iOS
+                              // as described here
+                              // [https://github.com/flutter/flutter/issues/30256]
+                              return request.url == _initialUrl
+                                  ? NavigationDecision.navigate
+                                  : NavigationDecision.prevent;
                             },
                             javascriptMode: JavascriptMode.unrestricted,
                           ),
@@ -180,7 +187,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 ))));
   }
 
-  // var testhtml =
-  //     "<div style=\"text-align: justify;\">\n  <h2 style=\"line-height: 40.8%;\">What is Lorem Ipsum?</h2><p></p><p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p><h2 style=\"line-height: 40.8%;\">Why do we use it?</h2><p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',</p><ol><li>one</li><li>two</li><li>three</li></ol><p></p>\n</div>";
+// var testhtml =
+//     "<div style=\"text-align: justify;\">\n  <h2 style=\"line-height: 40.8%;\">What is Lorem Ipsum?</h2><p></p><p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p><h2 style=\"line-height: 40.8%;\">Why do we use it?</h2><p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',</p><ol><li>one</li><li>two</li><li>three</li></ol><p></p>\n</div>";
 
 }
